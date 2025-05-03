@@ -12,6 +12,17 @@ import Contact from "./pages/Contact";
 import Sitemap from "./pages/Sitemap";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import About from "./pages/About";
+import Team from "./pages/Team";
+import Regulation from "./pages/Regulation";
+import LunchMenu from "./pages/LunchMenu";
+import DressCode from "./pages/DressCode";
+import ClassSchedules from "./pages/ClassSchedules";
+import SchoolBooks from "./pages/SchoolBooks";
+import AcademicCalendar from "./pages/AcademicCalendar";
+import Extracurricular from "./pages/Extracurricular";
+import Inovar from "./pages/Inovar";
+import Admission from "./pages/Admission";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +41,26 @@ const App = () => (
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
+            
+            {/* School routes */}
+            <Route path="/about" element={<About />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/regulation" element={<Regulation />} />
+            
+            {/* Daily Life routes */}
+            <Route path="/lunch-menu" element={<LunchMenu />} />
+            <Route path="/dress-code" element={<DressCode />} />
+            <Route path="/class-schedules" element={<ClassSchedules />} />
+            <Route path="/school-books" element={<SchoolBooks />} />
+            <Route path="/academic-calendar" element={<AcademicCalendar />} />
+            
+            {/* Programs & Services routes */}
+            <Route path="/extracurricular" element={<Extracurricular />} />
+            <Route path="/inovar" element={<Inovar />} />
+            
+            {/* Admission route */}
+            <Route path="/admission" element={<Admission />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

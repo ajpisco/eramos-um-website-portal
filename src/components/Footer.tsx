@@ -43,18 +43,8 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="hover:text-school-blue transition-colors">
-                  {t('nav.home')}
-                </Link>
-              </li>
-              <li>
                 <Link to="/news" className="hover:text-school-blue transition-colors">
                   {t('nav.news')}
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-school-blue transition-colors">
-                  {t('nav.contact')}
                 </Link>
               </li>
               <li>
@@ -63,13 +53,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="hover:text-school-blue transition-colors">
-                  {t('terms.title')}
+                <Link to="/privacy" className="hover:text-school-blue transition-colors">
+                  {t('privacy.title')}
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="hover:text-school-blue transition-colors">
-                  {t('privacy.title')}
+                <Link to="/terms" className="hover:text-school-blue transition-colors">
+                  {t('terms.title')}
                 </Link>
               </li>
             </ul>

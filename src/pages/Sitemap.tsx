@@ -14,6 +14,69 @@ const Sitemap = () => {
       children: []
     },
     {
+      title: language === 'en' ? 'School' : 'Escola',
+      url: '#',
+      children: [
+        {
+          title: language === 'en' ? 'About Us' : 'Sobre Nós',
+          url: '/about'
+        },
+        {
+          title: language === 'en' ? 'Our Team' : 'Nossa Equipe',
+          url: '/team'
+        },
+        {
+          title: language === 'en' ? 'Internal Regulation' : 'Regulamento Interno',
+          url: '/regulation'
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Daily Life' : 'Dia a Dia',
+      url: '#',
+      children: [
+        {
+          title: language === 'en' ? 'Lunch Menu' : 'Cardápio',
+          url: '/lunch-menu'
+        },
+        {
+          title: language === 'en' ? 'Dress Code' : 'Uniforme',
+          url: '/dress-code'
+        },
+        {
+          title: language === 'en' ? 'Class Schedules' : 'Horários das Aulas',
+          url: '/class-schedules'
+        },
+        {
+          title: language === 'en' ? 'School Books' : 'Material Escolar',
+          url: '/school-books'
+        },
+        {
+          title: language === 'en' ? 'Academic Calendar' : 'Calendário Acadêmico',
+          url: '/academic-calendar'
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Programs & Services' : 'Programas & Serviços',
+      url: '#',
+      children: [
+        {
+          title: language === 'en' ? 'Extracurricular Activities' : 'Atividades Extracurriculares',
+          url: '/extracurricular'
+        },
+        {
+          title: language === 'en' ? 'Inovar Tool' : 'Ferramenta Inovar',
+          url: '/inovar'
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Admission' : 'Admissão',
+      url: '/admission',
+      children: []
+    },
+    {
       title: language === 'en' ? 'News' : 'Notícias',
       url: '/news',
       children: []
@@ -55,12 +118,16 @@ const Sitemap = () => {
             <ul className="space-y-4">
               {pages.map((page, index) => (
                 <li key={index}>
-                  <Link 
-                    to={page.url}
-                    className="text-lg font-medium text-school-blue hover:underline"
-                  >
-                    {page.title}
-                  </Link>
+                  {page.url === '#' ? (
+                    <span className="text-lg font-medium text-gray-700">{page.title}</span>
+                  ) : (
+                    <Link 
+                      to={page.url}
+                      className="text-lg font-medium text-school-blue hover:underline"
+                    >
+                      {page.title}
+                    </Link>
+                  )}
                   
                   {page.children.length > 0 && (
                     <ul className="ml-6 mt-2 space-y-1">
