@@ -1,7 +1,6 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { Activity, Music, Brain, Swimming, Dumbbell } from "lucide-react";
+import { Activity, Music, Brain, Waves, Dumbbell } from "lucide-react";
 
 const Extracurricular = () => {
   const { t, language } = useLanguage();
@@ -9,7 +8,7 @@ const Extracurricular = () => {
   const sportsActivities = [
     {
       name: t('extracurricular.swimming'),
-      icon: Swimming,
+      icon: Waves,
       description: language === 'en'
         ? 'Swimming lessons for all skill levels. Classes take place at our heated pool with certified instructors.'
         : 'Aulas de natação para todos os níveis de habilidade. As aulas acontecem em nossa piscina aquecida com instrutores certificados.'

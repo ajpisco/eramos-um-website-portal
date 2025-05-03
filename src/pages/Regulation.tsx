@@ -4,7 +4,7 @@ import Layout from "@/components/Layout";
 import { FileText, Download } from "lucide-react";
 
 const Regulation = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <Layout>
