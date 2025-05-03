@@ -2,7 +2,7 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
-import { Sitemap as SitemapIcon } from "lucide-react";
+import { Map } from "lucide-react";
 
 const Sitemap = () => {
   const { t, language } = useLanguage();
@@ -45,7 +45,7 @@ const Sitemap = () => {
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <SitemapIcon className="h-10 w-10 text-school-blue mr-3" />
+            <Map className="h-10 w-10 text-school-blue mr-3" />
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold">
               <span className="text-school-blue">{t('sitemap.title')}</span>
             </h1>
