@@ -1,5 +1,6 @@
 
 import { useLanguage } from "@/context/LanguageContext";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -34,20 +35,30 @@ const HeroSection = () => {
                 {t('hero.line1.highlight')}
               </span>
             </div>
-            <div>
+            <div className="mb-2">
               {t('hero.line2')}{" "}
               <span className="strikethrough text-white">
                 {t('hero.line2.highlight')}
               </span>
             </div>
+            <div className="mb-2">
+              <span className="text-3xl md:text-4xl lg:text-5xl">
+                {t('hero.line3')}
+              </span>
+            </div>
+            <div>
+              <span className="text-2xl md:text-3xl lg:text-4xl text-school-green">
+                {t('hero.line4')}
+              </span>
+            </div>
           </h1>
           <div className="mt-8 flex justify-center">
-            <a
-              href="#programs"
+            <Link
+              to="/contact"
               className="bg-school-blue hover:bg-school-blue-dark text-white font-medium px-8 py-3 rounded-lg transition-colors"
             >
-              {t('section.programs')}
-            </a>
+              {t('hero.cta')}
+            </Link>
           </div>
         </div>
       </div>

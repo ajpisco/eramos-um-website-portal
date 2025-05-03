@@ -1,30 +1,19 @@
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
-// Define language types
-export type Language = 'pt' | 'en';
+type Language = 'en' | 'pt';
 
-// Define the context type
-type LanguageContextType = {
+interface LanguageContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (language: Language) => void;
   t: (key: string) => string;
-};
+}
 
-// Create the context
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
-
-// Define translations
-const translations: Record<Language, Record<string, string>> = {
+const translations = {
   en: {
-    // Navbar
-    'nav.home': 'Home',
-    'nav.news': 'News',
-    'nav.contact': 'Contact',
-    'nav.sitemap': 'Sitemap',
     'nav.school': 'School',
     'nav.about': 'About Us',
-    'nav.team': 'Our Team',
+    'nav.team': 'Team',
     'nav.regulation': 'Internal Regulation',
     'nav.daily_life': 'Daily Life',
     'nav.lunch_menu': 'Lunch Menu',
@@ -34,108 +23,59 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.academic_calendar': 'Academic Calendar',
     'nav.programs_services': 'Programs & Services',
     'nav.extracurricular': 'Extracurricular Activities',
-    'nav.inovar': 'Inovar Tool',
+    'nav.inovar': 'Inovar',
     'nav.admission': 'Admission',
-
-    // Hero
-    'hero.line1': 'Learning with',
-    'hero.line1.highlight': 'passion',
-    'hero.line2': 'Growing with',
-    'hero.line2.highlight': 'care',
-
-    // Sections
+    'nav.contact': 'Contact',
+    
+    'hero.line1': 'Empowering the',
+    'hero.line1.highlight': 'future',
+    'hero.line2': 'Nurturing the',
+    'hero.line2.highlight': 'present',
+    'hero.line3': 'Building a foundation for lifelong learning',
+    'hero.line4': 'Where every child reaches their potential',
+    'hero.cta': 'Contact Us',
+    
     'section.programs': 'Our Programs',
     'section.activities': 'Extracurricular Activities',
+    'section.activities.description': 'Discover our wide range of engaging activities designed to develop skills, foster creativity, and promote healthy habits.',
+    'section.activities.see_all': 'See All Activities',
+    'section.activities.learn_more': 'Learn more about our activities',
     'section.news': 'Latest News',
-
-    // Programs
-    'program.daycare': 'Daycare',
-    'program.daycare.ages': '1-2 years old',
-    'program.daycare.description': 'A safe and nurturing environment for our youngest students to explore and develop.',
-    'program.kindergarten': 'Kindergarten',
-    'program.kindergarten.ages': '3-5 years old',
-    'program.kindergarten.description': 'Playful learning experiences that prepare children for future academic success.',
-    'program.elementary': 'Elementary School',
-    'program.elementary.ages': '1st to 4th grade',
-    'program.elementary.description': 'A comprehensive curriculum that fosters critical thinking and creativity.',
-
-    // Activities
+    
     'activity.guitar': 'Guitar',
     'activity.piano': 'Piano',
     'activity.ballet': 'Ballet',
     'activity.swimming': 'Swimming',
     'activity.surfing': 'Surfing',
+    'activity.karate': 'Karate',
+    'activity.horse_riding': 'Horse Riding',
+    'activity.dance': 'Contemporary Dance',
+    'activity.it': 'IT Classes',
+    'activity.music': 'Music',
     
-    // About Us Page
-    'about.title': 'About Us',
-    'about.mission_title': 'Our Mission',
-    'about.mission': 'To provide a nurturing environment where children can learn and grow to their full potential.',
-    'about.values_title': 'Our Values',
-    'about.values': 'Excellence, Respect, Innovation, Creativity, and Community.',
-    'about.approach_title': 'Educational Approach',
-    'about.approach': 'We combine traditional teaching methods with innovative approaches to create a comprehensive learning experience.',
-    'about.history_title': 'Our History',
-    'about.history': 'Eramos Um was founded in 1995 with a vision to provide quality education that emphasizes both academic excellence and character development.',
-    'about.project_title': 'Educational Project',
-    'about.project_description': 'Learn more about our educational philosophy and approach by downloading our Educational Project document.',
-    'about.project_button': 'Download Educational Project',
-
-    // Team Page
-    'team.title': 'Our Team',
-    'team.directors': 'Directors',
-    'team.teachers': 'Teachers',
-    'team.staff': 'Support Staff',
+    'program.preschool': 'Preschool',
+    'program.elementary': 'Elementary School',
+    'program.middle': 'Middle School',
+    'program.high': 'High School',
     
-    // Regulation Page
-    'regulation.title': 'Internal Regulation',
-    'regulation.intro': 'Our school operates under a set of guidelines that ensure a safe, respectful, and productive learning environment for all students.',
-    'regulation.document_title': 'Internal Regulation Document',
-    'regulation.document_description': 'The complete internal regulation document can be downloaded here:',
-    'regulation.document_button': 'Download Regulation',
+    'footer.about': 'About Eramos Um',
+    'footer.about_text': 'A modern educational institution focused on holistic development and academic excellence.',
+    'footer.links': 'Quick Links',
+    'footer.contact': 'Contact Us',
+    'footer.social': 'Follow Us',
+    'footer.copyright': '© 2024 Eramos Um. All rights reserved.',
     
-    // Lunch Menu
-    'lunch.title': 'Lunch Menu',
-    'lunch.intro': 'We provide nutritious and delicious meals prepared daily by our kitchen staff.',
-    'lunch.today': 'Today\'s Menu',
-    'lunch.week': 'This Week',
-    'lunch.next_week': 'Next Week',
+    'contact.title': 'Contact Us',
+    'contact.form.name': 'Your Name',
+    'contact.form.email': 'Email Address',
+    'contact.form.message': 'Your Message',
+    'contact.form.submit': 'Send Message',
+    'contact.info': 'School Information',
     
-    // Dress Code
-    'dress.title': 'Dress Code',
-    'dress.intro': 'Our dress code helps foster a sense of community and equality among students.',
-    'dress.policy': 'Dress Code Policy',
-    'dress.purchase_title': 'Where to Buy',
-    'dress.purchase_info': 'School uniforms can be purchased from our official supplier:',
-    
-    // Class Schedules
-    'schedules.title': 'Class Schedules',
-    'schedules.intro': 'Our schedule is designed to provide a balanced day with academic subjects, arts, physical education, and break times.',
-    'schedules.grade1': '1st Grade',
-    'schedules.grade2': '2nd Grade',
-    'schedules.grade3': '3rd Grade',
-    'schedules.grade4': '4th Grade',
-    
-    // Academic Calendar
-    'calendar.title': 'Academic Calendar',
-    'calendar.intro': 'Our academic year is divided into two semesters with vacation periods and holidays.',
-    'calendar.semester1': 'First Semester',
-    'calendar.semester2': 'Second Semester',
-    'calendar.breaks': 'Academic Breaks',
-    
-    // School Books
-    'books.title': 'School Books',
-    'books.intro': 'Required textbooks and reading materials for each grade level.',
-    'books.grade1': '1st Grade Books',
-    'books.grade2': '2nd Grade Books',
-    'books.grade3': '3rd Grade Books',
-    'books.grade4': '4th Grade Books',
-    'books.where_to_buy': 'Where to Buy',
-    
-    // Extracurricular Activities
     'extracurricular.title': 'Extracurricular Activities',
-    'extracurricular.intro': 'We offer a variety of activities to enrich our students\' education beyond the classroom.',
-    'extracurricular.sports': 'Sports',
-    'extracurricular.arts': 'Arts',
+    'extracurricular.intro': 'Our school offers a wide range of extracurricular activities designed to enrich your child\'s educational experience and develop new skills.',
+    'extracurricular.sports': 'Sports Activities',
+    'extracurricular.arts': 'Arts & Technology',
     'extracurricular.academic': 'Academic Support',
     'extracurricular.swimming': 'Swimming',
     'extracurricular.ballet': 'Ballet',
@@ -143,216 +83,114 @@ const translations: Record<Language, Record<string, string>> = {
     'extracurricular.horse_riding': 'Horse Riding',
     'extracurricular.dance': 'Contemporary Dance',
     'extracurricular.it': 'Information Technology',
-    'extracurricular.music': 'Music',
+    'extracurricular.music': 'Music Lessons',
     'extracurricular.pedagogical': 'Pedagogical Support',
     'extracurricular.psycho': 'Psychopedagogical Support',
     
-    // Inovar Tool
-    'inovar.title': 'Inovar Tool',
-    'inovar.intro': 'Inovar is our digital platform for communication between school, teachers, and families.',
-    'inovar.parents': 'For Parents',
-    'inovar.teachers': 'For Teachers',
-    'inovar.login': 'Login to Inovar',
-    
-    // Admission
-    'admission.title': 'School Admission',
-    'admission.intro': 'Join our school community by following these admission steps.',
-    'admission.requirements': 'Requirements',
-    'admission.process': 'Application Process',
-    'admission.documents': 'Required Documents',
-    'admission.download': 'Download Admission Forms',
-
-    // Footer
-    'footer.contact': 'Contact Us',
-    'footer.links': 'Quick Links',
-    'footer.social': 'Follow Us',
-    'footer.rights': 'All rights reserved',
-
-    // Pages
-    'contact.title': 'Contact Us',
-    'contact.form.name': 'Name',
-    'contact.form.email': 'Email',
-    'contact.form.message': 'Message',
-    'contact.form.submit': 'Send Message',
-    'contact.info': 'Contact Information',
-    'news.title': 'Latest News',
-    'sitemap.title': 'Sitemap',
-    'terms.title': 'Terms of Service',
-    'privacy.title': 'Privacy Policy',
+    'regulation.title': 'Internal Regulation',
+    'regulation.intro': 'Our Internal Regulation establishes the guidelines, rules, and procedures that govern our school community. Understanding and following these regulations helps create a harmonious educational environment where all students can thrive.',
+    'regulation.document_title': 'Complete Document',
+    'regulation.document_description': 'Download the complete Internal Regulation document for comprehensive information on school policies, student conduct, academic requirements, and operational procedures.',
+    'regulation.document_button': 'Download Regulation (PDF)',
   },
   pt: {
-    // Navbar
-    'nav.home': 'Início',
-    'nav.news': 'Notícias',
-    'nav.contact': 'Contato',
-    'nav.sitemap': 'Mapa do Site',
     'nav.school': 'Escola',
     'nav.about': 'Sobre Nós',
-    'nav.team': 'Nossa Equipe',
+    'nav.team': 'Equipe',
     'nav.regulation': 'Regulamento Interno',
     'nav.daily_life': 'Dia a Dia',
     'nav.lunch_menu': 'Cardápio',
     'nav.dress_code': 'Uniforme',
-    'nav.class_schedules': 'Horários das Aulas',
-    'nav.school_books': 'Material Escolar',
+    'nav.class_schedules': 'Horário das Aulas',
+    'nav.school_books': 'Lista de Livros',
     'nav.academic_calendar': 'Calendário Acadêmico',
     'nav.programs_services': 'Programas & Serviços',
     'nav.extracurricular': 'Atividades Extracurriculares',
-    'nav.inovar': 'Ferramenta Inovar',
+    'nav.inovar': 'Inovar',
     'nav.admission': 'Admissão',
-
-    // Hero
-    'hero.line1': 'Aprendendo com',
-    'hero.line1.highlight': 'paixão',
-    'hero.line2': 'Crescendo com',
-    'hero.line2.highlight': 'cuidado',
-
-    // Sections
+    'nav.contact': 'Contato',
+    
+    'hero.line1': 'Capacitando o',
+    'hero.line1.highlight': 'futuro',
+    'hero.line2': 'Nutrindo o',
+    'hero.line2.highlight': 'presente',
+    'hero.line3': 'Construindo uma base para a aprendizagem ao longo da vida',
+    'hero.line4': 'Onde cada criança alcança seu potencial',
+    'hero.cta': 'Entre em Contato',
+    
     'section.programs': 'Nossos Programas',
     'section.activities': 'Atividades Extracurriculares',
+    'section.activities.description': 'Descubra nossa ampla gama de atividades envolventes projetadas para desenvolver habilidades, estimular a criatividade e promover hábitos saudáveis.',
+    'section.activities.see_all': 'Ver Todas as Atividades',
+    'section.activities.learn_more': 'Saiba mais sobre nossas atividades',
     'section.news': 'Últimas Notícias',
-
-    // Programs
-    'program.daycare': 'Berçário',
-    'program.daycare.ages': '1-2 anos',
-    'program.daycare.description': 'Um ambiente seguro e acolhedor para nossos alunos mais jovens explorarem e se desenvolverem.',
-    'program.kindergarten': 'Educação Infantil',
-    'program.kindergarten.ages': '3-5 anos',
-    'program.kindergarten.description': 'Experiências de aprendizado lúdicas que preparam as crianças para o futuro sucesso acadêmico.',
-    'program.elementary': 'Ensino Fundamental I',
-    'program.elementary.ages': '1º ao 4º ano',
-    'program.elementary.description': 'Um currículo abrangente que estimula o pensamento crítico e a criatividade.',
-
-    // Activities
+    
     'activity.guitar': 'Violão',
     'activity.piano': 'Piano',
     'activity.ballet': 'Ballet',
     'activity.swimming': 'Natação',
     'activity.surfing': 'Surf',
+    'activity.karate': 'Karatê',
+    'activity.horse_riding': 'Equitação',
+    'activity.dance': 'Dança Contemporânea',
+    'activity.it': 'Aulas de Informática',
+    'activity.music': 'Música',
     
-    // About Us Page
-    'about.title': 'Sobre Nós',
-    'about.mission_title': 'Nossa Missão',
-    'about.mission': 'Proporcionar um ambiente acolhedor onde as crianças possam aprender e crescer em seu pleno potencial.',
-    'about.values_title': 'Nossos Valores',
-    'about.values': 'Excelência, Respeito, Inovação, Criatividade e Comunidade.',
-    'about.approach_title': 'Abordagem Educacional',
-    'about.approach': 'Combinamos métodos tradicionais de ensino com abordagens inovadoras para criar uma experiência de aprendizagem abrangente.',
-    'about.history_title': 'Nossa História',
-    'about.history': 'Eramos Um foi fundada em 1995 com a visão de oferecer uma educação de qualidade que enfatiza tanto a excelência acadêmica quanto o desenvolvimento do caráter.',
-    'about.project_title': 'Projeto Educacional',
-    'about.project_description': 'Saiba mais sobre nossa filosofia e abordagem educacional baixando nosso documento de Projeto Educacional.',
-    'about.project_button': 'Baixar Projeto Educacional',
-
-    // Team Page
-    'team.title': 'Nossa Equipe',
-    'team.directors': 'Diretores',
-    'team.teachers': 'Professores',
-    'team.staff': 'Equipe de Apoio',
+    'program.preschool': 'Educação Infantil',
+    'program.elementary': 'Ensino Fundamental I',
+    'program.middle': 'Ensino Fundamental II',
+    'program.high': 'Ensino Médio',
     
-    // Regulation Page
-    'regulation.title': 'Regulamento Interno',
-    'regulation.intro': 'Nossa escola opera sob um conjunto de diretrizes que garantem um ambiente de aprendizagem seguro, respeitoso e produtivo para todos os alunos.',
-    'regulation.document_title': 'Documento de Regulamento Interno',
-    'regulation.document_description': 'O documento completo de regulamento interno pode ser baixado aqui:',
-    'regulation.document_button': 'Baixar Regulamento',
+    'footer.about': 'Sobre Eramos Um',
+    'footer.about_text': 'Uma instituição educacional moderna focada no desenvolvimento holístico e na excelência acadêmica.',
+    'footer.links': 'Links Rápidos',
+    'footer.contact': 'Contate-nos',
+    'footer.social': 'Siga-nos',
+    'footer.copyright': '© 2024 Eramos Um. Todos os direitos reservados.',
     
-    // Lunch Menu
-    'lunch.title': 'Cardápio',
-    'lunch.intro': 'Fornecemos refeições nutritivas e deliciosas preparadas diariamente pela nossa equipe de cozinha.',
-    'lunch.today': 'Cardápio de Hoje',
-    'lunch.week': 'Esta Semana',
-    'lunch.next_week': 'Próxima Semana',
+    'contact.title': 'Entre em Contato',
+    'contact.form.name': 'Seu Nome',
+    'contact.form.email': 'Endereço de Email',
+    'contact.form.message': 'Sua Mensagem',
+    'contact.form.submit': 'Enviar Mensagem',
+    'contact.info': 'Informações da Escola',
     
-    // Dress Code
-    'dress.title': 'Uniforme',
-    'dress.intro': 'Nosso código de vestimenta ajuda a promover um senso de comunidade e igualdade entre os alunos.',
-    'dress.policy': 'Política de Uniforme',
-    'dress.purchase_title': 'Onde Comprar',
-    'dress.purchase_info': 'Os uniformes escolares podem ser adquiridos em nosso fornecedor oficial:',
-    
-    // Class Schedules
-    'schedules.title': 'Horários das Aulas',
-    'schedules.intro': 'Nosso horário é projetado para proporcionar um dia equilibrado com disciplinas acadêmicas, artes, educação física e intervalos.',
-    'schedules.grade1': '1º Ano',
-    'schedules.grade2': '2º Ano',
-    'schedules.grade3': '3º Ano',
-    'schedules.grade4': '4º Ano',
-    
-    // Academic Calendar
-    'calendar.title': 'Calendário Acadêmico',
-    'calendar.intro': 'Nosso ano acadêmico é dividido em dois semestres com períodos de férias e feriados.',
-    'calendar.semester1': 'Primeiro Semestre',
-    'calendar.semester2': 'Segundo Semestre',
-    'calendar.breaks': 'Pausas Acadêmicas',
-    
-    // School Books
-    'books.title': 'Material Escolar',
-    'books.intro': 'Livros didáticos e materiais de leitura necessários para cada série.',
-    'books.grade1': 'Material do 1º Ano',
-    'books.grade2': 'Material do 2º Ano',
-    'books.grade3': 'Material do 3º Ano',
-    'books.grade4': 'Material do 4º Ano',
-    'books.where_to_buy': 'Onde Comprar',
-    
-    // Extracurricular Activities
     'extracurricular.title': 'Atividades Extracurriculares',
-    'extracurricular.intro': 'Oferecemos uma variedade de atividades para enriquecer a educação de nossos alunos além da sala de aula.',
-    'extracurricular.sports': 'Esportes',
-    'extracurricular.arts': 'Artes',
-    'extracurricular.academic': 'Apoio Acadêmico',
+    'extracurricular.intro': 'Nossa escola oferece uma ampla gama de atividades extracurriculares projetadas para enriquecer a experiência educacional do seu filho e desenvolver novas habilidades.',
+    'extracurricular.sports': 'Atividades Esportivas',
+    'extracurricular.arts': 'Artes & Tecnologia',
+    'extracurricular.academic': 'Suporte Acadêmico',
     'extracurricular.swimming': 'Natação',
     'extracurricular.ballet': 'Ballet',
     'extracurricular.karate': 'Karatê',
     'extracurricular.horse_riding': 'Equitação',
     'extracurricular.dance': 'Dança Contemporânea',
-    'extracurricular.it': 'Informática',
-    'extracurricular.music': 'Música',
-    'extracurricular.pedagogical': 'Apoio Pedagógico',
-    'extracurricular.psycho': 'Apoio Psicopedagógico',
+    'extracurricular.it': 'Tecnologia da Informação',
+    'extracurricular.music': 'Aulas de Música',
+    'extracurricular.pedagogical': 'Suporte Pedagógico',
+    'extracurricular.psycho': 'Suporte Psicopedagógico',
     
-    // Inovar Tool
-    'inovar.title': 'Ferramenta Inovar',
-    'inovar.intro': 'Inovar é nossa plataforma digital para comunicação entre escola, professores e famílias.',
-    'inovar.parents': 'Para Pais',
-    'inovar.teachers': 'Para Professores',
-    'inovar.login': 'Entrar no Inovar',
-    
-    // Admission
-    'admission.title': 'Admissão Escolar',
-    'admission.intro': 'Junte-se à nossa comunidade escolar seguindo estas etapas de admissão.',
-    'admission.requirements': 'Requisitos',
-    'admission.process': 'Processo de Aplicação',
-    'admission.documents': 'Documentos Necessários',
-    'admission.download': 'Baixar Formulários de Admissão',
-
-    // Footer
-    'footer.contact': 'Entre em Contato',
-    'footer.links': 'Links Rápidos',
-    'footer.social': 'Siga-nos',
-    'footer.rights': 'Todos os direitos reservados',
-
-    // Pages
-    'contact.title': 'Entre em Contato',
-    'contact.form.name': 'Nome',
-    'contact.form.email': 'Email',
-    'contact.form.message': 'Mensagem',
-    'contact.form.submit': 'Enviar Mensagem',
-    'contact.info': 'Informações de Contato',
-    'news.title': 'Últimas Notícias',
-    'sitemap.title': 'Mapa do Site',
-    'terms.title': 'Termos de Serviço',
-    'privacy.title': 'Política de Privacidade',
-  },
+    'regulation.title': 'Regulamento Interno',
+    'regulation.intro': 'Nosso Regulamento Interno estabelece as diretrizes, regras e procedimentos que governam nossa comunidade escolar. Entender e seguir esses regulamentos ajuda a criar um ambiente educacional harmonioso onde todos os alunos podem prosperar.',
+    'regulation.document_title': 'Documento Completo',
+    'regulation.document_description': 'Baixe o documento completo do Regulamento Interno para informações abrangentes sobre políticas escolares, conduta dos alunos, requisitos acadêmicos e procedimentos operacionais.',
+    'regulation.document_button': 'Baixar Regulamento (PDF)',
+  }
 };
 
-// Create provider component
-export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('pt');
+const LanguageContext = createContext<LanguageContextType>({
+  language: 'en',
+  setLanguage: () => {},
+  t: () => '',
+});
 
-  // Translation function
+export const useLanguage = () => useContext(LanguageContext);
+
+export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [language, setLanguage] = useState<Language>('en');
+
   const t = (key: string): string => {
-    return translations[language][key] || key;
+    return translations[language][key as keyof typeof translations[typeof language]] || key;
   };
 
   return (
@@ -362,11 +200,4 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   );
 };
 
-// Custom hook for using the language context
-export const useLanguage = (): LanguageContextType => {
-  const context = useContext(LanguageContext);
-  if (context === undefined) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
-};
+export default LanguageContext;
