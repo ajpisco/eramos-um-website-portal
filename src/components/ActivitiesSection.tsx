@@ -100,7 +100,7 @@ const ActivitiesSection = () => {
             <CarouselContent>
               {activities.map((activity) => (
                 <CarouselItem key={activity.id} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-4">
-                  <div className="group relative h-[400px] overflow-hidden rounded-lg">
+                  <div className="group relative h-[400px] overflow-hidden rounded-lg activity-card">
                     <img 
                       src={activity.image} 
                       alt={t(activity.titleKey)} 
@@ -112,7 +112,7 @@ const ActivitiesSection = () => {
                         {t(activity.location)}
                       </div>
                       <h3 className="text-3xl font-serif mb-6">{t(activity.titleKey)}</h3>
-                      <div className="w-16 h-1 bg-orange-500 mb-2"></div>
+                      <div className="activity-indicator"></div>
                     </div>
                   </div>
                 </CarouselItem>
@@ -129,8 +129,8 @@ const ActivitiesSection = () => {
                 </Link>
               </CarouselItem>
             </CarouselContent>
-            <CarouselPrevious className="left-0 bg-orange-500 border-none text-white hover:bg-orange-600 hover:text-white" />
-            <CarouselNext className="right-0 bg-orange-500 border-none text-white hover:bg-orange-600 hover:text-white" />
+            <CarouselPrevious className="left-0 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
+            <CarouselNext className="right-0 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
           </Carousel>
         </div>
         

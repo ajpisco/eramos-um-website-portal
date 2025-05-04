@@ -31,13 +31,13 @@ const HeroSection = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
             <div className="mb-2">
               {t('hero.line1')}{" "}
-              <span className="px-2 py-1 bg-school-green bg-opacity-40 text-white">
+              <span className="strikethrough strikethrough-future">
                 {t('hero.line1.highlight')}
               </span>
             </div>
             <div className="mb-2">
               {t('hero.line2')}{" "}
-              <span className="px-2 py-1 bg-blue-500 bg-opacity-40 text-white">
+              <span className="strikethrough strikethrough-present">
                 {t('hero.line2.highlight')}
               </span>
             </div>
