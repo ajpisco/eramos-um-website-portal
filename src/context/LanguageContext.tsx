@@ -127,7 +127,7 @@ const translations = {
     'schedule.download': 'Download Schedule',
     
     'books.title': 'School Books',
-    'books.description': 'Here you'll find the list of required textbooks and materials for each grade level.',
+    'books.description': 'Here you\'ll find the list of required textbooks and materials for each grade level.',
     'books.download': 'Download Book List',
     
     'calendar.title': 'Academic Calendar',
