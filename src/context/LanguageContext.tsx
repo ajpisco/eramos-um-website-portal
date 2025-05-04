@@ -76,6 +76,7 @@ const translations = {
     'extracurricular.intro': 'Our school offers a wide range of extracurricular activities designed to enrich your child\'s educational experience and develop new skills.',
     'extracurricular.sports': 'Sports Activities',
     'extracurricular.arts': 'Arts & Technology',
+    'extracurricular.activities': 'Activities',
     'extracurricular.academic': 'Academic Support',
     'extracurricular.swimming': 'Swimming',
     'extracurricular.ballet': 'Ballet',
@@ -92,6 +93,11 @@ const translations = {
     'regulation.document_title': 'Complete Document',
     'regulation.document_description': 'Download the complete Internal Regulation document for comprehensive information on school policies, student conduct, academic requirements, and operational procedures.',
     'regulation.document_button': 'Download Regulation (PDF)',
+    
+    'team.title': 'Our Team',
+    'team.directors': 'School Directors',
+    'team.teachers': 'Teachers',
+    'team.staff': 'Support Staff'
   },
   pt: {
     'nav.school': 'Escola',
@@ -159,6 +165,7 @@ const translations = {
     'extracurricular.intro': 'Nossa escola oferece uma ampla gama de atividades extracurriculares projetadas para enriquecer a experiência educacional do seu filho e desenvolver novas habilidades.',
     'extracurricular.sports': 'Atividades Esportivas',
     'extracurricular.arts': 'Artes & Tecnologia',
+    'extracurricular.activities': 'Atividades',
     'extracurricular.academic': 'Suporte Acadêmico',
     'extracurricular.swimming': 'Natação',
     'extracurricular.ballet': 'Ballet',
@@ -175,6 +182,11 @@ const translations = {
     'regulation.document_title': 'Documento Completo',
     'regulation.document_description': 'Baixe o documento completo do Regulamento Interno para informações abrangentes sobre políticas escolares, conduta dos alunos, requisitos acadêmicos e procedimentos operacionais.',
     'regulation.document_button': 'Baixar Regulamento (PDF)',
+    
+    'team.title': 'Nossa Equipe',
+    'team.directors': 'Diretores da Escola',
+    'team.teachers': 'Professores',
+    'team.staff': 'Equipe de Apoio'
   }
 };
 

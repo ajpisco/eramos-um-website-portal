@@ -1,3 +1,4 @@
+
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Activity, Music, Brain, Waves, Dumbbell } from "lucide-react";
@@ -5,58 +6,62 @@ import { Activity, Music, Brain, Waves, Dumbbell } from "lucide-react";
 const Extracurricular = () => {
   const { t, language } = useLanguage();
   
-  const sportsActivities = [
+  const activities = [
     {
       name: t('extracurricular.swimming'),
       icon: Waves,
       description: language === 'en'
         ? 'Swimming lessons for all skill levels. Classes take place at our heated pool with certified instructors.'
-        : 'Aulas de natação para todos os níveis de habilidade. As aulas acontecem em nossa piscina aquecida com instrutores certificados.'
+        : 'Aulas de natação para todos os níveis de habilidade. As aulas acontecem em nossa piscina aquecida com instrutores certificados.',
+      image: "https://images.unsplash.com/photo-1600965962324-592903ae5fc4?q=80&w=2070&auto=format&fit=crop"
     },
     {
       name: t('extracurricular.ballet'),
       icon: Activity,
       description: language === 'en'
         ? 'Ballet classes for beginners and intermediate students, focusing on technique, flexibility, and expression.'
-        : 'Aulas de ballet para alunos iniciantes e intermediários, com foco em técnica, flexibilidade e expressão.'
+        : 'Aulas de ballet para alunos iniciantes e intermediários, com foco em técnica, flexibilidade e expressão.',
+      image: "https://images.unsplash.com/photo-1596882671619-d146dba96db6?q=80&w=2274&auto=format&fit=crop"
     },
     {
       name: t('extracurricular.karate'),
       icon: Dumbbell,
       description: language === 'en'
         ? 'Karate training emphasizes discipline, focus, and physical coordination.'
-        : 'O treinamento de karatê enfatiza disciplina, foco e coordenação física.'
+        : 'O treinamento de karatê enfatiza disciplina, foco e coordenação física.',
+      image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=2071&auto=format&fit=crop"
     },
     {
       name: t('extracurricular.horse_riding'),
       icon: Activity,
       description: language === 'en'
         ? 'Horse riding lessons at our partner stables. Transportation provided from school.'
-        : 'Aulas de equitação em nossos estábulos parceiros. Transporte fornecido pela escola.'
-    }
-  ];
-  
-  const artsActivities = [
+        : 'Aulas de equitação em nossos estábulos parceiros. Transporte fornecido pela escola.',
+      image: "https://images.unsplash.com/photo-1511994714008-b6d68a8b32a2?q=80&w=2070&auto=format&fit=crop"
+    },
     {
       name: t('extracurricular.dance'),
       icon: Activity,
       description: language === 'en'
         ? 'Contemporary dance classes develop creative expression, rhythm, and movement skills.'
-        : 'Aulas de dança contemporânea desenvolvem expressão criativa, ritmo e habilidades de movimento.'
+        : 'Aulas de dança contemporânea desenvolvem expressão criativa, ritmo e habilidades de movimento.',
+      image: "https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?q=80&w=2070&auto=format&fit=crop"
     },
     {
       name: t('extracurricular.it'),
       icon: Brain,
       description: language === 'en'
         ? 'IT classes introduce students to programming, digital creativity, and computational thinking.'
-        : 'Aulas de informática introduzem os alunos à programação, criatividade digital e pensamento computacional.'
+        : 'Aulas de informática introduzem os alunos à programação, criatividade digital e pensamento computacional.',
+      image: "https://images.unsplash.com/photo-1510751007277-36932aac9ebd?q=80&w=2070&auto=format&fit=crop"
     },
     {
       name: t('extracurricular.music'),
       icon: Music,
       description: language === 'en'
         ? 'Music lessons include guitar, piano, and choir options for different age groups.'
-        : 'As aulas de música incluem opções de violão, piano e coral para diferentes faixas etárias.'
+        : 'As aulas de música incluem opções de violão, piano e coral para diferentes faixas etárias.',
+      image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2070&auto=format&fit=crop"
     }
   ];
   
@@ -91,49 +96,34 @@ const Extracurricular = () => {
               {t('extracurricular.intro')}
             </p>
             
-            {/* Sports Section */}
+            {/* Combined Activities Section */}
             <section className="mb-12">
               <div className="flex items-center mb-6">
-                <Dumbbell className="h-6 w-6 text-school-blue mr-2" />
+                <Activity className="h-6 w-6 text-school-blue mr-2" />
                 <h2 className="text-2xl font-serif font-bold text-school-blue">
-                  {t('extracurricular.sports')}
+                  {t('extracurricular.activities')}
                 </h2>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {sportsActivities.map((activity, index) => (
-                  <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-school-blue bg-opacity-10 p-2 rounded-full mr-3">
-                        <activity.icon className="h-6 w-6 text-school-blue" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-school-blue">{activity.name}</h3>
+                {activities.map((activity, index) => (
+                  <div key={index} className="bg-white overflow-hidden rounded-lg shadow-md">
+                    <div className="h-48 overflow-hidden">
+                      <img 
+                        src={activity.image} 
+                        alt={activity.name} 
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
                     </div>
-                    <p className="text-gray-700">{activity.description}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-            
-            {/* Arts Section */}
-            <section className="mb-12">
-              <div className="flex items-center mb-6">
-                <Music className="h-6 w-6 text-school-blue mr-2" />
-                <h2 className="text-2xl font-serif font-bold text-school-blue">
-                  {t('extracurricular.arts')}
-                </h2>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {artsActivities.map((activity, index) => (
-                  <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                    <div className="flex items-center mb-4">
-                      <div className="bg-school-green bg-opacity-10 p-2 rounded-full mr-3">
-                        <activity.icon className="h-6 w-6 text-school-green" />
+                    <div className="p-6">
+                      <div className="flex items-center mb-4">
+                        <div className="bg-school-blue bg-opacity-10 p-2 rounded-full mr-3">
+                          <activity.icon className="h-6 w-6 text-school-blue" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-school-blue">{activity.name}</h3>
                       </div>
-                      <h3 className="text-xl font-semibold text-school-blue">{activity.name}</h3>
+                      <p className="text-gray-700">{activity.description}</p>
                     </div>
-                    <p className="text-gray-700">{activity.description}</p>
                   </div>
                 ))}
               </div>
