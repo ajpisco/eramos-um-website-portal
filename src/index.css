@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -60,21 +59,22 @@
   .strikethrough::after {
     content: '';
     position: absolute;
-    left: -10px;
-    right: -10px;
-    height: 55%;
-    bottom: 3px;
+    left: -6px;
+    right: -6px;
+    height: 10px; /* Thinner line for wavy effect */
+    bottom: 0px;
     z-index: -1;
-    border-radius: 20px;
-    transform: rotate(-2deg);
+    background-repeat: repeat-x;
+    background-size: 16px 8px; /* Size of the wave pattern */
+    background-position: left bottom;
   }
   
   .strikethrough-future::after {
-    background-color: rgba(74, 222, 128, 0.75);
+    background-image: url("data:image/svg+xml,%3Csvg width='50' height='12' viewBox='0 0 50 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5.5C5.5 1 9 11 13.5 6.5C18 2 21.5 11.5 26 6.5C30.5 1.5 34.5 11.5 39 6.5C43.5 1.5 47 11 49 6.5' stroke='%234ADE80' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
   
   .strikethrough-present::after {
-    background-color: rgba(30, 174, 219, 0.75);
+    background-image: url("data:image/svg+xml,%3Csvg width='50' height='12' viewBox='0 0 50 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5.5C5.5 1 9 11 13.5 6.5C18 2 21.5 11.5 26 6.5C30.5 1.5 34.5 11.5 39 6.5C43.5 1.5 47 11 49 6.5' stroke='%231EAEDB' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
   
   .navbar-link {
