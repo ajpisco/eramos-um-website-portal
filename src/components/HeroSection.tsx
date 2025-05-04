@@ -31,27 +31,20 @@ const HeroSection = () => {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
             <div className="mb-2">
               {t('hero.line1')}{" "}
-              <span className="strikethrough text-white">
+              <span className="px-2 py-1 bg-school-green bg-opacity-40 text-white">
                 {t('hero.line1.highlight')}
               </span>
             </div>
             <div className="mb-2">
               {t('hero.line2')}{" "}
-              <span className="strikethrough text-white">
+              <span className="px-2 py-1 bg-blue-500 bg-opacity-40 text-white">
                 {t('hero.line2.highlight')}
               </span>
             </div>
-            <div className="mb-2">
-              <span className="text-3xl md:text-4xl lg:text-5xl">
-                {t('hero.line3')}
-              </span>
-            </div>
-            <div>
-              <span className="text-2xl md:text-3xl lg:text-4xl text-school-green">
-                {t('hero.line4')}
-              </span>
-            </div>
           </h1>
+          <p className="text-lg md:text-xl text-white max-w-3xl mx-auto mb-8">
+            {t('hero.line3')}
+          </p>
           <div className="mt-8 flex justify-center">
             <Link
               to="/contact"

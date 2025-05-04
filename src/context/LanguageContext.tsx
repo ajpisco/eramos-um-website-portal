@@ -42,6 +42,13 @@ const translations = {
     'section.activities.learn_more': 'Learn more about our activities',
     'section.news': 'Latest News',
     
+    'activity.location.swimming': 'AQUATICS',
+    'activity.location.music': 'MUSIC',
+    'activity.location.dance': 'PERFORMING ARTS',
+    'activity.location.sports': 'ATHLETICS',
+    'activity.location.outdoor': 'OUTDOOR',
+    'activity.location.tech': 'TECHNOLOGY',
+    
     'activity.guitar': 'Guitar',
     'activity.piano': 'Piano',
     'activity.ballet': 'Ballet',
@@ -96,8 +103,41 @@ const translations = {
     
     'team.title': 'Our Team',
     'team.directors': 'School Directors',
+    'team.directors.description': 'Our dedicated leadership team brings years of experience in educational administration and a commitment to excellence.',
     'team.teachers': 'Teachers',
-    'team.staff': 'Support Staff'
+    'team.teachers.description': 'Our highly qualified teachers are passionate about education and committed to helping each student reach their full potential.',
+    'team.staff': 'Support Staff',
+    'team.staff.description': 'Our support staff works tirelessly behind the scenes to ensure the smooth operation of our school and provide assistance to students and families.',
+    
+    'inovar.title': 'Inovar Platform',
+    'inovar.description': 'Inovar is our digital school management platform that connects parents, students, and teachers.',
+    'inovar.features': 'Platform Features',
+    'inovar.login': 'Login to Platform',
+    
+    'lunch.title': 'Lunch Menu',
+    'lunch.description': 'Our lunch menu is carefully crafted by nutritionists to provide balanced and healthy meals for our students.',
+    'lunch.weekly': 'Weekly Menu',
+    
+    'dress.title': 'Dress Code',
+    'dress.description': 'Our dress code is designed to create a sense of community and belonging while ensuring students are comfortable and ready to learn.',
+    'dress.requirements': 'Uniform Requirements',
+    
+    'schedule.title': 'Class Schedules',
+    'schedule.description': 'Our class schedules are designed to provide a balanced academic experience with time for extracurricular activities.',
+    'schedule.download': 'Download Schedule',
+    
+    'books.title': 'School Books',
+    'books.description': 'Here you'll find the list of required textbooks and materials for each grade level.',
+    'books.download': 'Download Book List',
+    
+    'calendar.title': 'Academic Calendar',
+    'calendar.description': 'Our academic calendar outlines important dates throughout the school year, including holidays, exam periods, and special events.',
+    'calendar.download': 'Download Calendar',
+    
+    'admission.title': 'Admission',
+    'admission.description': 'We welcome applications from families who share our educational philosophy and commitment to academic excellence.',
+    'admission.process': 'Admission Process',
+    'admission.apply': 'Apply Now'
   },
   pt: {
     'nav.school': 'Escola',
@@ -130,6 +170,13 @@ const translations = {
     'section.activities.see_all': 'Ver Todas as Atividades',
     'section.activities.learn_more': 'Saiba mais sobre nossas atividades',
     'section.news': 'Últimas Notícias',
+    
+    'activity.location.swimming': 'AQUÁTICOS',
+    'activity.location.music': 'MÚSICA',
+    'activity.location.dance': 'ARTES CÊNICAS',
+    'activity.location.sports': 'ATLETISMO',
+    'activity.location.outdoor': 'AR LIVRE',
+    'activity.location.tech': 'TECNOLOGIA',
     
     'activity.guitar': 'Violão',
     'activity.piano': 'Piano',
@@ -185,8 +232,41 @@ const translations = {
     
     'team.title': 'Nossa Equipe',
     'team.directors': 'Diretores da Escola',
+    'team.directors.description': 'Nossa equipe de liderança dedicada traz anos de experiência em administração educacional e um compromisso com a excelência.',
     'team.teachers': 'Professores',
-    'team.staff': 'Equipe de Apoio'
+    'team.teachers.description': 'Nossos professores altamente qualificados são apaixonados por educação e comprometidos em ajudar cada aluno a alcançar seu pleno potencial.',
+    'team.staff': 'Equipe de Apoio',
+    'team.staff.description': 'Nossa equipe de apoio trabalha incansavelmente nos bastidores para garantir o bom funcionamento de nossa escola e fornecer assistência aos alunos e às famílias.',
+    
+    'inovar.title': 'Plataforma Inovar',
+    'inovar.description': 'Inovar é nossa plataforma digital de gestão escolar que conecta pais, alunos e professores.',
+    'inovar.features': 'Recursos da Plataforma',
+    'inovar.login': 'Entrar na Plataforma',
+    
+    'lunch.title': 'Cardápio',
+    'lunch.description': 'Nosso cardápio é cuidadosamente elaborado por nutricionistas para oferecer refeições equilibradas e saudáveis aos nossos alunos.',
+    'lunch.weekly': 'Cardápio Semanal',
+    
+    'dress.title': 'Uniforme',
+    'dress.description': 'Nosso código de vestimenta foi projetado para criar um senso de comunidade e pertencimento, garantindo que os alunos estejam confortáveis e prontos para aprender.',
+    'dress.requirements': 'Requisitos do Uniforme',
+    
+    'schedule.title': 'Horário das Aulas',
+    'schedule.description': 'Nossos horários de aula são projetados para proporcionar uma experiência acadêmica equilibrada com tempo para atividades extracurriculares.',
+    'schedule.download': 'Baixar Horário',
+    
+    'books.title': 'Lista de Livros',
+    'books.description': 'Aqui você encontrará a lista de livros didáticos e materiais necessários para cada série.',
+    'books.download': 'Baixar Lista de Livros',
+    
+    'calendar.title': 'Calendário Acadêmico',
+    'calendar.description': 'Nosso calendário acadêmico destaca datas importantes ao longo do ano letivo, incluindo feriados, períodos de exames e eventos especiais.',
+    'calendar.download': 'Baixar Calendário',
+    
+    'admission.title': 'Admissão',
+    'admission.description': 'Recebemos inscrições de famílias que compartilham nossa filosofia educacional e compromisso com a excelência acadêmica.',
+    'admission.process': 'Processo de Admissão',
+    'admission.apply': 'Inscreva-se Agora'
   }
 };
 
