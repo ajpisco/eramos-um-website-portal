@@ -61,20 +61,21 @@
     position: absolute;
     left: -6px;
     right: -6px;
-    height: 10px; /* Thinner line for wavy effect */
-    bottom: 0px;
+    height: 100%; /* Cover the full height of the text */
+    width: calc(100% + 12px); /* Ensure full width coverage */
+    top: 0;
     z-index: -1;
-    background-repeat: repeat-x;
-    background-size: 16px 8px; /* Size of the wave pattern */
-    background-position: left bottom;
+    background-repeat: repeat;
+    background-size: 16px 16px; /* Increase size of the wave pattern */
+    background-position: center;
   }
   
   .strikethrough-future::after {
-    background-image: url("data:image/svg+xml,%3Csvg width='50' height='12' viewBox='0 0 50 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5.5C5.5 1 9 11 13.5 6.5C18 2 21.5 11.5 26 6.5C30.5 1.5 34.5 11.5 39 6.5C43.5 1.5 47 11 49 6.5' stroke='%234ADE80' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='50' height='50' fill='%234ADE80' fill-opacity='0.4'/%3E%3Cpath d='M1 25.5C5.5 21 9 31 13.5 26.5C18 22 21.5 31.5 26 26.5C30.5 21.5 34.5 31.5 39 26.5C43.5 21.5 47 31 49 26.5' stroke='%234ADE80' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
   
   .strikethrough-present::after {
-    background-image: url("data:image/svg+xml,%3Csvg width='50' height='12' viewBox='0 0 50 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5.5C5.5 1 9 11 13.5 6.5C18 2 21.5 11.5 26 6.5C30.5 1.5 34.5 11.5 39 6.5C43.5 1.5 47 11 49 6.5' stroke='%231EAEDB' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='50' height='50' fill='%231EAEDB' fill-opacity='0.4'/%3E%3Cpath d='M1 25.5C5.5 21 9 31 13.5 26.5C18 22 21.5 31.5 26 26.5C30.5 21.5 34.5 31.5 39 26.5C43.5 21.5 47 31 49 26.5' stroke='%231EAEDB' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
   
   .navbar-link {
