@@ -6,7 +6,8 @@ import LanguageToggle from "./LanguageToggle";
 import { 
   Menu, 
   X, 
-  ChevronDown 
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -23,6 +24,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [expandedMobileSection, setExpandedMobileSection] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,6 +38,10 @@ const Navbar = () => {
 
   const isActive = (path: string) => {
     return location.pathname === path;
+  };
+
+  const toggleMobileSection = (section: string) => {
+    setExpandedMobileSection(current => current === section ? null : section);
   };
 
   return (
@@ -193,94 +199,134 @@ const Navbar = () => {
           </button>
         </div>
         
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Updated to use collapsible sections */}
         {mobileMenuOpen && (
           <nav className="md:hidden pt-4 pb-4 space-y-3 flex flex-col bg-white animate-fade-in">
-            <div className="border-b border-gray-100 pb-2">
-              <div className="px-3 py-2 font-medium">{t('nav.school')}</div>
-              <Link
-                to="/about"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.about')}
-              </Link>
-              <Link
-                to="/team"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.team')}
-              </Link>
-              <Link
-                to="/regulation"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.regulation')}
-              </Link>
-            </div>
+            {/* School section */}
+            <button 
+              className="flex items-center justify-between px-3 py-2 font-medium border-b border-gray-100"
+              onClick={() => toggleMobileSection('school')}
+            >
+              <span>{t('nav.school')}</span>
+              {expandedMobileSection === 'school' ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+            {expandedMobileSection === 'school' && (
+              <div className="space-y-1 pl-3">
+                <Link
+                  to="/about"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.about')}
+                </Link>
+                <Link
+                  to="/team"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.team')}
+                </Link>
+                <Link
+                  to="/regulation"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.regulation')}
+                </Link>
+              </div>
+            )}
             
-            <div className="border-b border-gray-100 pb-2">
-              <div className="px-3 py-2 font-medium">{t('nav.daily_life')}</div>
-              <Link
-                to="/lunch-menu"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.lunch_menu')}
-              </Link>
-              <Link
-                to="/dress-code"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.dress_code')}
-              </Link>
-              <Link
-                to="/class-schedules"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.class_schedules')}
-              </Link>
-              <Link
-                to="/school-books"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.school_books')}
-              </Link>
-              <Link
-                to="/academic-calendar"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.academic_calendar')}
-              </Link>
-            </div>
+            {/* Daily Life section */}
+            <button 
+              className="flex items-center justify-between px-3 py-2 font-medium border-b border-gray-100"
+              onClick={() => toggleMobileSection('daily_life')}
+            >
+              <span>{t('nav.daily_life')}</span>
+              {expandedMobileSection === 'daily_life' ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+            {expandedMobileSection === 'daily_life' && (
+              <div className="space-y-1 pl-3">
+                <Link
+                  to="/lunch-menu"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.lunch_menu')}
+                </Link>
+                <Link
+                  to="/dress-code"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.dress_code')}
+                </Link>
+                <Link
+                  to="/class-schedules"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.class_schedules')}
+                </Link>
+                <Link
+                  to="/school-books"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.school_books')}
+                </Link>
+                <Link
+                  to="/academic-calendar"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.academic_calendar')}
+                </Link>
+              </div>
+            )}
             
-            <div className="border-b border-gray-100 pb-2">
-              <div className="px-3 py-2 font-medium">{t('nav.programs_services')}</div>
-              <Link
-                to="/extracurricular"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.extracurricular')}
-              </Link>
-              <Link
-                to="/inovar"
-                className="px-6 py-2 block text-gray-700 hover:text-school-blue"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {t('nav.inovar')}
-              </Link>
-            </div>
+            {/* Programs & Services section */}
+            <button 
+              className="flex items-center justify-between px-3 py-2 font-medium border-b border-gray-100"
+              onClick={() => toggleMobileSection('programs_services')}
+            >
+              <span>{t('nav.programs_services')}</span>
+              {expandedMobileSection === 'programs_services' ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </button>
+            {expandedMobileSection === 'programs_services' && (
+              <div className="space-y-1 pl-3">
+                <Link
+                  to="/extracurricular"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.extracurricular')}
+                </Link>
+                <Link
+                  to="/inovar"
+                  className="px-6 py-2 block text-gray-700 hover:text-school-blue"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {t('nav.inovar')}
+                </Link>
+              </div>
+            )}
             
+            {/* Direct links */}
             <Link
               to="/admission"
-              className="px-3 py-2 text-gray-700 hover:text-school-blue"
+              className="px-3 py-2 text-gray-700 hover:text-school-blue border-b border-gray-100"
               onClick={() => setMobileMenuOpen(false)}
             >
               {t('nav.admission')}
@@ -288,7 +334,7 @@ const Navbar = () => {
             
             <Link
               to="/contact"
-              className="px-3 py-2 text-gray-700 hover:text-school-blue"
+              className="px-3 py-2 text-gray-700 hover:text-school-blue border-b border-gray-100"
               onClick={() => setMobileMenuOpen(false)}
             >
               {t('nav.contact')}
