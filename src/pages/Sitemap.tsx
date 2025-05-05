@@ -1,103 +1,102 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Link } from "react-router-dom";
 import { Map } from "lucide-react";
 
 const Sitemap = () => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   const pages = [
     {
-      title: language === 'en' ? 'Home' : 'Início',
+      title: t('nav.home'),
       url: '/',
       children: []
     },
     {
-      title: language === 'en' ? 'School' : 'Escola',
+      title: t('nav.school'),
       url: '#',
       children: [
         {
-          title: language === 'en' ? 'About Us' : 'Sobre Nós',
+          title: t('nav.about'),
           url: '/about'
         },
         {
-          title: language === 'en' ? 'Our Team' : 'Nossa Equipe',
+          title: t('nav.team'),
           url: '/team'
         },
         {
-          title: language === 'en' ? 'Internal Regulation' : 'Regulamento Interno',
+          title: t('nav.regulation'),
           url: '/regulation'
         }
       ]
     },
     {
-      title: language === 'en' ? 'Daily Life' : 'Dia a Dia',
+      title: t('nav.daily'),
       url: '#',
       children: [
         {
-          title: language === 'en' ? 'Lunch Menu' : 'Cardápio',
+          title: t('nav.lunch'),
           url: '/lunch-menu'
         },
         {
-          title: language === 'en' ? 'Dress Code' : 'Uniforme',
+          title: t('nav.dress'),
           url: '/dress-code'
         },
         {
-          title: language === 'en' ? 'Class Schedules' : 'Horários das Aulas',
+          title: t('nav.schedule'),
           url: '/class-schedules'
         },
         {
-          title: language === 'en' ? 'School Books' : 'Material Escolar',
+          title: t('nav.books'),
           url: '/school-books'
         },
         {
-          title: language === 'en' ? 'Academic Calendar' : 'Calendário Acadêmico',
+          title: t('nav.calendar'),
           url: '/academic-calendar'
         }
       ]
     },
     {
-      title: language === 'en' ? 'Programs & Services' : 'Programas & Serviços',
+      title: t('nav.programs'),
       url: '#',
       children: [
         {
-          title: language === 'en' ? 'Extracurricular Activities' : 'Atividades Extracurriculares',
+          title: t('nav.extracurricular'),
           url: '/extracurricular'
         },
         {
-          title: language === 'en' ? 'Inovar Tool' : 'Ferramenta Inovar',
+          title: t('nav.inovar'),
           url: '/inovar'
         }
       ]
     },
     {
-      title: language === 'en' ? 'Admission' : 'Admissão',
+      title: t('nav.admission'),
       url: '/admission',
       children: []
     },
     {
-      title: language === 'en' ? 'News' : 'Notícias',
+      title: t('nav.news'),
       url: '/news',
       children: []
     },
     {
-      title: language === 'en' ? 'Contact' : 'Contato',
+      title: t('nav.contact'),
       url: '/contact',
       children: []
     },
     {
-      title: language === 'en' ? 'Sitemap' : 'Mapa do Site',
+      title: t('nav.sitemap'),
       url: '/sitemap',
       children: []
     },
     {
-      title: language === 'en' ? 'Terms of Service' : 'Termos de Serviço',
+      title: t('nav.terms'),
       url: '/terms',
       children: []
     },
     {
-      title: language === 'en' ? 'Privacy Policy' : 'Política de Privacidade',
+      title: t('nav.privacy'),
       url: '/privacy',
       children: []
     }

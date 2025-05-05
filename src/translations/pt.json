@@ -1,4 +1,5 @@
 {
+  "nav.home": "Início",
   "nav.school": "Escola",
   "nav.about": "Sobre Nós",
   "nav.team": "Equipa",
@@ -16,6 +17,15 @@
   "nav.contact": "Contacto",
   "nav.news": "Notícias",
   "nav.sitemap": "Mapa do Site",
+  "nav.terms": "Termos de Serviço",
+  "nav.privacy": "Política de Privacidade",
+  "nav.daily": "Dia a Dia",
+  "nav.lunch": "Ementa",
+  "nav.dress": "Uniforme",
+  "nav.schedule": "Horários das Aulas",
+  "nav.books": "Lista de Manuais",
+  "nav.calendar": "Calendário Escolar",
+  "nav.programs": "Programas & Serviços",
   
   "hero.line1": "Capacitando o",
   "hero.line1.highlight": "futuro",
@@ -57,7 +67,7 @@
   
   "program.kindergarten": "Jardim de Infância",
   "program.kindergarten.ages": "4-5 anos",
-  "program.kindergarten.description": "O Jardim de Infância na Eramos Um prepara as crianças para o 1º Ciclo através de aprendizagem baseada em brincadeiras e fundamentos académicos iniciais.",
+  "program.kindergarten.description": "O Jardim de Infância na Éramos Um prepara as crianças para o 1º Ciclo através de aprendizagem baseada em brincadeiras e fundamentos académicos iniciais.",
   
   "program.elementary": "1º Ciclo",
   "program.elementary.ages": "6-10 anos",
@@ -66,9 +76,9 @@
   "program.middle": "2º Ciclo",
   "program.high": "3º Ciclo",
   
-  "footer.about": "Sobre Eramos Um",
+  "footer.about": "Sobre Éramos Um",
   "footer.about_text": "Uma instituição educativa moderna focada no desenvolvimento holístico e na excelência académica.",
-  "footer.links": "Links Rápidos",
+  "footer.links": "Ligações Rápidas",
   "footer.contact": "Contacte-nos",
   "footer.social": "Siga-nos",
   "footer.rights": "Todos os direitos reservados.",
@@ -99,8 +109,8 @@
   "regulation.title": "Regulamento Interno",
   "regulation.intro": "O nosso Regulamento Interno estabelece as diretrizes, regras e procedimentos que regem a nossa comunidade escolar. Compreender e seguir estes regulamentos ajuda a criar um ambiente educativo harmonioso onde todos os alunos podem prosperar.",
   "regulation.document_title": "Documento Completo",
-  "regulation.document_description": "Descarregue o documento completo do Regulamento Interno para informações abrangentes sobre políticas escolares, conduta dos alunos, requisitos académicos e procedimentos operacionais.",
-  "regulation.document_button": "Descarregar Regulamento (PDF)",
+  "regulation.document_description": "Transfira o documento completo do Regulamento Interno para informações abrangentes sobre políticas escolares, conduta dos alunos, requisitos académicos e procedimentos operacionais.",
+  "regulation.document_button": "Transferir Regulamento (PDF)",
   
   "team.title": "A Nossa Equipa",
   "team.directors": "Diretores da Escola",
@@ -143,7 +153,7 @@
   
   "books.title": "Lista de Manuais",
   "books.description": "Aqui encontrará a lista de manuais escolares e materiais necessários para cada ano.",
-  "books.download": "Descarregar Lista de Manuais",
+  "books.download": "Transferir Lista de Manuais",
   "books.intro": "Aqui encontrará a lista de manuais escolares e materiais necessários para cada ano.",
   "books.grade1": "Manuais do 1º Ano",
   "books.grade2": "Manuais do 2º Ano",
@@ -153,7 +163,7 @@
   
   "calendar.title": "Calendário Escolar",
   "calendar.description": "O nosso calendário escolar destaca datas importantes ao longo do ano letivo, incluindo feriados, períodos de exames e eventos especiais.",
-  "calendar.download": "Descarregar Calendário",
+  "calendar.download": "Transferir Calendário",
   "calendar.intro": "O nosso calendário escolar destaca datas importantes ao longo do ano letivo, incluindo feriados, períodos de exames e eventos especiais.",
   "calendar.semester1": "Primeiro Período",
   "calendar.semester2": "Segundo Período",
@@ -166,7 +176,7 @@
   "admission.intro": "Recebemos candidaturas de famílias que partilham a nossa filosofia educativa e compromisso com a excelência académica.",
   "admission.requirements": "Requisitos de Admissão",
   "admission.documents": "Documentos Necessários",
-  "admission.download": "Descarregar Formulário de Candidatura",
+  "admission.download": "Transferir Formulário de Candidatura",
   
   "terms.title": "Termos e Condições",
   
@@ -184,7 +194,7 @@
   "about.approach_title": "A Nossa Abordagem",
   "about.approach": "Combinamos rigor académico tradicional com métodos de ensino inovadores para criar um ambiente de aprendizagem envolvente e eficaz.",
   "about.history_title": "A Nossa História",
-  "about.history": "Fundada em 1990, a Eramos Um tem sido um pilar da excelência educativa por mais de três décadas.",
+  "about.history": "Fundada em 1990, a Éramos Um tem sido um pilar da excelência educativa por mais de três décadas.",
   "about.project_title": "O Nosso Projeto Educativo",
   "about.project_description": "O nosso projeto educativo abrangente foca no desenvolvimento de indivíduos completos preparados para o sucesso futuro.",
   "about.project_button": "Saiba Mais"
