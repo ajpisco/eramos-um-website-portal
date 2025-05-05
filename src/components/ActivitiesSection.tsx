@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import { Guitar, Piano, Activity, Waves, Dumbbell, Brain, Music, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -89,7 +88,7 @@ const ActivitiesSection = () => {
           {t('section.activities.description')}
         </p>
         
-        <div className="relative px-4">
+        <div className="relative px-20">
           <Carousel
             opts={{
               align: "start",
@@ -117,20 +116,9 @@ const ActivitiesSection = () => {
                   </div>
                 </CarouselItem>
               ))}
-              <CarouselItem className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 pl-4">
-                <Link to="/extracurricular" className="group relative flex h-[400px] overflow-hidden rounded-lg bg-school-blue bg-opacity-90">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-white">
-                    <ChevronRight className="h-16 w-16 text-white mb-4" />
-                    <h3 className="text-2xl font-serif font-bold text-white">
-                      {t('section.activities.see_all')}
-                    </h3>
-                  </div>
-                </Link>
-              </CarouselItem>
             </CarouselContent>
-            <CarouselPrevious className="left-0 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
-            <CarouselNext className="right-0 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
+            <CarouselPrevious className="-left-16 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
+            <CarouselNext className="-right-16 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
           </Carousel>
         </div>
         
