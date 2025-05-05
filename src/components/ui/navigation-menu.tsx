@@ -60,7 +60,7 @@ const NavigationMenuTrigger = React.forwardRef<
       className="relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180"
       aria-hidden="true"
     />
-    <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-school-blue scale-x-0 origin-bottom-right transition-transform duration-300 ease-in-out group-hover:scale-x-100 group-hover:origin-bottom-left group-data-[state=open]:scale-x-100"></span>
+    <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-school-blue scale-x-0 origin-bottom-right transition-transform duration-300 ease-in-out group-hover:scale-x-100 group-hover:origin-bottom-left"></span>
   </NavigationMenuPrimitive.Trigger>
 ))
 NavigationMenuTrigger.displayName = NavigationMenuPrimitive.Trigger.displayName
