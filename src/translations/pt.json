@@ -14,6 +14,8 @@
   "nav.inovar": "Inovar",
   "nav.admission": "Admissão",
   "nav.contact": "Contacto",
+  "nav.news": "Notícias",
+  "nav.sitemap": "Mapa do Site",
   
   "hero.line1": "Capacitando o",
   "hero.line1.highlight": "futuro",
@@ -69,7 +71,7 @@
   "footer.links": "Links Rápidos",
   "footer.contact": "Contacte-nos",
   "footer.social": "Siga-nos",
-  "footer.copyright": "© 2024 Eramos Um. Todos os direitos reservados.",
+  "footer.rights": "Todos os direitos reservados.",
   
   "contact.title": "Contacte-nos",
   "contact.form.name": "O Seu Nome",

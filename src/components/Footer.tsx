@@ -1,6 +1,7 @@
 import { useLanguage } from "@/context/LanguageContext";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import logo from '@/assets/logos/main.png';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -96,9 +97,7 @@ const Footer = () => {
 
             {/* School Logo */}
             <div className="mt-6">
-              <span className="text-2xl font-serif font-bold">
-                Eramos <span className="text-school-green">Um</span>
-              </span>
+              <img src={logo} alt="School Logo" className="h-14 w-auto" />
             </div>
           </div>
         </div>

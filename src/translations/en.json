@@ -14,6 +14,8 @@
   "nav.inovar": "Inovar",
   "nav.admission": "Admission",
   "nav.contact": "Contact",
+  "nav.news": "Notícias",
+  "nav.sitemap": "Sitemap",
   
   "hero.line1": "Empowering the",
   "hero.line1.highlight": "future",
@@ -69,7 +71,6 @@
   "footer.links": "Quick Links",
   "footer.contact": "Contact Us",
   "footer.social": "Follow Us",
-  "footer.copyright": "© 2024 Eramos Um. All rights reserved.",
   
   "contact.title": "Contact Us",
   "contact.form.name": "Your Name",
