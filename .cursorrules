@@ -1,0 +1,117 @@
+{
+  "rules": [
+    {
+      "name": "Component Props Interface",
+      "pattern": "interface\\s+([A-Z][a-zA-Z]+)Props",
+      "message": "Component props interfaces should be named with 'Props' suffix",
+      "severity": "warning"
+    },
+    {
+      "name": "React Component Naming",
+      "pattern": "export\\s+(?:default\\s+)?(?:const|function)\\s+([A-Z][a-zA-Z]+)",
+      "message": "React components should start with a capital letter",
+      "severity": "error"
+    },
+    {
+      "name": "Translation Import",
+      "pattern": "import\\s+.*from\\s+['\"]\\.\\./translations/[^'\"]+['\"]",
+      "message": "Translation files should be imported from the translations directory",
+      "severity": "warning"
+    },
+    {
+      "name": "Language Type Usage",
+      "pattern": "type\\s+Language\\s*=\\s*['\"]en['\"]\\s*\\|\\s*['\"]pt['\"]",
+      "message": "Language type should be defined as 'en' | 'pt'",
+      "severity": "warning"
+    },
+    {
+      "name": "Context Provider Pattern",
+      "pattern": "export\\s+const\\s+([A-Z][a-zA-Z]+)Provider",
+      "message": "Context providers should be named with 'Provider' suffix",
+      "severity": "warning"
+    },
+    {
+      "name": "Hook Naming",
+      "pattern": "export\\s+const\\s+use([A-Z][a-zA-Z]+)",
+      "message": "Custom hooks should start with 'use'",
+      "severity": "error"
+    },
+    {
+      "name": "Translation Key Organization",
+      "pattern": "['\"]([a-z]+\\.[a-z]+\\.[a-z_]+)['\"]",
+      "message": "Translation keys should be organized in sections (e.g., 'nav.home', 'section.title')",
+      "severity": "warning"
+    },
+    {
+      "name": "TypeScript Strict Types",
+      "pattern": ":\\s*any\\b",
+      "message": "Avoid using 'any' type, use specific types instead",
+      "severity": "error"
+    },
+    {
+      "name": "React Fragment Usage",
+      "pattern": "<>\\s*<([A-Z][a-zA-Z]+)",
+      "message": "Consider using semantic HTML elements instead of fragments when possible",
+      "severity": "info"
+    },
+    {
+      "name": "Translation Key Consistency",
+      "pattern": "['\"]([a-z]+\\.[a-z]+)['\"]",
+      "message": "Ensure translation keys are consistent across language files",
+      "severity": "warning"
+    },
+    {
+      "name": "Component File Organization",
+      "pattern": "//\\s*Components",
+      "message": "Organize components in a dedicated components directory",
+      "severity": "info"
+    },
+    {
+      "name": "Context File Organization",
+      "pattern": "//\\s*Context",
+      "message": "Organize context files in a dedicated context directory",
+      "severity": "info"
+    },
+    {
+      "name": "Translation File Organization",
+      "pattern": "//\\s*Translations",
+      "message": "Organize translation files in a dedicated translations directory",
+      "severity": "info"
+    },
+    {
+      "name": "Commit Message Format",
+      "pattern": "git\\s+commit\\s+-m\\s+['\"]([^'\"]+)['\"]",
+      "message": "Commit messages should follow the format: 'type(scope): description'",
+      "severity": "warning",
+      "commitTemplate": "git commit -m \"{type}({scope}): {description}\"",
+      "commitTypes": [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "test",
+        "chore",
+        "i18n"
+      ],
+      "commitScopes": [
+        "components",
+        "context",
+        "translations",
+        "config",
+        "deps",
+        "ci"
+      ]
+    }
+  ],
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "build",
+    ".git",
+    "*.test.ts",
+    "*.test.tsx",
+    "*.spec.ts",
+    "*.spec.tsx"
+  ]
+} 
