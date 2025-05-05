@@ -1,6 +1,6 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import { Link } from "react-router-dom";
+import heroVideo from '../assets/videos/hero-background.mp4';
 
 const HeroSection = () => {
   const { t } = useLanguage();
@@ -15,10 +15,7 @@ const HeroSection = () => {
         loop
         playsInline
       >
-        <source
-          src="https://player.vimeo.com/external/371433846.sd.mp4?s=236da2f62c35a71eb2989a7d092bc03c2eeb4806&profile_id=139&oauth2_token_id=57447761"
-          type="video/mp4"
-        />
+        <source src={heroVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
