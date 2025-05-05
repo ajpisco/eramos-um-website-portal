@@ -19,19 +19,19 @@ const Footer = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-school-green mr-2 mt-0.5" />
-                <span>Rua dos Exemplos, 123, São Paulo - SP, Brasil</span>
+                <span>Praceta Vasco Morgado, nº45, Murtal</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-school-green mr-2" />
-                <span>(11) 5555-1234</span>
+                <span>214 530 512</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-school-green mr-2" />
-                <span>(11) 5555-5678</span>
+                <span>964 234 322</span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-school-green mr-2" />
-                <span>contato@eramosum.edu.br</span>
+                <span>secretaria@eramosum.pt</span>
               </li>
             </ul>
           </div>
