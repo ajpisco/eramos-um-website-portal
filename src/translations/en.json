@@ -49,7 +49,18 @@
   "activity.music": "Music",
   
   "program.preschool": "Preschool",
+  "program.daycare": "Daycare",
+  "program.daycare.ages": "Ages 2-3",
+  "program.daycare.description": "Our daycare program provides a nurturing environment for our youngest learners, focusing on early development and social skills.",
+  
+  "program.kindergarten": "Kindergarten",
+  "program.kindergarten.ages": "Ages 4-5",
+  "program.kindergarten.description": "Kindergarten at Eramos Um prepares children for elementary school through play-based learning and early academic foundations.",
+  
   "program.elementary": "Elementary School",
+  "program.elementary.ages": "Ages 6-10",
+  "program.elementary.description": "Our elementary program combines academic excellence with character development, fostering a love for learning.",
+  
   "program.middle": "Middle School",
   "program.high": "High School",
   
@@ -101,29 +112,81 @@
   "inovar.description": "Inovar is our digital school management platform that connects parents, students, and teachers.",
   "inovar.features": "Platform Features",
   "inovar.login": "Login to Platform",
+  "inovar.intro": "Inovar is our digital school management platform that connects parents, students, and teachers.",
+  "inovar.parents": "For Parents",
+  "inovar.teachers": "For Teachers",
   
   "lunch.title": "Lunch Menu",
   "lunch.description": "Our lunch menu is carefully crafted by nutritionists to provide balanced and healthy meals for our students.",
   "lunch.weekly": "Weekly Menu",
+  "lunch.intro": "Our lunch menu is carefully crafted by nutritionists to provide balanced and healthy meals for our students.",
+  "lunch.today": "Today's Menu",
+  "lunch.week": "This Week",
+  "lunch.next_week": "Next Week",
   
   "dress.title": "Dress Code",
   "dress.description": "Our dress code is designed to create a sense of community and belonging while ensuring students are comfortable and ready to learn.",
   "dress.requirements": "Uniform Requirements",
+  "dress.intro": "Our dress code is designed to create a sense of community and belonging while ensuring students are comfortable and ready to learn.",
+  "dress.policy": "Dress Code Policy",
+  "dress.purchase_title": "Where to Purchase",
+  "dress.purchase_info": "Uniforms can be purchased at our school store or through our online shop.",
   
   "schedule.title": "Class Schedules",
   "schedule.description": "Our class schedules are designed to provide a balanced academic experience with time for extracurricular activities.",
   "schedule.download": "Download Schedule",
+  "schedules.title": "Class Schedules",
+  "schedules.intro": "Our class schedules are designed to provide a balanced academic experience with time for extracurricular activities.",
+  "schedules.grade1": "Grade 1 Schedule",
+  "schedules.grade2": "Grade 2 Schedule",
+  "schedules.grade3": "Grade 3 Schedule",
+  "schedules.grade4": "Grade 4 Schedule",
   
   "books.title": "School Books",
   "books.description": "Here you'll find the list of required textbooks and materials for each grade level.",
   "books.download": "Download Book List",
+  "books.intro": "Here you'll find the list of required textbooks and materials for each grade level.",
+  "books.grade1": "Grade 1 Books",
+  "books.grade2": "Grade 2 Books",
+  "books.grade3": "Grade 3 Books",
+  "books.grade4": "Grade 4 Books",
+  "books.where_to_buy": "Where to Buy",
   
   "calendar.title": "Academic Calendar",
   "calendar.description": "Our academic calendar outlines important dates throughout the school year, including holidays, exam periods, and special events.",
   "calendar.download": "Download Calendar",
+  "calendar.intro": "Our academic calendar outlines important dates throughout the school year, including holidays, exam periods, and special events.",
+  "calendar.semester1": "First Semester",
+  "calendar.semester2": "Second Semester",
+  "calendar.breaks": "School Breaks",
   
   "admission.title": "Admission",
   "admission.description": "We welcome applications from families who share our educational philosophy and commitment to academic excellence.",
   "admission.process": "Admission Process",
-  "admission.apply": "Apply Now"
+  "admission.apply": "Apply Now",
+  "admission.intro": "We welcome applications from families who share our educational philosophy and commitment to academic excellence.",
+  "admission.requirements": "Admission Requirements",
+  "admission.documents": "Required Documents",
+  "admission.download": "Download Application Form",
+  
+  "terms.title": "Terms and Conditions",
+  
+  "sitemap.title": "Site Map",
+  
+  "privacy.title": "Privacy Policy",
+  
+  "news.title": "Latest News",
+  
+  "about.title": "About Us",
+  "about.mission_title": "Our Mission",
+  "about.mission": "To provide an exceptional education that nurtures the whole child, fostering academic excellence, character development, and a lifelong love of learning.",
+  "about.values_title": "Our Values",
+  "about.values": "Excellence, Integrity, Respect, Innovation, and Community",
+  "about.approach_title": "Our Approach",
+  "about.approach": "We combine traditional academic rigor with innovative teaching methods to create an engaging and effective learning environment.",
+  "about.history_title": "Our History",
+  "about.history": "Founded in 1990, Eramos Um has been a cornerstone of educational excellence for over three decades.",
+  "about.project_title": "Our Educational Project",
+  "about.project_description": "Our comprehensive educational project focuses on developing well-rounded individuals prepared for future success.",
+  "about.project_button": "Learn More"
 } 

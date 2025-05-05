@@ -49,7 +49,18 @@
   "activity.music": "Música",
   
   "program.preschool": "Educação Infantil",
+  "program.daycare": "Berçário",
+  "program.daycare.ages": "2-3 anos",
+  "program.daycare.description": "Nosso programa de berçário proporciona um ambiente acolhedor para nossos alunos mais jovens, focando no desenvolvimento inicial e habilidades sociais.",
+  
+  "program.kindergarten": "Jardim de Infância",
+  "program.kindergarten.ages": "4-5 anos",
+  "program.kindergarten.description": "O Jardim de Infância na Eramos Um prepara as crianças para o Ensino Fundamental através de aprendizagem baseada em brincadeiras e fundamentos acadêmicos iniciais.",
+  
   "program.elementary": "Ensino Fundamental I",
+  "program.elementary.ages": "6-10 anos",
+  "program.elementary.description": "Nosso programa do Ensino Fundamental combina excelência acadêmica com desenvolvimento de caráter, promovendo o amor pelo aprendizado.",
+  
   "program.middle": "Ensino Fundamental II",
   "program.high": "Ensino Médio",
   
@@ -101,29 +112,82 @@
   "inovar.description": "Inovar é nossa plataforma digital de gestão escolar que conecta pais, alunos e professores.",
   "inovar.features": "Recursos da Plataforma",
   "inovar.login": "Entrar na Plataforma",
+  "inovar.intro": "Inovar é nossa plataforma digital de gestão escolar que conecta pais, alunos e professores.",
+  "inovar.parents": "Para Pais",
+  "inovar.teachers": "Para Professores",
   
   "lunch.title": "Cardápio",
   "lunch.description": "Nosso cardápio é cuidadosamente elaborado por nutricionistas para oferecer refeições equilibradas e saudáveis aos nossos alunos.",
   "lunch.weekly": "Cardápio Semanal",
+  "lunch.intro": "Nosso cardápio é cuidadosamente elaborado por nutricionistas para oferecer refeições equilibradas e saudáveis aos nossos alunos.",
+  "lunch.today": "Cardápio de Hoje",
+  "lunch.week": "Esta Semana",
+  "lunch.next_week": "Próxima Semana",
   
   "dress.title": "Uniforme",
   "dress.description": "Nosso código de vestimenta foi projetado para criar um senso de comunidade e pertencimento, garantindo que os alunos estejam confortáveis e prontos para aprender.",
   "dress.requirements": "Requisitos do Uniforme",
+  "dress.intro": "Nosso código de vestimenta foi projetado para criar um senso de comunidade e pertencimento, garantindo que os alunos estejam confortáveis e prontos para aprender.",
+  "dress.policy": "Política de Uniforme",
+  "dress.purchase_title": "Onde Comprar",
+  "dress.purchase_info": "Os uniformes podem ser adquiridos em nossa loja escolar ou através de nossa loja online.",
   
   "schedule.title": "Horário das Aulas",
   "schedule.description": "Nossos horários de aula são projetados para proporcionar uma experiência acadêmica equilibrada com tempo para atividades extracurriculares.",
   "schedule.download": "Baixar Horário",
   
+  "schedules.title": "Horário das Aulas",
+  "schedules.intro": "Nossos horários de aula são projetados para proporcionar uma experiência acadêmica equilibrada com tempo para atividades extracurriculares.",
+  "schedules.grade1": "Horário da 1ª Série",
+  "schedules.grade2": "Horário da 2ª Série",
+  "schedules.grade3": "Horário da 3ª Série",
+  "schedules.grade4": "Horário da 4ª Série",
+  
   "books.title": "Lista de Livros",
   "books.description": "Aqui você encontrará a lista de livros didáticos e materiais necessários para cada série.",
   "books.download": "Baixar Lista de Livros",
+  "books.intro": "Aqui você encontrará a lista de livros didáticos e materiais necessários para cada série.",
+  "books.grade1": "Livros da 1ª Série",
+  "books.grade2": "Livros da 2ª Série",
+  "books.grade3": "Livros da 3ª Série",
+  "books.grade4": "Livros da 4ª Série",
+  "books.where_to_buy": "Onde Comprar",
   
   "calendar.title": "Calendário Acadêmico",
   "calendar.description": "Nosso calendário acadêmico destaca datas importantes ao longo do ano letivo, incluindo feriados, períodos de exames e eventos especiais.",
   "calendar.download": "Baixar Calendário",
+  "calendar.intro": "Nosso calendário acadêmico destaca datas importantes ao longo do ano letivo, incluindo feriados, períodos de exames e eventos especiais.",
+  "calendar.semester1": "Primeiro Semestre",
+  "calendar.semester2": "Segundo Semestre",
+  "calendar.breaks": "Recessos Escolares",
   
   "admission.title": "Admissão",
   "admission.description": "Recebemos inscrições de famílias que compartilham nossa filosofia educacional e compromisso com a excelência acadêmica.",
   "admission.process": "Processo de Admissão",
-  "admission.apply": "Inscreva-se Agora"
+  "admission.apply": "Inscreva-se Agora",
+  "admission.intro": "Recebemos inscrições de famílias que compartilham nossa filosofia educacional e compromisso com a excelência acadêmica.",
+  "admission.requirements": "Requisitos de Admissão",
+  "admission.documents": "Documentos Necessários",
+  "admission.download": "Baixar Formulário de Inscrição",
+  
+  "terms.title": "Termos e Condições",
+  
+  "sitemap.title": "Mapa do Site",
+  
+  "privacy.title": "Política de Privacidade",
+  
+  "news.title": "Últimas Notícias",
+  
+  "about.title": "Sobre Nós",
+  "about.mission_title": "Nossa Missão",
+  "about.mission": "Fornecer uma educação excepcional que nutre a criança como um todo, promovendo excelência acadêmica, desenvolvimento de caráter e amor permanente pelo aprendizado.",
+  "about.values_title": "Nossos Valores",
+  "about.values": "Excelência, Integridade, Respeito, Inovação e Comunidade",
+  "about.approach_title": "Nossa Abordagem",
+  "about.approach": "Combinamos rigor acadêmico tradicional com métodos de ensino inovadores para criar um ambiente de aprendizado envolvente e eficaz.",
+  "about.history_title": "Nossa História",
+  "about.history": "Fundada em 1990, a Eramos Um tem sido um pilar da excelência educacional por mais de três décadas.",
+  "about.project_title": "Nosso Projeto Educacional",
+  "about.project_description": "Nosso projeto educacional abrangente foca no desenvolvimento de indivíduos completos preparados para o sucesso futuro.",
+  "about.project_button": "Saiba Mais"
 } 
