@@ -12,7 +12,7 @@ const LanguageToggle = () => {
   return (
     <div className="flex items-center gap-2">
       <div className="flex items-center">
-        <Globe className="h-4 w-4 mr-1" />
+        <Globe className="h-4 w-4 mr-1 text-white" />
       </div>
       
       {/* Custom language toggle switch */}
