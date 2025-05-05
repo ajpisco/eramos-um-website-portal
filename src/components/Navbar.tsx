@@ -26,6 +26,8 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMobileSection, setExpandedMobileSection] = useState<string | null>(null);
 
+  const isHomePage = location.pathname === '/';
+
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
@@ -44,10 +46,14 @@ const Navbar = () => {
     setExpandedMobileSection(current => current === section ? null : section);
   };
 
+  // Use white text only on home page when not scrolled, dark text everywhere else
+  const shouldUseDarkText = !isHomePage || isScrolled;
+  const navTextColor = shouldUseDarkText ? "text-gray-700" : "text-white";
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+        isScrolled || !isHomePage ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
       }`}
     >
       <div className="container mx-auto px-4">
@@ -62,7 +68,7 @@ const Navbar = () => {
               <NavigationMenuList>
                 {/* School Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="navbar-link hover:text-white hover:bg-transparent">
+                  <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
                     {t('nav.school')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -94,7 +100,7 @@ const Navbar = () => {
 
                 {/* Daily Life Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="navbar-link hover:text-white hover:bg-transparent">
+                  <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
                     {t('nav.daily_life')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -140,7 +146,7 @@ const Navbar = () => {
 
                 {/* Programs & Services Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="navbar-link hover:text-white hover:bg-transparent">
+                  <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
                     {t('nav.programs_services')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -165,14 +171,14 @@ const Navbar = () => {
 
                 {/* Admissions Link */}
                 <NavigationMenuItem>
-                  <Link to="/admission" className="navbar-link">
+                  <Link to="/admission" className={`navbar-link ${navTextColor}`}>
                     {t('nav.admission')}
                   </Link>
                 </NavigationMenuItem>
 
                 {/* Contact Link */}
                 <NavigationMenuItem>
-                  <Link to="/contact" className={`navbar-link ${isActive('/contact') ? 'active-link' : ''}`}>
+                  <Link to="/contact" className={`navbar-link ${navTextColor} ${isActive('/contact') ? 'active-link' : ''}`}>
                     {t('nav.contact')}
                   </Link>
                 </NavigationMenuItem>
@@ -180,7 +186,7 @@ const Navbar = () => {
             </NavigationMenu>
             
             <div className="ml-6">
-              <LanguageToggle />
+              <LanguageToggle isDarkMode={shouldUseDarkText} />
             </div>
           </nav>
           
@@ -192,7 +198,7 @@ const Navbar = () => {
             {mobileMenuOpen ? (
               <X className="h-6 w-6 text-gray-700" />
             ) : (
-              <Menu className="h-6 w-6 text-gray-700" />
+              <Menu className={`h-6 w-6 ${navTextColor}`} />
             )}
           </button>
         </div>
@@ -339,7 +345,7 @@ const Navbar = () => {
             </Link>
             
             <div className="px-3 py-2">
-              <LanguageToggle />
+              <LanguageToggle isDarkMode={true} />
             </div>
           </nav>
         )}

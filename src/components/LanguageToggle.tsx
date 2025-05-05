@@ -2,7 +2,11 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const LanguageToggle = () => {
+interface LanguageToggleProps {
+  isDarkMode?: boolean;
+}
+
+const LanguageToggle = ({ isDarkMode = false }: LanguageToggleProps) => {
   const { language, setLanguage } = useLanguage();
 
   const toggleLanguage = () => {
@@ -12,7 +16,7 @@ const LanguageToggle = () => {
   return (
     <div className="flex items-center gap-2">
       <div className="flex items-center">
-        <Globe className="h-4 w-4 mr-1 text-white" />
+        <Globe className={`h-4 w-4 mr-1 ${isDarkMode ? 'text-gray-700' : 'text-white'}`} />
       </div>
       
       {/* Custom language toggle switch */}
