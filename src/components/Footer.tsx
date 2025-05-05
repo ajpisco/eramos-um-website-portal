@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
@@ -31,7 +30,9 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-school-green mr-2" />
-                <span>secretaria@eramosum.pt</span>
+                <a href="mailto:secretaria@eramosum.pt" className="hover:text-school-blue transition-colors">
+                  secretaria@eramosum.pt
+                </a>
               </li>
             </ul>
           </div>
