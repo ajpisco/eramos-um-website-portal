@@ -17,7 +17,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import logo from '../assets/logos/logo.png';
+import logo from '@/assets/logos/main.png';
 
 const Navbar = () => {
   const { t, language } = useLanguage();
