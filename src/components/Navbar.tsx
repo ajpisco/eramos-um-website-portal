@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
@@ -64,7 +63,7 @@ const Navbar = () => {
               <NavigationMenuList>
                 {/* School Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-transparent hover:bg-transparent">
+                  <NavigationMenuTrigger className="text-black hover:text-black hover:bg-transparent">
                     {t('nav.school')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -96,7 +95,7 @@ const Navbar = () => {
 
                 {/* Daily Life Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-transparent hover:bg-transparent">
+                  <NavigationMenuTrigger className="text-black hover:text-black hover:bg-transparent">
                     {t('nav.daily_life')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -142,7 +141,7 @@ const Navbar = () => {
 
                 {/* Programs & Services Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="bg-transparent hover:bg-transparent">
+                  <NavigationMenuTrigger className="text-black hover:text-black hover:bg-transparent">
                     {t('nav.programs_services')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -199,7 +198,7 @@ const Navbar = () => {
           </button>
         </div>
         
-        {/* Mobile Navigation - Updated to use collapsible sections */}
+        {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <nav className="md:hidden pt-4 pb-4 space-y-3 flex flex-col bg-white animate-fade-in">
             {/* School section */}
