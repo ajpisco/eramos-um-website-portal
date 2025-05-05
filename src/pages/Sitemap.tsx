@@ -134,7 +134,7 @@ const Sitemap = () => {
                         <li key={`${index}-${childIndex}`}>
                           <Link 
                             to={child.url}
-                            className="text-gray-700 hover:text-school-blue hover:underline"
+                            className="text-school-blue hover:underline"
                           >
                             {child.title}
                           </Link>
