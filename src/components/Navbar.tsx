@@ -17,6 +17,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import logo from '../assets/logos/logo.png';
 
 const Navbar = () => {
   const { t, language } = useLanguage();
@@ -52,9 +53,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-serif font-bold text-school-blue">
-              Eramos <span className="text-school-green">Um</span>
-            </span>
+            <img src={logo} alt="School Logo" className="h-10 w-auto mr-2" />
           </Link>
           
           {/* Desktop Navigation */}

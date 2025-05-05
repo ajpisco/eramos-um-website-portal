@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+# Append the git commit command with a proper message
+
+- After any suggestion always give me the git commit command to save the changes. the git command should look like this: `git commit -am "<brief changes description>"`
