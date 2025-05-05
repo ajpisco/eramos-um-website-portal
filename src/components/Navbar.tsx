@@ -62,7 +62,7 @@ const Navbar = () => {
               <NavigationMenuList>
                 {/* School Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-black hover:text-black hover:bg-transparent">
+                  <NavigationMenuTrigger className="navbar-link text-black hover:text-black hover:bg-transparent">
                     {t('nav.school')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -94,7 +94,7 @@ const Navbar = () => {
 
                 {/* Daily Life Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-black hover:text-black hover:bg-transparent">
+                  <NavigationMenuTrigger className="navbar-link text-black hover:text-black hover:bg-transparent">
                     {t('nav.daily_life')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -140,7 +140,7 @@ const Navbar = () => {
 
                 {/* Programs & Services Dropdown */}
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-black hover:text-black hover:bg-transparent">
+                  <NavigationMenuTrigger className="navbar-link text-black hover:text-black hover:bg-transparent">
                     {t('nav.programs_services')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
