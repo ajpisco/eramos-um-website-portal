@@ -112,6 +112,15 @@
   "team.teachers.description": "Our highly qualified teachers are passionate about education and committed to helping each student reach their full potential.",
   "team.staff": "Support Staff",
   "team.staff.description": "Our support staff works tirelessly behind the scenes to ensure the smooth operation of our school and provide assistance to students and families.",
+  "team.english_teacher": "English Teacher",
+  "team.music_teacher": "Music Teacher",
+  "team.study_room_head": "Head of Study Room",
+  "team.school_driver": "School Driver",
+  "team.administrative_assistant": "Administrative Assistant",
+  "team.operational_assistant": "Operational Assistant",
+  "team.cook": "Cook",
+  "team.cook_assistant": "Cook Assistant",
+  "team.maintenance_assistant": "Maintenance Assistant",
   
   "inovar.title": "Inovar Platform",
   "inovar.description": "Inovar is our digital school management platform that connects parents, students, and teachers.",
@@ -268,5 +277,9 @@
   "extracurricular.support.pedagogical": "Pedagogical Support",
   "extracurricular.support.pedagogical_desc": "Additional support for students who need help with specific academic subjects. Our specialized teachers work in small groups to address individual learning needs.",
   "extracurricular.support.psycho": "Psycho-pedagogical Support",
-  "extracurricular.support.psycho_desc": "Professional support addressing learning difficulties, emotional development, and educational psychology to help students reach their full potential."
+  "extracurricular.support.psycho_desc": "Professional support addressing learning difficulties, emotional development, and educational psychology to help students reach their full potential.",
+  "lunch.starter_label": "Starter:",
+  "lunch.main_label": "Main:",
+  "lunch.dessert_label": "Dessert:",
+  "lunch.drink_label": "Drink:"
 } 

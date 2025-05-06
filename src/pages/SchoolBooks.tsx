@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
@@ -233,16 +232,13 @@ const SchoolBooks = () => {
                       <p className="text-gray-500 text-sm mb-2">{book.subject}</p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-gray-700">
                         <div>
-                          <span className="font-medium">{language === 'en' ? 'Author: ' : 'Autor: '}</span>
-                          {book.author}
+                          <span className="font-medium">{t('books.author_label')} </span> {book.author}
                         </div>
                         <div>
-                          <span className="font-medium">{language === 'en' ? 'Publisher: ' : 'Editora: '}</span>
-                          {book.publisher}
+                          <span className="font-medium">{t('books.publisher_label')} </span> {book.publisher}
                         </div>
                         <div className="md:col-span-2">
-                          <span className="font-medium">ISBN: </span>
-                          {book.isbn}
+                          <span className="font-medium">{t('books.isbn_label')} </span> {book.isbn}
                         </div>
                       </div>
                     </div>
@@ -263,14 +259,14 @@ const SchoolBooks = () => {
                     <h3 className="text-xl font-semibold text-school-blue mb-3">{store.name}</h3>
                     {store.address && (
                       <p className="text-gray-700 mb-1">
-                        <span className="font-medium">{language === 'en' ? 'Address: ' : 'Endereço: '}</span>
-                        {store.address}
+                        <span className="font-medium">{t('books.address_label')} </span> {store.address}
                       </p>
                     )}
-                    <p className="text-gray-700 mb-1">
-                      <span className="font-medium">{language === 'en' ? 'Phone: ' : 'Telefone: '}</span>
-                      {store.phone}
-                    </p>
+                    {store.phone && (
+                      <p className="text-gray-700 mb-1">
+                        <span className="font-medium">{t('books.phone_label')} </span> {store.phone}
+                      </p>
+                    )}
                     <a 
                       href={`https://${store.website}`}
                       target="_blank"

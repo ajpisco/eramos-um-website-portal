@@ -254,13 +254,17 @@
   "team.teacher_grade": "Professor do {grade}º Ano",
   "team.kindergarten": "Educação Infantil",
   "team.pe": "Educação Física",
+  "team.english_teacher": "Professora de Inglês",
+  "team.music_teacher": "Professor(a) de Música",
+  "team.study_room_head": "Responsável pela Sala de Estudo",
+  "team.school_driver": "Motorista Escolar",
+  "team.administrative_assistant": "Assistente Administrativa",
+  "team.operational_assistant": "Assistente Operacional",
+  "team.cook": "Cozinheira",
+  "team.cook_assistant": "Ajudante de Cozinha",
+  "team.maintenance_assistant": "Assistente de Manutenção",
   
   "contact.success": "Mensagem enviada com sucesso!",
-  
-  "terms.section.intro": "1. Introdução",
-  "terms.section.definitions": "2. Definições",
-  "terms.section.use": "3. Utilização do Website",
-  "terms.section.privacy": "4. Privacidade",
   
   "extracurricular.support.pedagogical": "Apoio Pedagógico",
   "extracurricular.support.pedagogical_desc": "Suporte adicional para alunos que precisam de ajuda com matérias académicas específicas. Os nossos professores especializados trabalham em pequenos grupos para atender às necessidades individuais de aprendizagem.",
@@ -269,5 +273,13 @@
   
   "schedule.title": "Horários das Aulas",
   "schedule.description": "Os nossos horários de aula são concebidos para proporcionar uma experiência académica equilibrada com tempo para atividades extracurriculares.",
-  "schedule.download": "Transferir Horário"
+  "schedule.download": "Transferir Horário",
+  "lunch.starter_label": "Entrada:",
+  "lunch.main_label": "Prato Principal:",
+  "lunch.dessert_label": "Sobremesa:",
+  "lunch.drink_label": "Bebida:",
+
+  "notfound.title": "404 - Página Não Encontrada",
+  "notfound.message": "Oops! A página que procura não existe ou foi movida.",
+  "notfound.button": "Ir para a Página Inicial"
 } 

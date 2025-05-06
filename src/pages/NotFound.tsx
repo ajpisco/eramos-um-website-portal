@@ -1,26 +1,27 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useLanguage } from "@/context/LanguageContext";
+import Layout from "@/components/Layout";
+import { AlertTriangle } from "lucide-react";
 
 const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+  const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
+    <Layout>
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] text-center px-4">
+        <AlertTriangle className="w-24 h-24 text-yellow-400 mb-8" />
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">{t('notfound.title')}</h1>
+        <p className="text-xl text-gray-600 mb-8 max-w-md">
+          {t('notfound.message')}
+        </p>
+        <Link
+          to="/"
+          className="px-6 py-3 bg-school-blue text-white font-semibold rounded-lg shadow-md hover:bg-school-blue-dark transition-colors duration-300"
+        >
+          {t('notfound.button')}
+        </Link>
       </div>
-    </div>
+    </Layout>
   );
 };
 
