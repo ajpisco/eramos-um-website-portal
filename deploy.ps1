@@ -3,26 +3,27 @@
 # Build the project
 npm run build
 
-# Create and switch to a temporary branch
-git checkout --orphan temp-gh-pages
+# Save the current branch name
+$currentBranch = git rev-parse --abbrev-ref HEAD
 
-# Add the dist contents
-git add -f dist
+# Create a .nojekyll file to bypass Jekyll processing
+New-Item -Path "dist/.nojekyll" -ItemType File -Force
 
-# Create a commit with the built files
-git commit -m "GitHub Pages deployment"
+# Navigate to the dist directory
+Set-Location -Path "dist"
 
-# Create a subtree with only the dist folder for the gh-pages branch
-git subtree split --prefix dist -b gh-pages
+# Initialize git in the dist directory
+git init
+git add .
+git commit -m "Deploy to GitHub Pages"
 
-# Force push to the gh-pages branch
-git push -f origin gh-pages:gh-pages
+# Force push to the gh-pages branch of the repository
+git push -f "https://github.com/ajpisco/eramos-um-website-portal.git" master:gh-pages
 
-# Switch back to the original branch
-git checkout main
+# Go back to the project root
+Set-Location -Path ".."
 
-# Clean up the temporary branches
-git branch -D temp-gh-pages
-git branch -D gh-pages
+# Return to the original branch
+git checkout $currentBranch
 
 echo "Deployed successfully to GitHub Pages!" 
