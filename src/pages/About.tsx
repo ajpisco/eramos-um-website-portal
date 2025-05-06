@@ -1,6 +1,6 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { Book } from "lucide-react";
+import { Book, Download } from "lucide-react";
 
 const About = () => {
   const { t } = useLanguage();
@@ -67,7 +67,7 @@ const About = () => {
                 download
                 className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
               >
-                <Book className="mr-2 h-5 w-5" />
+                <Download className="mr-2 h-5 w-5" />
                 {t('about.project_button')}
               </a>
             </section>
