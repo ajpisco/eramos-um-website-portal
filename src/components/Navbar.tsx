@@ -101,42 +101,42 @@ const Navbar = () => {
                 {/* Daily Life Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
-                    {t('nav.daily_life')}
+                    {t('nav.daily')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[200px] gap-1 p-2">
                       <li>
                         <NavigationMenuLink asChild>
                           <Link to="/lunch-menu" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.lunch_menu')}
+                            {t('nav.lunch')}
                           </Link>
                         </NavigationMenuLink>
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
                           <Link to="/dress-code" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.dress_code')}
+                            {t('nav.dress')}
                           </Link>
                         </NavigationMenuLink>
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
                           <Link to="/class-schedules" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.class_schedules')}
+                            {t('nav.schedule')}
                           </Link>
                         </NavigationMenuLink>
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
                           <Link to="/school-books" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.school_books')}
+                            {t('nav.books')}
                           </Link>
                         </NavigationMenuLink>
                       </li>
                       <li>
                         <NavigationMenuLink asChild>
                           <Link to="/academic-calendar" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.academic_calendar')}
+                            {t('nav.calendar')}
                           </Link>
                         </NavigationMenuLink>
                       </li>
@@ -147,7 +147,7 @@ const Navbar = () => {
                 {/* Programs & Services Dropdown */}
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
-                    {t('nav.programs_services')}
+                    {t('nav.programs')}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="grid w-[200px] gap-1 p-2">
@@ -249,7 +249,7 @@ const Navbar = () => {
               className="flex items-center justify-between px-3 py-2 font-medium border-b border-gray-100"
               onClick={() => toggleMobileSection('daily_life')}
             >
-              <span>{t('nav.daily_life')}</span>
+              <span>{t('nav.daily')}</span>
               {expandedMobileSection === 'daily_life' ? (
                 <ChevronDown className="h-4 w-4" />
               ) : (
@@ -263,35 +263,35 @@ const Navbar = () => {
                   className="px-6 py-2 block text-gray-700 hover:text-school-blue"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('nav.lunch_menu')}
+                  {t('nav.lunch')}
                 </Link>
                 <Link
                   to="/dress-code"
                   className="px-6 py-2 block text-gray-700 hover:text-school-blue"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('nav.dress_code')}
+                  {t('nav.dress')}
                 </Link>
                 <Link
                   to="/class-schedules"
                   className="px-6 py-2 block text-gray-700 hover:text-school-blue"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('nav.class_schedules')}
+                  {t('nav.schedule')}
                 </Link>
                 <Link
                   to="/school-books"
                   className="px-6 py-2 block text-gray-700 hover:text-school-blue"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('nav.school_books')}
+                  {t('nav.books')}
                 </Link>
                 <Link
                   to="/academic-calendar"
                   className="px-6 py-2 block text-gray-700 hover:text-school-blue"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('nav.academic_calendar')}
+                  {t('nav.calendar')}
                 </Link>
               </div>
             )}
@@ -301,7 +301,7 @@ const Navbar = () => {
               className="flex items-center justify-between px-3 py-2 font-medium border-b border-gray-100"
               onClick={() => toggleMobileSection('programs_services')}
             >
-              <span>{t('nav.programs_services')}</span>
+              <span>{t('nav.programs')}</span>
               {expandedMobileSection === 'programs_services' ? (
                 <ChevronDown className="h-4 w-4" />
               ) : (

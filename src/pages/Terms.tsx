@@ -1,4 +1,3 @@
-
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/context/LanguageContext";
 import { FileText } from "lucide-react";
@@ -19,69 +18,71 @@ const Terms = () => {
           
           <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-md">
             {language === 'en' ? (
-              <div className="prose max-w-none">
-                <h2>1. Introduction</h2>
-                <p>
-                  These Terms of Service govern your use of the Eramos Um School website 
-                  and the services we provide. By using our website, you agree to these terms.
-                </p>
-                
-                <h2>2. Definitions</h2>
-                <p>
-                  "School," "we," "us," and "our" refer to Eramos Um School.
-                  "Website" refers to our website located at www.eramosum.edu.br.
-                  "Services" refers to the educational services provided by Eramos Um School.
-                  "You" and "your" refer to you, as a user of our website or services.
-                </p>
-                
-                <h2>3. Website Use</h2>
-                <p>
-                  The content of our website is for general information and use only.
-                  We reserve the right to make changes to our website without notice.
-                </p>
-                
-                <h2>4. Privacy</h2>
-                <p>
-                  Your use of our website is also governed by our Privacy Policy, which is incorporated into these Terms by reference.
-                </p>
-                
-                <h2>5. Limitations of Liability</h2>
-                <p>
-                  While we strive to provide accurate information, we make no warranties about the completeness, reliability, or accuracy of the information on our website.
-                </p>
-              </div>
+              <>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.intro')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    Welcome to the Éramos Um website. These terms and conditions outline the rules and regulations for the use of our website. By accessing this website, we assume you accept these terms and conditions. Do not continue to use Éramos Um if you do not agree to take all of the terms and conditions stated on this page.
+                  </p>
+                </div>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.definitions')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company's terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client's needs in respect of provision of the Company's stated services, in accordance with and subject to, prevailing law of Portugal. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.
+                  </p>
+                </div>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.use')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    You may access this from Éramos Um for your own personal use subjected to restrictions set in these terms and conditions. You must not: Republish material from Éramos Um; Sell, rent or sub-license material from Éramos Um; Reproduce, duplicate or copy material from Éramos Um; Redistribute content from Éramos Um.
+                  </p>
+                </div>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.privacy')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    Please read our Privacy Policy.
+                  </p>
+                </div>
+                <div className="p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.limitations')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    In no event shall Éramos Um, nor any of its officers, directors and employees, be held liable for anything arising out of or in any way connected with your use of this Website whether such liability is under contract. Éramos Um, including its officers, directors and employees shall not be held liable for any indirect, consequential or special liability arising out of or in any way related to your use of this Website.
+                  </p>
+                </div>
+              </>
             ) : (
-              <div className="prose max-w-none">
-                <h2>1. Introdução</h2>
-                <p>
-                  Estes Termos de Serviço regem o uso do site da Escola Eramos Um
-                  e os serviços que fornecemos. Ao usar nosso site, você concorda com estes termos.
-                </p>
-                
-                <h2>2. Definições</h2>
-                <p>
-                  "Escola," "nós," e "nosso" referem-se à Escola Eramos Um.
-                  "Site" refere-se ao nosso site localizado em www.eramosum.edu.br.
-                  "Serviços" refere-se aos serviços educacionais fornecidos pela Escola Eramos Um.
-                  "Você" e "seu" referem-se a você, como usuário do nosso site ou serviços.
-                </p>
-                
-                <h2>3. Uso do Site</h2>
-                <p>
-                  O conteúdo do nosso site é apenas para informação geral e uso.
-                  Reservamo-nos o direito de fazer alterações em nosso site sem aviso prévio.
-                </p>
-                
-                <h2>4. Privacidade</h2>
-                <p>
-                  O uso do nosso site também é regido por nossa Política de Privacidade, que está incorporada a estes Termos por referência.
-                </p>
-                
-                <h2>5. Limitações de Responsabilidade</h2>
-                <p>
-                  Embora nos esforcemos para fornecer informações precisas, não oferecemos garantias sobre a integridade, confiabilidade ou precisão das informações em nosso site.
-                </p>
-              </div>
+              <>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.intro')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    Bem-vindo ao site Éramos Um. Estes termos e condições descrevem as regras e regulamentos para o uso do nosso site. Ao aceder a este site, presumimos que aceita estes termos e condições. Não continue a usar Éramos Um se não concordar com todos os termos e condições declarados nesta página.
+                  </p>
+                </div>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.definitions')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    A terminologia seguinte aplica-se a estes Termos e Condições, Declaração de Privacidade e Aviso de Isenção de Responsabilidade e todos os Acordos: "Cliente", "Você" e "Seu" refere-se a si, a pessoa que acede a este site e cumpre os termos e condições da Empresa. "A Empresa", "Nós", "Nosso" e "Nos", refere-se à nossa Empresa. "Parte", "Partes", ou "Nós", refere-se tanto ao Cliente como a nós. Todos os termos referem-se à oferta, aceitação e consideração do pagamento necessário para empreender o processo da nossa assistência ao Cliente da maneira mais apropriada para o propósito expresso de atender às necessidades do Cliente em relação à prestação dos serviços declarados da Empresa, de acordo com e sujeito à lei vigente de Portugal. Qualquer uso da terminologia acima ou outras palavras no singular, plural, maiúsculas e/ou ele/ela ou eles, são considerados intercambiáveis e, portanto, como referindo-se ao mesmo.
+                  </p>
+                </div>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.use')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    Pode aceder a isto a partir de Éramos Um para seu uso pessoal, sujeito às restrições estabelecidas nestes termos e condições. Não deve: Republicar material de Éramos Um; Vender, alugar ou sublicenciar material de Éramos Um; Reproduzir, duplicar ou copiar material de Éramos Um; Redistribuir conteúdo de Éramos Um.
+                  </p>
+                </div>
+                <div className="mb-8 p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.privacy')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    Por favor, leia a nossa Política de Privacidade.
+                  </p>
+                </div>
+                <div className="p-6 bg-white rounded-lg shadow">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-3">{t('terms.section.limitations')}</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    Em nenhum caso a Éramos Um, nem qualquer um dos seus administradores, diretores e funcionários, será responsabilizada por qualquer coisa decorrente ou de qualquer forma relacionada com o seu uso deste Site, quer tal responsabilidade seja contratual. A Éramos Um, incluindo os seus administradores, diretores e funcionários, não será responsabilizada por qualquer responsabilidade indireta, consequencial ou especial decorrente ou de qualquer forma relacionada com o seu uso deste Site.
+                  </p>
+                </div>
+              </>
             )}
           </div>
         </div>

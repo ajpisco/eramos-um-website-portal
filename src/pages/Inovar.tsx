@@ -3,7 +3,7 @@ import Layout from "@/components/Layout";
 import { Settings, Users, ExternalLink } from "lucide-react";
 
 const Inovar = () => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <Layout>
@@ -23,59 +23,25 @@ const Inovar = () => {
               </p>
               
               <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-4">
-                {language === 'en' ? 'What is Inovar?' : 'O que é o Inovar?'}
+                {t('inovar.features')}
               </h2>
               
               <p className="text-gray-700 mb-6">
-                {language === 'en' 
-                  ? 'Inovar is our school\'s digital platform that helps parents stay connected with their children\'s educational progress. It enables communication between teachers, parents, and school administration, while providing real-time updates on academic performance, attendance, and school events.'
-                  : 'Inovar é a plataforma digital da nossa escola que ajuda os pais a se manterem conectados com o progresso educacional de seus filhos. Ela permite a comunicação entre professores, pais e administração escolar, além de fornecer atualizações em tempo real sobre desempenho acadêmico, frequência e eventos escolares.'}
+                {t('inovar.description')}
               </p>
               
-              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-4">
-                {language === 'en' ? 'Key Features' : 'Principais Recursos'}
-              </h2>
-              
-              <ul className="space-y-3 text-gray-700 mb-6">
+              <ul className="space-y-2 mb-6">
                 <li className="flex items-start">
                   <span className="text-school-green-dark mr-2">•</span>
-                  <span>
-                    {language === 'en' 
-                      ? 'Real-time access to grades and academic progress'
-                      : 'Acesso em tempo real a notas e progresso acadêmico'}
-                  </span>
+                  <span>{t('inovar.feature1')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-school-green-dark mr-2">•</span>
-                  <span>
-                    {language === 'en' 
-                      ? 'Attendance tracking and notifications'
-                      : 'Acompanhamento de frequência e notificações'}
-                  </span>
+                  <span>{t('inovar.feature2')}</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-school-green-dark mr-2">•</span>
-                  <span>
-                    {language === 'en' 
-                      ? 'Direct messaging between parents and teachers'
-                      : 'Mensagens diretas entre pais e professores'}
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-school-green-dark mr-2">•</span>
-                  <span>
-                    {language === 'en' 
-                      ? 'School calendar and event notifications'
-                      : 'Calendário escolar e notificações de eventos'}
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-school-green-dark mr-2">•</span>
-                  <span>
-                    {language === 'en' 
-                      ? 'Homework assignments and submission tracking'
-                      : 'Tarefas de casa e acompanhamento de entregas'}
-                  </span>
+                  <span>{t('inovar.feature3')}</span>
                 </li>
               </ul>
             </div>
@@ -91,20 +57,18 @@ const Inovar = () => {
                 </div>
                 
                 <p className="text-gray-700 mb-6">
-                  {language === 'en' 
-                    ? 'Parents can access their child\'s academic information, communicate with teachers, and stay updated on school events.'
-                    : 'Os pais podem acessar informações acadêmicas de seus filhos, comunicar-se com professores e manter-se atualizados sobre eventos escolares.'}
+                  {t('inovar.parents_description')}
                 </p>
                 
                 <div className="space-y-3 mb-6">
                   <h3 className="font-medium text-gray-800">
-                    {language === 'en' ? 'How to Access:' : 'Como Acessar:'}
+                    {t('inovar.how_to_access')}
                   </h3>
                   <ol className="list-decimal pl-5 text-gray-700">
-                    <li>{language === 'en' ? 'Visit the Inovar parent portal' : 'Visite o portal dos pais do Inovar'}</li>
-                    <li>{language === 'en' ? 'Enter your registered email' : 'Digite seu email registrado'}</li>
-                    <li>{language === 'en' ? 'Enter your password' : 'Digite sua senha'}</li>
-                    <li>{language === 'en' ? 'Click "Login"' : 'Clique em "Entrar"'}</li>
+                    <li>{t('inovar.access_step1')}</li>
+                    <li>{t('inovar.access_step2')}</li>
+                    <li>{t('inovar.access_step3')}</li>
+                    <li>{t('inovar.access_step4')}</li>
                   </ol>
                 </div>
                 
@@ -129,20 +93,18 @@ const Inovar = () => {
                 </div>
                 
                 <p className="text-gray-700 mb-6">
-                  {language === 'en' 
-                    ? 'Teachers can record grades, take attendance, assign homework, and communicate with parents through the platform.'
-                    : 'Os professores podem registrar notas, fazer chamada, passar tarefas de casa e se comunicar com os pais através da plataforma.'}
+                  {t('inovar.teachers_description')}
                 </p>
                 
                 <div className="space-y-3 mb-6">
                   <h3 className="font-medium text-gray-800">
-                    {language === 'en' ? 'Teacher Resources:' : 'Recursos para Professores:'}
+                    {t('inovar.teacher_resources')}
                   </h3>
                   <ul className="space-y-1 text-gray-700">
-                    <li>• {language === 'en' ? 'Grade management system' : 'Sistema de gestão de notas'}</li>
-                    <li>• {language === 'en' ? 'Attendance tracking' : 'Controle de frequência'}</li>
-                    <li>• {language === 'en' ? 'Lesson planning tools' : 'Ferramentas de planejamento de aulas'}</li>
-                    <li>• {language === 'en' ? 'Parent communication center' : 'Centro de comunicação com os pais'}</li>
+                    <li>• {t('inovar.resource1')}</li>
+                    <li>• {t('inovar.resource2')}</li>
+                    <li>• {t('inovar.resource3')}</li>
+                    <li>• {t('inovar.resource4')}</li>
                   </ul>
                 </div>
                 
@@ -161,12 +123,10 @@ const Inovar = () => {
             {/* Support Section */}
             <div className="mt-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
               <h3 className="font-bold text-school-blue-dark mb-3">
-                {language === 'en' ? 'Need Help?' : 'Precisa de Ajuda?'}
+                {t('inovar.need_help')}
               </h3>
               <p className="text-gray-700">
-                {language === 'en' 
-                  ? 'If you need assistance with Inovar, please contact our IT support team at it-support@eramosum.edu.br or call (11) 5555-1234 ext. 789.'
-                  : 'Se precisar de ajuda com o Inovar, entre em contato com nossa equipe de suporte de TI em it-support@eramosum.edu.br ou ligue para (11) 5555-1234 ramal 789.'}
+                {t('inovar.support_text')}
               </p>
             </div>
           </div>
