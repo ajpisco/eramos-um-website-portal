@@ -82,7 +82,7 @@ const ActivitiesSection = () => {
     <section className="py-20 px-4 bg-gray-50">
       <div className="container mx-auto">
         <h2 className="text-3xl md:text-4xl font-serif font-bold text-center mb-6">
-          <span className="text-school-green">{t('section.activities')}</span>
+          <span className="text-school-green-dark">{t('section.activities')}</span>
         </h2>
         <p className="text-center text-gray-700 max-w-3xl mx-auto mb-12">
           {t('section.activities.description')}
@@ -117,13 +117,13 @@ const ActivitiesSection = () => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="-left-16 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
-            <CarouselNext className="-right-16 bg-school-green border-none text-white hover:bg-school-green-dark hover:text-white" />
+            <CarouselPrevious className="-left-16 bg-school-green-dark border-none text-white hover:bg-school-green-light hover:text-white" />
+            <CarouselNext className="-right-16 bg-school-blue-dark border-none text-white hover:bg-school-blue-light hover:text-white" />
           </Carousel>
         </div>
         
         <div className="text-center mt-8">
-          <Link to="/extracurricular" className="inline-flex items-center text-school-blue hover:text-school-green transition-colors font-medium">
+          <Link to="/extracurricular" className="inline-flex items-center text-school-blue-dark hover:text-school-green-dark transition-colors font-medium">
             {t('section.activities.learn_more')}
             <ChevronRight className="ml-1 h-4 w-4" />
           </Link>

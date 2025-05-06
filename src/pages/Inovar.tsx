@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Settings, Users, ExternalLink } from "lucide-react";
@@ -23,7 +22,7 @@ const Inovar = () => {
                 {t('inovar.intro')}
               </p>
               
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-4">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-4">
                 {language === 'en' ? 'What is Inovar?' : 'O que é o Inovar?'}
               </h2>
               
@@ -33,13 +32,13 @@ const Inovar = () => {
                   : 'Inovar é a plataforma digital da nossa escola que ajuda os pais a se manterem conectados com o progresso educacional de seus filhos. Ela permite a comunicação entre professores, pais e administração escolar, além de fornecer atualizações em tempo real sobre desempenho acadêmico, frequência e eventos escolares.'}
               </p>
               
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-4">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-4">
                 {language === 'en' ? 'Key Features' : 'Principais Recursos'}
               </h2>
               
               <ul className="space-y-3 text-gray-700 mb-6">
                 <li className="flex items-start">
-                  <span className="text-school-green mr-2">•</span>
+                  <span className="text-school-green-dark mr-2">•</span>
                   <span>
                     {language === 'en' 
                       ? 'Real-time access to grades and academic progress'
@@ -47,7 +46,7 @@ const Inovar = () => {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-school-green mr-2">•</span>
+                  <span className="text-school-green-dark mr-2">•</span>
                   <span>
                     {language === 'en' 
                       ? 'Attendance tracking and notifications'
@@ -55,7 +54,7 @@ const Inovar = () => {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-school-green mr-2">•</span>
+                  <span className="text-school-green-dark mr-2">•</span>
                   <span>
                     {language === 'en' 
                       ? 'Direct messaging between parents and teachers'
@@ -63,7 +62,7 @@ const Inovar = () => {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-school-green mr-2">•</span>
+                  <span className="text-school-green-dark mr-2">•</span>
                   <span>
                     {language === 'en' 
                       ? 'School calendar and event notifications'
@@ -71,7 +70,7 @@ const Inovar = () => {
                   </span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-school-green mr-2">•</span>
+                  <span className="text-school-green-dark mr-2">•</span>
                   <span>
                     {language === 'en' 
                       ? 'Homework assignments and submission tracking'
@@ -85,8 +84,8 @@ const Inovar = () => {
               {/* For Parents */}
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="flex items-center mb-4">
-                  <Users className="h-6 w-6 text-school-blue mr-2" />
-                  <h2 className="text-xl font-serif font-bold text-school-blue">
+                  <Users className="h-6 w-6 text-school-blue-dark mr-2" />
+                  <h2 className="text-xl font-serif font-bold text-school-blue-dark">
                     {t('inovar.parents')}
                   </h2>
                 </div>
@@ -123,8 +122,8 @@ const Inovar = () => {
               {/* For Teachers */}
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <div className="flex items-center mb-4">
-                  <Settings className="h-6 w-6 text-school-blue mr-2" />
-                  <h2 className="text-xl font-serif font-bold text-school-blue">
+                  <Settings className="h-6 w-6 text-school-blue-dark mr-2" />
+                  <h2 className="text-xl font-serif font-bold text-school-blue-dark">
                     {t('inovar.teachers')}
                   </h2>
                 </div>
@@ -161,7 +160,7 @@ const Inovar = () => {
             
             {/* Support Section */}
             <div className="mt-8 bg-gray-50 p-6 rounded-lg border border-gray-200">
-              <h3 className="font-bold text-school-blue mb-3">
+              <h3 className="font-bold text-school-blue-dark mb-3">
                 {language === 'en' ? 'Need Help?' : 'Precisa de Ajuda?'}
               </h3>
               <p className="text-gray-700">

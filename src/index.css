@@ -62,7 +62,7 @@
   }
   
   .navbar-link::after {
-    @apply content-[''] absolute left-0 right-0 bottom-0 h-0.5 bg-school-blue scale-x-0 origin-bottom-right transition-transform duration-300 ease-in-out;
+    @apply content-[''] absolute left-0 right-0 bottom-0 h-0.5 bg-school-blue-dark scale-x-0 origin-bottom-right transition-transform duration-300 ease-in-out;
   }
   
   .navbar-link:hover::after {
@@ -79,13 +79,13 @@
 
   /* Activity card styles */
   .activity-card .activity-indicator {
-    @apply w-16 h-1 bg-school-blue mb-2;
+    @apply w-16 h-1 bg-school-blue-light mb-2;
   }
 
   /* Intense dual-color glowing effect */
   .glow-future,
   .glow-present {
-    background: linear-gradient(90deg, #22c55e, #0284c7, #22c55e, #0284c7);
+    background: linear-gradient(90deg, #22C55E, #0EA5E9, #22C55E, #0EA5E9);
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

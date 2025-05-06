@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Activity, Music, Brain, Waves, Dumbbell } from "lucide-react";
@@ -85,9 +84,9 @@ const Extracurricular = () => {
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <Activity className="h-10 w-10 text-school-blue mr-3" />
+            <Activity className="h-10 w-10 text-school-blue-dark mr-3" />
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold">
-              <span className="text-school-blue">{t('extracurricular.title')}</span>
+              <span className="text-school-blue-dark">{t('extracurricular.title')}</span>
             </h1>
           </div>
           
@@ -99,8 +98,8 @@ const Extracurricular = () => {
             {/* Combined Activities Section */}
             <section className="mb-12">
               <div className="flex items-center mb-6">
-                <Activity className="h-6 w-6 text-school-blue mr-2" />
-                <h2 className="text-2xl font-serif font-bold text-school-blue">
+                <Activity className="h-6 w-6 text-school-blue-dark mr-2" />
+                <h2 className="text-2xl font-serif font-bold text-school-blue-dark">
                   {t('extracurricular.activities')}
                 </h2>
               </div>
@@ -117,10 +116,10 @@ const Extracurricular = () => {
                     </div>
                     <div className="p-6">
                       <div className="flex items-center mb-4">
-                        <div className="bg-school-blue bg-opacity-10 p-2 rounded-full mr-3">
-                          <activity.icon className="h-6 w-6 text-school-blue" />
+                        <div className="bg-school-blue-light bg-opacity-10 p-2 rounded-full mr-3">
+                          <activity.icon className="h-6 w-6 text-school-blue-dark" />
                         </div>
-                        <h3 className="text-xl font-semibold text-school-blue">{activity.name}</h3>
+                        <h3 className="text-xl font-semibold text-school-blue-dark">{activity.name}</h3>
                       </div>
                       <p className="text-gray-700">{activity.description}</p>
                     </div>
@@ -132,8 +131,8 @@ const Extracurricular = () => {
             {/* Academic Support Section */}
             <section>
               <div className="flex items-center mb-6">
-                <Brain className="h-6 w-6 text-school-blue mr-2" />
-                <h2 className="text-2xl font-serif font-bold text-school-blue">
+                <Brain className="h-6 w-6 text-school-blue-dark mr-2" />
+                <h2 className="text-2xl font-serif font-bold text-school-blue-dark">
                   {t('extracurricular.academic')}
                 </h2>
               </div>
@@ -141,7 +140,7 @@ const Extracurricular = () => {
               <div className="grid grid-cols-1 gap-6">
                 {supportActivities.map((activity, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-xl font-semibold text-school-blue mb-3">{activity.name}</h3>
+                    <h3 className="text-xl font-semibold text-school-blue-dark mb-3">{activity.name}</h3>
                     <p className="text-gray-700">{activity.description}</p>
                   </div>
                 ))}

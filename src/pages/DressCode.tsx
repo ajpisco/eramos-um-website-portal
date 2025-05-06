@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Shirt, ShoppingBag } from "lucide-react";
@@ -38,9 +37,9 @@ const DressCode = () => {
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <Shirt className="h-10 w-10 text-school-blue mr-3" />
+            <Shirt className="h-10 w-10 text-school-blue-dark mr-3" />
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold">
-              <span className="text-school-blue">{t('dress.title')}</span>
+              <span className="text-school-blue-dark">{t('dress.title')}</span>
             </h1>
           </div>
           
@@ -51,7 +50,7 @@ const DressCode = () => {
             
             {/* Dress Code Policy */}
             <section className="bg-white p-8 rounded-lg shadow-md mb-8">
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6">
                 {t('dress.policy')}
               </h2>
               
@@ -62,14 +61,14 @@ const DressCode = () => {
                     : 'Todos os alunos devem usar o uniforme escolar oficial durante o horário escolar e eventos patrocinados pela escola. O uniforme ajuda a promover um senso de igualdade e pertencimento entre nossos alunos.'}
                 </p>
                 
-                <h3 className="text-xl font-semibold text-school-blue">
+                <h3 className="text-xl font-semibold text-school-blue-dark">
                   {language === 'en' ? 'Required Items:' : 'Itens Obrigatórios:'}
                 </h3>
                 
                 <ul className="space-y-4">
                   {uniformItems.map((item, index) => (
                     <li key={index} className="flex items-start">
-                      <span className="text-school-green mr-2">•</span>
+                      <span className="text-school-green-dark mr-2">•</span>
                       <div>
                         <span className="font-medium">{item.name}</span>
                         <p className="text-gray-600 text-sm">{item.description}</p>
@@ -78,13 +77,13 @@ const DressCode = () => {
                   ))}
                 </ul>
                 
-                <h3 className="text-xl font-semibold text-school-blue">
+                <h3 className="text-xl font-semibold text-school-blue-dark">
                   {language === 'en' ? 'Additional Guidelines:' : 'Diretrizes Adicionais:'}
                 </h3>
                 
                 <ul className="space-y-2">
                   <li className="flex items-start">
-                    <span className="text-school-green mr-2">•</span>
+                    <span className="text-school-green-dark mr-2">•</span>
                     <span>
                       {language === 'en'
                         ? 'Shoes should be comfortable and appropriate for school activities.'
@@ -92,7 +91,7 @@ const DressCode = () => {
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-school-green mr-2">•</span>
+                    <span className="text-school-green-dark mr-2">•</span>
                     <span>
                       {language === 'en'
                         ? 'Jewelry should be minimal and not distracting.'
@@ -100,7 +99,7 @@ const DressCode = () => {
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-school-green mr-2">•</span>
+                    <span className="text-school-green-dark mr-2">•</span>
                     <span>
                       {language === 'en'
                         ? 'Hair should be neat and natural in color.'
@@ -113,7 +112,7 @@ const DressCode = () => {
             
             {/* Where to Buy */}
             <section className="bg-white p-8 rounded-lg shadow-md">
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6">
                 {t('dress.purchase_title')}
               </h2>
               

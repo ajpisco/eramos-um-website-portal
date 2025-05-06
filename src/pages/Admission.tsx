@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { UserPlus, CheckCircle, Download, Calendar } from "lucide-react";
@@ -66,9 +65,9 @@ const Admission = () => {
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-center mb-8">
-            <UserPlus className="h-10 w-10 text-school-blue mr-3" />
+            <UserPlus className="h-10 w-10 text-school-blue-dark mr-3" />
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold">
-              <span className="text-school-blue">{t('admission.title')}</span>
+              <span className="text-school-blue-dark">{t('admission.title')}</span>
             </h1>
           </div>
           
@@ -79,17 +78,17 @@ const Admission = () => {
             
             {/* Application Process */}
             <section className="mb-12">
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6 text-center">
                 {t('admission.process')}
               </h2>
               
               <div className="space-y-6 md:space-y-0 grid md:grid-cols-2 md:gap-8">
                 {steps.map((step, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md relative">
-                    <div className="absolute -top-4 left-6 bg-school-blue text-white h-8 w-8 rounded-full flex items-center justify-center font-bold">
+                    <div className="absolute -top-4 left-6 bg-school-blue-dark text-white h-8 w-8 rounded-full flex items-center justify-center font-bold">
                       {index + 1}
                     </div>
-                    <h3 className="text-xl font-semibold text-school-blue mb-3 mt-2">
+                    <h3 className="text-xl font-semibold text-school-blue-dark mb-3 mt-2">
                       {step.title}
                     </h3>
                     <p className="text-gray-700">{step.description}</p>
@@ -110,18 +109,18 @@ const Admission = () => {
             
             {/* Requirements */}
             <section className="mb-12">
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6 text-center">
                 {t('admission.requirements')}
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {requirements.map((req, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-xl font-semibold text-school-blue mb-4">{req.title}</h3>
+                    <h3 className="text-xl font-semibold text-school-blue-dark mb-4">{req.title}</h3>
                     <ul className="space-y-2">
                       {req.items.map((item, i) => (
                         <li key={i} className="flex items-start">
-                          <CheckCircle className="h-5 w-5 text-school-green mr-2 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="h-5 w-5 text-school-green-dark mr-2 flex-shrink-0 mt-0.5" />
                           <span className="text-gray-700">{item}</span>
                         </li>
                       ))}
@@ -133,7 +132,7 @@ const Admission = () => {
             
             {/* Required Documents */}
             <section className="mb-12">
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6 text-center">
                 {t('admission.documents')}
               </h2>
               
@@ -141,7 +140,7 @@ const Admission = () => {
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                   {documents.map((doc, index) => (
                     <li key={index} className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-school-green mr-2 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-school-green-dark mr-2 flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">{doc}</span>
                     </li>
                   ))}
@@ -151,7 +150,7 @@ const Admission = () => {
             
             {/* Download Forms */}
             <section>
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
+              <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6 text-center">
                 {t('admission.download')}
               </h2>
               
