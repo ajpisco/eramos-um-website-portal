@@ -65,11 +65,11 @@ export default {
 				},
 				school: {
 					blue: '#1EAEDB',
-					'blue-light': '#33C3F0',
-					'blue-dark': '#0EA5E9',
+					'blue-light': '#bed3f3',
+					'blue-dark': '#4d7ed2',
 					green: '#4ADE80',
-					'green-light': '#86EFAC',
-					'green-dark': '#22C55E',
+					'green-light': '#D9EF9B',
+					'green-dark': '#ade349',
 				}
 			},
 			borderRadius: {

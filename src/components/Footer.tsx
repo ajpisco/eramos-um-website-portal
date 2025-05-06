@@ -78,7 +78,7 @@ const Footer = () => {
             </h3>
             <div className="flex space-x-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/eramos.um.cooperativa.de.ensino"
                 target="_blank"
                 rel="noreferrer"
                 className="bg-school-blue hover:bg-school-blue-dark text-white p-2 rounded-full transition-colors"
@@ -86,7 +86,7 @@ const Footer = () => {
                 <Facebook className="h-6 w-6" />
               </a>
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/eramos.um/"
                 target="_blank"
                 rel="noreferrer"
                 className="bg-school-blue hover:bg-school-blue-dark text-white p-2 rounded-full transition-colors"
