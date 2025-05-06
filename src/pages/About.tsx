@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Book } from "lucide-react";
@@ -64,7 +63,8 @@ const About = () => {
                 {t('about.project_description')}
               </p>
               <a 
-                href="#" 
+                href="/downloads/20170907013856_Projeto_Educativo.pdf"
+                download
                 className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
               >
                 <Book className="mr-2 h-5 w-5" />
