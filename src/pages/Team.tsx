@@ -7,121 +7,116 @@ const placeholderImg = "/placeholder.svg";
 
 interface TeamMember {
   name: string;
-  role: string; // This will be the primary role for display
-  bio?: string; // For more detailed descriptions if needed, can be translated if complex
+  role: string;
+  bio?: string;
   imageUrl?: string;
 }
 
 const TeamPage = () => {
   const { t, language } = useLanguage();
 
+  // Board members
   const boardMembers: TeamMember[] = [
     {
+      name: "Alexandrina Ildefonso",
+      role: t('team_elementary_teacher'),
+      imageUrl: placeholderImg,
+    },
+    {
       name: "João Seguro",
-      role: language === 'en' ? `${t('team.teacher')} & ${t('team.study_room_head')} (7th-9th Grades)` : `${t('team.teacher')} e ${t('team.study_room_head')} (Salas de Estudo 7º-9º Ano)`,
-      // bio: "Also a board member.", // Example if bio is needed
+      role: language === 'en' ? `${t('team_teacher')} & ${t('team_study_room_head')} (7th-9th Grades)` : `${t('team_teacher')} e ${t('team_study_room_head')} (Salas de Estudo 7º-9º Ano)`,
       imageUrl: placeholderImg,
     },
     {
       name: "Diogo Seguro",
-      role: language === 'en' ? `${t('team.study_room_head')} (5th-6th Grades)` : `${t('team.study_room_head')} (Salas de Estudo 5º-6º Ano)`,
-      // bio: "Also a board member.",
+      role: language === 'en' ? `${t('team_study_room_head')} (5th-6th Grades)` : `${t('team_study_room_head')} (Salas de Estudo 5º-6º Ano)`,
       imageUrl: placeholderImg,
-    },
-    {
-      name: "Alexandrina Ildefonso",
-      role: t('program.elementary'), // Role: Elementary Teacher
-      // bio: "Also a board member.",
-      imageUrl: placeholderImg,
-    },
+    }
   ];
 
-  const elementaryTeachers: TeamMember[] = [
-    { name: "Carla Moreira", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Ana Rita", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Raquel Monteiro", role: t('team.teacher'), imageUrl: placeholderImg },
+  // All teachers (elementary and kindergarten)
+  const teachers: TeamMember[] = [
+    { name: "Carla Moreira", role: t('team_elementary_teacher'), imageUrl: placeholderImg },
+    { name: "Rita Cardoso", role: t('team_elementary_teacher'), imageUrl: placeholderImg },
+    { name: "Raquel Monteiro", role: t('team_elementary_teacher'), imageUrl: placeholderImg },
     {
       name: "Andreia Ferreira",
-      role: t('team.pe'), // Role: Sports Teacher
+      role: t('team_pe'),
       imageUrl: placeholderImg,
     },
     {
       name: "Inês Miranda",
-      role: t('team.english_teacher'), // Role: English Teacher
+      role: t('team_english_teacher'),
       imageUrl: placeholderImg,
     },
     {
       name: "Steve",
-      role: t('team.music_teacher'), // Role: Music Teacher
+      role: t('team_music_teacher'),
       imageUrl: placeholderImg,
     },
     {
       name: "Mariana",
-      role: t('team.music_teacher'), // Role: Music Teacher
+      role: t('team_music_teacher'),
       imageUrl: placeholderImg,
     },
+    { name: "Catarina Oliveira", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: "Catarina Dias", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: "Christina Ashley", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: "Joana Goulart", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: "Catarina Lopes", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg }
   ];
-
-  const kindergartenTeachers: TeamMember[] = [
-    { name: "Catarina Oliveira", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Catarina Dias", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Christina Ashley", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Joana Goulart", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Mónica Vieira", role: t('team.teacher'), imageUrl: placeholderImg },
-    { name: "Catarina Lopes", role: t('team.teacher'), imageUrl: placeholderImg },
-  ];
-
-  const supportStaff: TeamMember[] = [
+  
+  // Operational staff
+  const operational: TeamMember[] = [
     {
-      name: "João Ildefonso",
-      role: t('team.school_driver'),
-      imageUrl: placeholderImg,
-    },
-    {
-      name: "Fátima Monteiro",
-      role: t('team.administrative_assistant'),
+      name: "João Ildefonso", // Moved from Assistants
+      role: t('team_school_driver'),
       imageUrl: placeholderImg,
     },
     {
       name: "Teresa Gonçalves",
-      role: t('team.operational_assistant'),
+      role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
       name: "Mónica Fernandes",
-      role: t('team.operational_assistant'),
-      imageUrl: placeholderImg,
-    },
-    {
-      name: "Maria dos Anjos",
-      role: t('team.cook'),
-      imageUrl: placeholderImg,
-    },
-    {
-      name: "Susana Bourdain",
-      role: t('team.cook_assistant'),
-      imageUrl: placeholderImg,
-    },
-    {
-      name: "Andreia Valido",
-      role: t('team.cook_assistant'),
+      role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
       name: "Marta Monteiro",
-      role: t('team.operational_assistant'),
+      role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
       name: "Sílvia Porêlo",
-      role: t('team.operational_assistant'),
+      role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
-      name: "João Gomes",
-      role: t('team.maintenance_assistant'),
+      name: "Maria dos Anjos",
+      role: t('team_cook'),
       imageUrl: placeholderImg,
     },
+    {
+      name: "Andreia Valido",
+      role: t('team_cook_assistant'),
+      imageUrl: placeholderImg,
+    },
+    {
+      name: "Nuno",
+      role: t('team_maintenance_assistant'),
+      imageUrl: placeholderImg,
+    }
+  ];
+
+  // Administrative staff
+  const administrative: TeamMember[] = [
+    {
+      name: "Fátima Monteiro",
+      role: t('team_administrative_assistant'),
+      imageUrl: placeholderImg,
+    }
   ];
 
   const renderTeamSection = (
@@ -167,18 +162,17 @@ const TeamPage = () => {
           <div className="text-center mb-16">
             <Users className="h-16 w-16 text-school-blue mx-auto mb-4" />
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-gray-800">
-              <span className="text-school-blue">{t('team.title')}</span>
+              <span className="text-school-blue">{t('team_title')}</span>
             </h1>
             <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
-              {t('team.directors.description')} {/* Using existing key for general description */}
+              {t('team_page_description')}
             </p>
           </div>
 
-          {renderTeamSection(t('team.directors'), boardMembers, Users)}
-          {renderTeamSection(t('program.elementary') + " " + t('team.teachers'), elementaryTeachers, BookOpen)}
-          {renderTeamSection(t('program.kindergarten') + " " + t('team.teachers'), kindergartenTeachers, Smile)}
-          {renderTeamSection(t('team.staff'), supportStaff, UserCog)}
-
+          {renderTeamSection(t('team_board'), boardMembers, Users)}
+          {renderTeamSection(t('team_teachers'), teachers, BookOpen)}
+          {renderTeamSection(t('team_operational'), operational, UserCog)}
+          {renderTeamSection(t('team_administrative'), administrative, UserCog)}
         </div>
       </div>
     </Layout>
