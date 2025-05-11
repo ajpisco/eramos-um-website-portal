@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { FileText, Download } from "lucide-react";
@@ -62,9 +61,10 @@ const Regulation = () => {
               <p className="text-lg text-gray-700 mb-6">
                 {t('regulation.document_description')}
               </p>
-              <a 
-                href="#" 
-                className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
+              <a
+                href="/downloads/20230719131936_20220603144847_Regulamento_Interno_2022-2023.pdf"
+                download="Regulamento_Interno.pdf"
+                className="inline-flex items-center px-6 py-3 bg-school-blue text-white font-semibold rounded-lg shadow-md hover:bg-school-blue-dark transition-colors duration-300"
               >
                 <Download className="mr-2 h-5 w-5" />
                 {t('regulation.document_button')}
