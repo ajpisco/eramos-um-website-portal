@@ -73,7 +73,7 @@ const Inovar = () => {
                 </div>
                 
                 <a 
-                  href="https://inovar.parents.edu.br" 
+                  href="https://eramosum.inovarmais.com/consulta"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center px-5 py-2 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
@@ -109,7 +109,7 @@ const Inovar = () => {
                 </div>
                 
                 <a 
-                  href="https://inovar.teachers.edu.br" 
+                  href="https://eramosum.inovarmais.com/alunos/Inicial.wgx"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center px-5 py-2 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
