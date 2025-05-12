@@ -1,4 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'Agrandir';
+  src: url('./assets/fonts/Agrandir-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Agrandir';
+  src: url('./assets/fonts/Agrandir-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;

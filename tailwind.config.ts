@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -79,7 +78,7 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Nunito', 'sans-serif'],
-				serif: ['Playfair Display', 'serif'],
+				serif: ['Agrandir', 'serif'],
 			},
 			keyframes: {
 				'accordion-down': {
