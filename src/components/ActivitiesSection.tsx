@@ -1,6 +1,7 @@
 import { useLanguage } from "@/context/LanguageContext";
-import { Guitar, Piano, Activity, Waves, Dumbbell, Brain, Music, ChevronRight } from "lucide-react";
+import { Guitar, Piano, Waves, Dumbbell, ChevronRight, Drama, Cpu } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getActivityImage } from "@/utils/imageUtils";
 import {
   Carousel,
   CarouselContent,
@@ -17,64 +18,57 @@ const ActivitiesSection = () => {
       id: 'swimming',
       icon: <Waves className="h-12 w-12 text-white" />,
       titleKey: 'activity.swimming',
-      image: 'https://images.unsplash.com/photo-1560090995-01632a28895b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      image: getActivityImage('swimming'),
       location: 'activity.location.swimming',
     },
     {
       id: 'guitar',
       icon: <Guitar className="h-12 w-12 text-white" />,
       titleKey: 'activity.guitar',
-      image: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      image: getActivityImage('guitar'),
       location: 'activity.location.music',
     },
     {
       id: 'piano',
       icon: <Piano className="h-12 w-12 text-white" />,
       titleKey: 'activity.piano',
-      image: 'https://images.unsplash.com/photo-1552422535-c45813c61732?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      image: getActivityImage('piano'),
       location: 'activity.location.music',
     },
     {
       id: 'ballet',
       icon: <span className="text-4xl text-white">🩰</span>,
       titleKey: 'activity.ballet',
-      image: 'https://images.unsplash.com/photo-1575052814086-f385ca5d91b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      image: getActivityImage('ballet'),
       location: 'activity.location.dance',
     },
     {
       id: 'karate',
       icon: <Dumbbell className="h-12 w-12 text-white" />,
       titleKey: 'activity.karate',
-      image: 'https://images.unsplash.com/photo-1555597673-b21d5c935865?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      image: getActivityImage('karate'),
       location: 'activity.location.sports',
     },
     {
-      id: 'horse_riding',
-      icon: <Activity className="h-12 w-12 text-white" />,
-      titleKey: 'activity.horse_riding',
-      image: 'https://images.unsplash.com/photo-1511994298241-608e28f14fde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
-      location: 'activity.location.outdoor',
+      id: 'theater',
+      icon: <Drama className="h-12 w-12 text-white" />,
+      titleKey: 'activity.theater',
+      image: getActivityImage('theater'),
+      location: 'activity.location.arts',
     },
     {
-      id: 'dance',
-      icon: <Activity className="h-12 w-12 text-white" />,
-      titleKey: 'activity.dance',
-      image: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
-      location: 'activity.location.dance',
-    },
-    {
-      id: 'it',
-      icon: <Brain className="h-12 w-12 text-white" />,
-      titleKey: 'activity.it',
-      image: 'https://images.unsplash.com/photo-1603354350317-6f7aaa5911c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
+      id: 'inventors',
+      icon: <Cpu className="h-12 w-12 text-white" />,
+      titleKey: 'activity.inventors',
+      image: getActivityImage('inventors'),
       location: 'activity.location.tech',
     },
     {
-      id: 'music',
-      icon: <Music className="h-12 w-12 text-white" />,
-      titleKey: 'activity.music',
-      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&h=600&q=80',
-      location: 'activity.location.music',
+      id: 'football',
+      icon: <span className="text-4xl text-white">⚽</span>,
+      titleKey: 'activity.football',
+      image: getActivityImage('football'),
+      location: 'activity.location.sports',
     },
   ];
 
@@ -104,6 +98,18 @@ const ActivitiesSection = () => {
                       src={activity.image} 
                       alt={t(activity.titleKey)} 
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        console.warn(`Failed to load image for ${activity.id}: ${activity.image}`);
+                        // Show gradient background with icon as fallback
+                        e.currentTarget.style.display = 'none';
+                        const parent = e.currentTarget.parentElement;
+                        if (parent) {
+                          const fallback = document.createElement('div');
+                          fallback.className = 'w-full h-full bg-gradient-to-br from-school-blue to-school-green flex items-center justify-center';
+                          fallback.innerHTML = `<div class="text-white">${activity.icon}</div>`;
+                          parent.appendChild(fallback);
+                        }
+                      }}
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-40 transition-opacity group-hover:bg-opacity-50"></div>
                     <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">

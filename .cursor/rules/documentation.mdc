@@ -1,0 +1,65 @@
+---
+description: Guide for handling the application documentation
+globs: **/*
+alwaysApply: true
+---
+# Documentation Sync Rules for Cursor AI
+
+> Ensure all changes made to the codebase reflect accurately in the documentation stored under the `/docs` directory.
+
+---
+
+## ✅ General Rules
+
+1. **Update Docs with Every Code Change**
+   - Any new feature, change, or removal must be documented in the relevant markdown file.
+
+2. **Match Feature Updates to `/docs/features/`**
+   - When updating feature logic (e.g. Events, Groups, RSVP), update the corresponding doc in `/docs/features/`.
+
+3. **Keep Setup and Deployment Accurate**
+   - Update `/docs/getting-started/setup.md` and `/deployment.md` when:
+     - Installing new packages
+     - Changing environment variables
+     - Updating commands
+
+4. **Sync API and Supabase Changes**
+   - Update:
+     - `/docs/backend/database.md` → when models change
+     - `/docs/backend/api-routes.md` → when new endpoints or logic are added
+     - `/docs/backend/supabase.md` → when auth or configuration changes
+
+---
+
+## 🎨 Design-Related
+
+5. **Update UI Documentation**
+   - Changes in shared UI components, theming, or layout should be reflected in:
+     - `/docs/design/components.md`
+     - `/docs/design/ui-guidelines.md`
+
+---
+
+## 🧠 Glossary & Terms
+
+6. **Define New Concepts**
+   - Add new terms or features that may be reused in `/docs/glossary.md`.
+
+---
+
+## 📚 Best Practices
+
+7. **Keep Examples Accurate**
+   - Code snippets and usage examples in docs should match the latest implementation.
+
+8. **No Silent Deprecations**
+   - Don’t remove doc entries unless the feature is fully removed from the app.
+
+9. **Maintain Doc Integrity Per PR**
+   - Each PR should reflect a 1:1 match between code logic and documentation changes where applicable.
+
+---
+
+## 💡 Tip for Cursor AI
+
+> Before finalizing changes, check if a doc update is needed and suggest the specific file to modify. Use concise language and mirror code terminology.

@@ -1,6 +1,6 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { Activity, Music, Brain, Waves, Dumbbell } from "lucide-react";
+import { Activity, Brain, Waves, Dumbbell, Drama, Cpu } from "lucide-react";
 
 const Extracurricular = () => {
   const { t, language } = useLanguage();
@@ -31,36 +31,28 @@ const Extracurricular = () => {
       image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=2071&auto=format&fit=crop"
     },
     {
-      name: t('extracurricular.horse_riding'),
+      name: t('extracurricular.theater'),
+      icon: Drama,
+      description: language === 'en'
+        ? 'Theater classes develop creativity, self-expression, and confidence through dramatic arts and performance.'
+        : 'Aulas de teatro desenvolvem criatividade, autoexpressão e confiança através das artes dramáticas e performance.',
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2070&auto=format&fit=crop"
+    },
+    {
+      name: t('extracurricular.robotics'),
+      icon: Cpu,
+      description: language === 'en'
+        ? 'Robotics classes introduce students to programming, engineering, and problem-solving through hands-on robot building.'
+        : 'Aulas de robótica introduzem os alunos à programação, engenharia e resolução de problemas através da construção prática de robôs.',
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2070&auto=format&fit=crop"
+    },
+    {
+      name: t('extracurricular.football'),
       icon: Activity,
       description: language === 'en'
-        ? 'Horse riding lessons at our partner stables. Transportation provided from school.'
-        : 'Aulas de equitação em nossos estábulos parceiros. Transporte fornecido pela escola.',
-      image: "https://images.unsplash.com/photo-1511994714008-b6d68a8b32a2?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-      name: t('extracurricular.dance'),
-      icon: Activity,
-      description: language === 'en'
-        ? 'Contemporary dance classes develop creative expression, rhythm, and movement skills.'
-        : 'Aulas de dança contemporânea desenvolvem expressão criativa, ritmo e habilidades de movimento.',
-      image: "https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-      name: t('extracurricular.it'),
-      icon: Brain,
-      description: language === 'en'
-        ? 'IT classes introduce students to programming, digital creativity, and computational thinking.'
-        : 'Aulas de informática introduzem os alunos à programação, criatividade digital e pensamento computacional.',
-      image: "https://images.unsplash.com/photo-1510751007277-36932aac9ebd?q=80&w=2070&auto=format&fit=crop"
-    },
-    {
-      name: t('extracurricular.music'),
-      icon: Music,
-      description: language === 'en'
-        ? 'Music lessons include guitar, piano, and choir options for different age groups.'
-        : 'As aulas de música incluem opções de violão, piano e coral para diferentes faixas etárias.',
-      image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=2070&auto=format&fit=crop"
+        ? 'Football training focuses on teamwork, physical fitness, and fundamental skills development in a fun environment.'
+        : 'O treinamento de futebol foca no trabalho em equipe, condicionamento físico e desenvolvimento de habilidades fundamentais em um ambiente divertido.',
+      image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=2070&auto=format&fit=crop"
     }
   ];
   

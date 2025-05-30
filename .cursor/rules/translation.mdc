@@ -1,0 +1,10 @@
+---
+description: Guidelines for creating and maintaining Cursor rules to ensure consistency and effectiveness.
+globs: .cursor/rules/*.mdc
+alwaysApply: true
+---
+
+- **Text changes:**
+  - Use `@src\translations\pt.json` for the Portuguese translations
+  - Use `@src\translations\en.json` for the English translations
+  - Everytime there's a change in any text, update the translations accordingly
