@@ -1,6 +1,7 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { Activity, Brain, Waves, Dumbbell, Drama, Cpu } from "lucide-react";
+import { Activity, Brain, Waves, Dumbbell, Drama, Cpu, Guitar, Piano } from "lucide-react";
+import { getActivityImage } from "@/utils/imageUtils";
 
 const Extracurricular = () => {
   const { t, language } = useLanguage();
@@ -9,50 +10,50 @@ const Extracurricular = () => {
     {
       name: t('extracurricular.swimming'),
       icon: Waves,
-      description: language === 'en'
-        ? 'Swimming lessons for all skill levels. Classes take place at our heated pool with certified instructors.'
-        : 'Aulas de natação para todos os níveis de habilidade. As aulas acontecem em nossa piscina aquecida com instrutores certificados.',
-      image: "https://images.unsplash.com/photo-1600965962324-592903ae5fc4?q=80&w=2070&auto=format&fit=crop"
+      description: t('extracurricular.swimming.description'),
+      image: getActivityImage('swimming')
+    },
+    {
+      name: t('extracurricular.guitar'),
+      icon: Guitar,
+      description: t('extracurricular.guitar.description'),
+      image: getActivityImage('guitar')
+    },
+    {
+      name: t('extracurricular.piano'),
+      icon: Piano,
+      description: t('extracurricular.piano.description'),
+      image: getActivityImage('piano')
     },
     {
       name: t('extracurricular.ballet'),
       icon: Activity,
-      description: language === 'en'
-        ? 'Ballet classes for beginners and intermediate students, focusing on technique, flexibility, and expression.'
-        : 'Aulas de ballet para alunos iniciantes e intermediários, com foco em técnica, flexibilidade e expressão.',
-      image: "https://images.unsplash.com/photo-1596882671619-d146dba96db6?q=80&w=2274&auto=format&fit=crop"
+      description: t('extracurricular.ballet.description'),
+      image: getActivityImage('ballet')
     },
     {
       name: t('extracurricular.karate'),
       icon: Dumbbell,
-      description: language === 'en'
-        ? 'Karate training emphasizes discipline, focus, and physical coordination.'
-        : 'O treinamento de karatê enfatiza disciplina, foco e coordenação física.',
-      image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=2071&auto=format&fit=crop"
+      description: t('extracurricular.karate.description'),
+      image: getActivityImage('karate')
     },
     {
       name: t('extracurricular.theater'),
       icon: Drama,
-      description: language === 'en'
-        ? 'Theater classes develop creativity, self-expression, and confidence through dramatic arts and performance.'
-        : 'Aulas de teatro desenvolvem criatividade, autoexpressão e confiança através das artes dramáticas e performance.',
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=2070&auto=format&fit=crop"
+      description: t('extracurricular.theater.description'),
+      image: getActivityImage('theater')
     },
     {
-      name: t('extracurricular.robotics'),
+      name: t('extracurricular.inventors'),
       icon: Cpu,
-      description: language === 'en'
-        ? 'Robotics classes introduce students to programming, engineering, and problem-solving through hands-on robot building.'
-        : 'Aulas de robótica introduzem os alunos à programação, engenharia e resolução de problemas através da construção prática de robôs.',
-      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=2070&auto=format&fit=crop"
+      description: t('extracurricular.inventors.description'),
+      image: getActivityImage('inventors')
     },
     {
       name: t('extracurricular.football'),
       icon: Activity,
-      description: language === 'en'
-        ? 'Football training focuses on teamwork, physical fitness, and fundamental skills development in a fun environment.'
-        : 'O treinamento de futebol foca no trabalho em equipe, condicionamento físico e desenvolvimento de habilidades fundamentais em um ambiente divertido.',
-      image: "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=2070&auto=format&fit=crop"
+      description: t('extracurricular.football.description'),
+      image: getActivityImage('football')
     }
   ];
   
@@ -88,18 +89,18 @@ const Extracurricular = () => {
             </p>
             
             {/* Combined Activities Section */}
-            <section className="mb-12">
-              <div className="flex items-center mb-6">
+            <section className="mb-16">
+              <div className="flex items-center mb-8">
                 <Activity className="h-6 w-6 text-school-blue-dark mr-2" />
                 <h2 className="text-2xl font-serif font-bold text-school-blue-dark">
                   {t('extracurricular.activities')}
                 </h2>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
                 {activities.map((activity, index) => (
-                  <div key={index} className="bg-white overflow-hidden rounded-lg shadow-md">
-                    <div className="h-48 overflow-hidden">
+                  <div key={index} className="bg-white overflow-hidden rounded-lg shadow-md max-w-sm w-full">
+                    <div className="aspect-square overflow-hidden">
                       <img 
                         src={activity.image} 
                         alt={activity.name} 
@@ -122,17 +123,17 @@ const Extracurricular = () => {
             
             {/* Academic Support Section */}
             <section>
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-8">
                 <Brain className="h-6 w-6 text-school-blue-dark mr-2" />
                 <h2 className="text-2xl font-serif font-bold text-school-blue-dark">
                   {t('extracurricular.academic')}
                 </h2>
               </div>
               
-              <div className="grid grid-cols-1 gap-6">
+              <div className="grid grid-cols-1 gap-8">
                 {supportActivities.map((activity, index) => (
-                  <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-xl font-semibold text-school-blue-dark mb-3">{activity.name}</h3>
+                  <div key={index} className="bg-white p-8 rounded-lg shadow-md">
+                    <h3 className="text-xl font-semibold text-school-blue-dark mb-4">{activity.name}</h3>
                     <p className="text-gray-700">{activity.description}</p>
                   </div>
                 ))}
@@ -140,17 +141,15 @@ const Extracurricular = () => {
             </section>
             
             {/* Registration Info */}
-            <div className="mt-12 bg-gray-50 p-6 rounded-lg border border-gray-200 text-center">
+            <div className="mt-16 bg-gray-50 p-8 rounded-lg border border-gray-200 text-center">
               <h3 className="text-xl font-semibold mb-3">
-                {language === 'en' ? 'Activity Registration' : 'Inscrição em Atividades'}
+                {t('extracurricular.registration.title')}
               </h3>
               <p className="text-gray-700 mb-4">
-                {language === 'en' 
-                  ? 'To enroll your child in any of our extracurricular activities, please contact the school office or complete the registration form.'
-                  : 'Para inscrever seu filho em qualquer uma de nossas atividades extracurriculares, entre em contato com a secretaria da escola ou preencha o formulário de inscrição.'}
+                {t('extracurricular.registration.description')}
               </p>
               <button className="px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors">
-                {language === 'en' ? 'Registration Form' : 'Formulário de Inscrição'}
+                {t('extracurricular.registration.button')}
               </button>
             </div>
           </div>
