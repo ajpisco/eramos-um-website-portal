@@ -89,13 +89,21 @@ const Admission = () => {
               </div>
               
               <div className="mt-8 text-center">
-                <a 
-                  href="#" 
-                  className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
-                >
-                  <Calendar className="mr-2 h-5 w-5" />
-                  {t('admission.schedule_visit')}
-                </a>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <a 
+                    href="#" 
+                    className="inline-flex items-center px-6 py-3 border-2 border-school-blue text-school-blue rounded-md hover:bg-school-blue hover:text-white transition-colors"
+                  >
+                    <Calendar className="mr-2 h-5 w-5" />
+                    {t('admission.schedule_visit')}
+                  </a>
+                  <a 
+                    href="#" 
+                    className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
+                  >
+                    {t('admission.apply_online')}
+                  </a>
+                </div>
               </div>
             </section>
             
