@@ -2,6 +2,9 @@ import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone } from "lucide-react";
 import { useState } from "react";
+import { sendAdmissionNotificationWithPDF, EmailErrorType } from "@/services/emailService";
+import AdmissionFormHTML, { AdmissionFormData } from "@/components/AdmissionFormHTML";
+import { generateFormSummary } from "@/services/pdfService";
 
 const Admission = () => {
   const { t } = useLanguage();
@@ -12,6 +15,32 @@ const Admission = () => {
     email: '',
     phone: ''
   });
+  
+  // New form data state for the HTML form
+  const [formData, setFormData] = useState<AdmissionFormData>({
+    studentName: '',
+    studentBirthDate: '',
+    studentGender: '',
+    studentNationality: '',
+    studentGrade: '',
+    parentName: '',
+    parentEmail: '',
+    parentPhone: '',
+    parentOccupation: '',
+    parentAddress: '',
+    emergencyName: '',
+    emergencyPhone: '',
+    emergencyRelation: '',
+    previousSchool: '',
+    previousSchoolYear: '',
+    reasonForTransfer: '',
+    allergies: '',
+    medications: '',
+    medicalConditions: '',
+    specialNeeds: '',
+    additionalComments: ''
+  });
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleOpenModal = () => {
@@ -23,9 +52,41 @@ const Admission = () => {
     setIsModalOpen(false);
     setCurrentStep(1);
     setContactData({ name: '', email: '', phone: '' });
+    // Reset form data
+    setFormData({
+      studentName: '',
+      studentBirthDate: '',
+      studentGender: '',
+      studentNationality: '',
+      studentGrade: '',
+      parentName: '',
+      parentEmail: '',
+      parentPhone: '',
+      parentOccupation: '',
+      parentAddress: '',
+      emergencyName: '',
+      emergencyPhone: '',
+      emergencyRelation: '',
+      previousSchool: '',
+      previousSchoolYear: '',
+      reasonForTransfer: '',
+      allergies: '',
+      medications: '',
+      medicalConditions: '',
+      specialNeeds: '',
+      additionalComments: ''
+    });
   };
 
   const handleContinue = () => {
+    // Pre-populate contact data from form data if available
+    if (formData.parentName || formData.parentEmail || formData.parentPhone) {
+      setContactData({
+        name: formData.parentName || contactData.name,
+        email: formData.parentEmail || contactData.email,
+        phone: formData.parentPhone || contactData.phone
+      });
+    }
     setCurrentStep(2);
   };
 
@@ -36,7 +97,7 @@ const Admission = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Check for missing fields
+    // Check for missing critical fields
     const missingFields = [];
     if (!contactData.name.trim()) missingFields.push(t('admission.modal.contact.name_label'));
     if (!contactData.email.trim()) missingFields.push(t('admission.modal.contact.email_label'));
@@ -52,15 +113,56 @@ const Admission = () => {
     
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Close modal and show success
-    handleCloseModal();
-    setIsSubmitting(false);
-    
-    // You could show a success message here
-    alert('Application submitted successfully!');
+    try {
+      // Generate a summary of the form data for the email
+      const formSummary = generateFormSummary(formData);
+      
+      // Create enhanced contact data that includes the form summary
+      const enhancedContactData = {
+        ...contactData,
+        formData: formSummary
+      };
+      
+      // Send notification email with the filled form data
+      // Note: Now we're sending the actual filled form data, not a blank PDF
+      const emailResult = await sendAdmissionNotificationWithPDF(enhancedContactData);
+      
+      // Close modal and show appropriate success/error message
+      handleCloseModal();
+      
+      if (emailResult.success) {
+        alert(t('admission.modal.email_sent'));
+      } else {
+        console.error('Email sending failed:', emailResult.error, 'Type:', emailResult.errorType);
+        
+        // Provide specific error messages based on error type
+        switch (emailResult.errorType) {
+          case EmailErrorType.NETWORK_ERROR:
+            alert(t('admission.modal.network_error'));
+            break;
+          case EmailErrorType.TIMEOUT_ERROR:
+            alert(t('admission.modal.timeout_error'));
+            break;
+          case EmailErrorType.AUTHENTICATION_ERROR:
+            alert(t('admission.modal.auth_error'));
+            break;
+          case EmailErrorType.SERVER_ERROR:
+            alert(t('admission.modal.server_error'));
+            break;
+          case EmailErrorType.VALIDATION_ERROR:
+            alert(t('admission.modal.validation_error'));
+            break;
+          default:
+            alert(t('admission.modal.email_error'));
+        }
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      handleCloseModal();
+      alert(t('admission.modal.submission_error'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -68,6 +170,31 @@ const Admission = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  // Sync parent data between form and contact data
+  const handleFormDataChange = (newFormData: AdmissionFormData) => {
+    setFormData(newFormData);
+    
+    // Auto-sync parent email and phone to contact data
+    if (newFormData.parentEmail && newFormData.parentPhone) {
+      setContactData(prev => ({
+        name: newFormData.parentName || prev.name,
+        email: newFormData.parentEmail || prev.email,
+        phone: newFormData.parentPhone || prev.phone
+      }));
+    }
+  };
+
+  // Validate form - check if required fields are filled
+  const isFormValid = () => {
+    const requiredFields = [
+      'studentName', 'studentBirthDate', 'studentGender', 'studentNationality', 'studentGrade',
+      'parentName', 'parentEmail', 'parentPhone', 'parentAddress',
+      'emergencyName', 'emergencyPhone', 'emergencyRelation'
+    ];
+    
+    return requiredFields.every(field => formData[field as keyof AdmissionFormData]?.trim());
   };
 
   // Update validation - no longer block submission, just visual feedback
@@ -157,7 +284,7 @@ const Admission = () => {
                 ))}
               </div>
               
-              <div className="mt-8 text-center">
+              <div className="mt-12 text-center">
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                   <a 
                     href="#" 
@@ -222,7 +349,7 @@ const Admission = () => {
             </section>
             
             {/* Download Forms */}
-            <section>
+            <section className="mb-12">
               <h2 className="text-2xl font-serif font-bold text-school-blue-dark mb-6 text-center">
                 {t('admission.download')}
               </h2>
@@ -282,7 +409,7 @@ const Admission = () => {
       {/* Application Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+          <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
               <div className="flex items-center">
@@ -306,7 +433,7 @@ const Admission = () => {
             </div>
 
             {/* Progress Indicator */}
-            <div className="px-6 py-4 bg-gray-50 flex-shrink-0">
+            <div className="px-6 py-4 border-b border-gray-200 flex-shrink-0">
               <div className="flex items-center">
                 <div className={`flex items-center ${currentStep >= 1 ? 'text-school-blue-dark' : 'text-gray-400'}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 1 ? 'bg-school-blue text-white' : 'bg-gray-200'}`}>
@@ -325,8 +452,8 @@ const Admission = () => {
             </div>
 
             {/* Modal Content - Scrollable */}
-            <div className="flex-1 overflow-y-auto min-h-0">
-              {/* Step 1 Content */}
+            <div className="flex-1 overflow-auto">
+              {/* Step 1 Content - HTML Form */}
               <div className={`${currentStep === 1 ? 'block' : 'hidden'}`}>
                 <div className="p-6">
                   <div className="mb-6">
@@ -336,19 +463,17 @@ const Admission = () => {
                     <p className="text-gray-600 mb-2">
                       {t('admission.modal.step1.description')}
                     </p>
-                    <p className="text-sm text-gray-500">
-                      {t('admission.modal.step1.pdf_note')}
+                    <p className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
+                      ✅ <strong>New:</strong> This form captures all your data and will be included in the email submission - no more blank PDFs!
                     </p>
                   </div>
                   
-                  {/* PDF Embed - Always mounted to preserve data */}
-                  <div className="bg-gray-100 rounded-lg p-4 mb-6">
-                    <iframe 
-                      src="/eramos-um-website-portal/downloads/20200504190835_Ficha_Inscricao_2020_editavel.pdf"
-                      className="w-full h-[800px] border rounded"
-                      title="Application Form - Ficha de Inscrição"
-                    />
-                  </div>
+                  {/* HTML Form Component */}
+                  <AdmissionFormHTML 
+                    formData={formData}
+                    onFormDataChange={handleFormDataChange}
+                    className="max-h-[600px] overflow-auto"
+                  />
                 </div>
               </div>
 
@@ -418,7 +543,7 @@ const Admission = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex-shrink-0">
+            <div className="px-6 py-4 border-t border-gray-200 flex-shrink-0">
               <div className="flex justify-between">
                 <div>
                   {currentStep === 2 && (
@@ -443,7 +568,12 @@ const Admission = () => {
                   {currentStep === 1 && (
                     <button
                       onClick={handleContinue}
-                      className="inline-flex items-center px-6 py-2 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
+                      disabled={!isFormValid()}
+                      className={`inline-flex items-center px-6 py-2 rounded-md transition-colors ${
+                        isFormValid() 
+                          ? 'bg-school-blue text-white hover:bg-opacity-90' 
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      }`}
                     >
                       {t('admission.modal.continue')}
                       <ArrowRight className="h-4 w-4 ml-2" />
@@ -466,7 +596,7 @@ const Admission = () => {
                       {isSubmitting ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Submitting...
+                          {t('admission.modal.sending_email')}
                         </>
                       ) : (
                         t('admission.modal.submit')
