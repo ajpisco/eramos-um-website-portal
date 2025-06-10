@@ -17,6 +17,9 @@ const Admission = () => {
     phone: ''
   });
   
+  // Guardian data source state
+  const [guardianDataSource, setGuardianDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
+  
   // New form data state for the HTML form
   const [formData, setFormData] = useState<AdmissionFormData>({
     // Dados do Aluno (Student Data)
@@ -99,13 +102,16 @@ const Admission = () => {
     storageKey: 'admission-form-data',
     debounceMs: 1500, // Save after 1.5 seconds of inactivity
     excludeFields: ['studentPhoto', 'submissionDate'], // Don't persist files and submission date
-    onRestore: (data) => {
+    onRestore: (data, extraData) => {
       console.log('Form data restored:', data);
+      if (extraData?.guardianDataSource) {
+        setGuardianDataSource(extraData.guardianDataSource);
+      }
     },
-    onSave: (data) => {
+    onSave: (data, extraData) => {
       console.log('Form data saved:', data);
     }
-  });
+  }, { guardianDataSource }); // Pass guardian data source as extra data
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -632,6 +638,8 @@ const Admission = () => {
                   <AdmissionFormHTML 
                     formData={formData}
                     onFormDataChange={handleFormDataChange}
+                    guardianDataSource={guardianDataSource}
+                    onGuardianDataSourceChange={setGuardianDataSource}
                   />
                 </div>
               </div>

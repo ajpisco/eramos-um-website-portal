@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { User, UserCheck, Edit3 } from 'lucide-react';
 
 export interface AdmissionFormData {
   // Dados do Aluno (Student Data)
@@ -73,16 +74,20 @@ export interface AdmissionFormData {
 interface AdmissionFormHTMLProps {
   formData: AdmissionFormData;
   onFormDataChange: (data: AdmissionFormData) => void;
+  guardianDataSource: 'mother' | 'father' | 'custom';
+  onGuardianDataSourceChange: (source: 'mother' | 'father' | 'custom') => void;
   className?: string;
 }
 
 const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({ 
   formData, 
-  onFormDataChange, 
+  onFormDataChange,
+  guardianDataSource,
+  onGuardianDataSourceChange,
   className = "" 
 }) => {
   const { t } = useLanguage();
-
+  
   const handleInputChange = (field: keyof AdmissionFormData, value: string | boolean | File | null) => {
     onFormDataChange({
       ...formData,
@@ -95,10 +100,54 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     handleInputChange(field, file);
   };
 
+  // Function to copy parent data to guardian fields
+  const copyParentDataToGuardian = (source: 'mother' | 'father') => {
+    const sourcePrefix = source === 'mother' ? 'mother' : 'father';
+    
+    const updatedFormData = {
+      ...formData,
+      guardianName: formData[`${sourcePrefix}Name` as keyof AdmissionFormData] as string,
+      guardianCC: formData[`${sourcePrefix}CC` as keyof AdmissionFormData] as string,
+      guardianAddress: formData[`${sourcePrefix}Address` as keyof AdmissionFormData] as string,
+      guardianPostalCode: formData[`${sourcePrefix}PostalCode` as keyof AdmissionFormData] as string,
+      guardianNIF: formData[`${sourcePrefix}NIF` as keyof AdmissionFormData] as string,
+      guardianHomePhone: formData[`${sourcePrefix}HomePhone` as keyof AdmissionFormData] as string,
+      guardianMobilePhone: formData[`${sourcePrefix}MobilePhone` as keyof AdmissionFormData] as string,
+      guardianEmail: formData[`${sourcePrefix}Email` as keyof AdmissionFormData] as string,
+    };
+    
+    onFormDataChange(updatedFormData);
+  };
+
+  // Handle guardian data source change
+  const handleGuardianSourceChange = (source: 'mother' | 'father' | 'custom') => {
+    onGuardianDataSourceChange(source);
+    
+    if (source === 'mother' || source === 'father') {
+      copyParentDataToGuardian(source);
+    }
+  };
+
+  // Auto-sync guardian data when parent data changes (if guardian is linked to parent)
+  useEffect(() => {
+    if (guardianDataSource === 'mother' || guardianDataSource === 'father') {
+      copyParentDataToGuardian(guardianDataSource);
+    }
+  }, [
+    formData.motherName, formData.motherCC, formData.motherAddress, formData.motherPostalCode,
+    formData.motherNIF, formData.motherHomePhone, formData.motherMobilePhone, formData.motherEmail,
+    formData.fatherName, formData.fatherCC, formData.fatherAddress, formData.fatherPostalCode,
+    formData.fatherNIF, formData.fatherHomePhone, formData.fatherMobilePhone, formData.fatherEmail,
+    guardianDataSource
+  ]);
+
   const inputClasses = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent";
   const labelClasses = "block text-sm font-medium text-gray-700 mb-1";
   const sectionClasses = "bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6";
   const requiredClasses = "text-red-500";
+
+  // Guardian input classes - disabled when copying from parent
+  const guardianInputClasses = `${inputClasses} ${guardianDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`;
 
   return (
     <div className={`max-w-4xl mx-auto ${className}`}>
@@ -484,10 +533,72 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
 
       {/* Dados do Encarregado de Educação (Guardian Data) */}
       <div className={sectionClasses}>
-        <h3 className="text-lg font-semibold text-school-blue-dark mb-4">
-          {t('admission.form.guardian_data')}
-        </h3>
-        <p className="text-sm text-gray-600 mb-4">{t('admission.form.guardian_description')}</p>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-school-blue-dark">
+            {t('admission.form.guardian_data')}
+          </h3>
+        </div>
+        
+        {/* Guardian Data Source Buttons */}
+        <div className="mb-6">
+          <p className="text-sm text-gray-600 mb-3">{t('admission.form.guardian_description')}</p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => handleGuardianSourceChange('mother')}
+              className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                guardianDataSource === 'mother'
+                  ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
+              }`}
+            >
+              <User className="h-4 w-4 mr-2" />
+              {t('admission.form.copy_from_mother')}
+              {guardianDataSource === 'mother' && <UserCheck className="h-4 w-4 ml-2 text-pink-600" />}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => handleGuardianSourceChange('father')}
+              className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                guardianDataSource === 'father'
+                  ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
+              }`}
+            >
+              <User className="h-4 w-4 mr-2" />
+              {t('admission.form.copy_from_father')}
+              {guardianDataSource === 'father' && <UserCheck className="h-4 w-4 ml-2 text-blue-600" />}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => handleGuardianSourceChange('custom')}
+              className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                guardianDataSource === 'custom'
+                  ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
+              }`}
+            >
+              <Edit3 className="h-4 w-4 mr-2" />
+              {t('admission.form.custom_guardian')}
+              {guardianDataSource === 'custom' && <UserCheck className="h-4 w-4 ml-2 text-green-600" />}
+            </button>
+          </div>
+          
+          {guardianDataSource !== 'custom' && (
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800">
+                <UserCheck className="h-4 w-4 inline mr-1" />
+                {guardianDataSource === 'mother' 
+                  ? t('admission.form.guardian_synced_mother')
+                  : t('admission.form.guardian_synced_father')
+                }
+              </p>
+            </div>
+          )}
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2">
             <label className={labelClasses}>
@@ -496,9 +607,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="text"
               value={formData.guardianName}
-              onChange={(e) => handleInputChange('guardianName', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianName', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_name_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -509,9 +621,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="text"
               value={formData.guardianCC}
-              onChange={(e) => handleInputChange('guardianCC', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianCC', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_cc_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -522,9 +635,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="text"
               value={formData.guardianNIF}
-              onChange={(e) => handleInputChange('guardianNIF', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianNIF', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_nif_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -535,9 +649,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="text"
               value={formData.guardianAddress}
-              onChange={(e) => handleInputChange('guardianAddress', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianAddress', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_address_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -548,9 +663,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="text"
               value={formData.guardianPostalCode}
-              onChange={(e) => handleInputChange('guardianPostalCode', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianPostalCode', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_postal_code_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -561,9 +677,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="tel"
               value={formData.guardianHomePhone}
-              onChange={(e) => handleInputChange('guardianHomePhone', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianHomePhone', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_home_phone_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -574,9 +691,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="tel"
               value={formData.guardianMobilePhone}
-              onChange={(e) => handleInputChange('guardianMobilePhone', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianMobilePhone', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_mobile_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
           
@@ -587,9 +705,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="email"
               value={formData.guardianEmail}
-              onChange={(e) => handleInputChange('guardianEmail', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => guardianDataSource === 'custom' && handleInputChange('guardianEmail', e.target.value)}
+              className={guardianInputClasses}
               placeholder={t('admission.form.guardian_email_placeholder')}
+              disabled={guardianDataSource !== 'custom'}
             />
           </div>
         </div>

@@ -5,14 +5,15 @@ interface FormPersistenceOptions {
   storageKey: string;
   debounceMs?: number;
   excludeFields?: (keyof AdmissionFormData)[];
-  onRestore?: (data: Partial<AdmissionFormData>) => void;
-  onSave?: (data: Partial<AdmissionFormData>) => void;
+  onRestore?: (data: Partial<AdmissionFormData>, extraData?: any) => void;
+  onSave?: (data: Partial<AdmissionFormData>, extraData?: any) => void;
 }
 
 export const useFormPersistence = (
   formData: AdmissionFormData,
   setFormData: (data: AdmissionFormData) => void,
-  options: FormPersistenceOptions
+  options: FormPersistenceOptions,
+  extraData?: any // For additional state like guardianDataSource
 ) => {
   const {
     storageKey,
@@ -23,111 +24,112 @@ export const useFormPersistence = (
   } = options;
 
   const debounceRef = useRef<NodeJS.Timeout>();
-  const initialLoadRef = useRef(false);
+  const hasInitialized = useRef(false);
 
-  // Save form data to localStorage with debouncing
-  const saveFormData = useCallback((data: AdmissionFormData) => {
+  // Save data to localStorage with debouncing
+  const saveData = useCallback((data: AdmissionFormData, extra?: any) => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
 
     debounceRef.current = setTimeout(() => {
       try {
-        // Create a copy of the data excluding specified fields
+        // Filter out excluded fields and non-serializable data
         const dataToSave: Record<string, any> = {};
         
-        (Object.keys(data) as (keyof AdmissionFormData)[]).forEach(key => {
-          if (!excludeFields.includes(key)) {
-            const value = data[key];
-            // Only save serializable data (exclude File objects)
-            if (!(value instanceof File)) {
+        Object.entries(data).forEach(([key, value]) => {
+          if (!excludeFields.includes(key as keyof AdmissionFormData)) {
+            // Handle different value types
+            if (value instanceof File) {
+              // Don't save files
+              return;
+            } else if (value instanceof Date) {
+              dataToSave[key] = value.toISOString();
+            } else if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number') {
+              dataToSave[key] = value;
+            } else if (value === null || value === undefined) {
               dataToSave[key] = value;
             }
           }
         });
 
-        // Add metadata
-        const persistedData = {
+        const persistenceData = {
           formData: dataToSave,
+          extraData: extra || {},
           savedAt: new Date().toISOString(),
-          version: '1.0' // For future compatibility
+          version: '1.0'
         };
 
-        localStorage.setItem(storageKey, JSON.stringify(persistedData));
-        onSave?.(dataToSave as Partial<AdmissionFormData>);
-        
-        console.log('Form data saved to localStorage');
+        localStorage.setItem(storageKey, JSON.stringify(persistenceData));
+        onSave?.(dataToSave, extra);
       } catch (error) {
-        console.error('Failed to save form data to localStorage:', error);
+        console.warn('Failed to save form data:', error);
       }
     }, debounceMs);
   }, [storageKey, debounceMs, excludeFields, onSave]);
 
-  // Restore form data from localStorage
+  // Restore data from localStorage
   const restoreFormData = useCallback(() => {
     try {
       const savedData = localStorage.getItem(storageKey);
-      
-      if (!savedData) {
-        return false;
-      }
+      if (!savedData) return null;
 
       const parsedData = JSON.parse(savedData);
       
-      // Validate the structure
-      if (!parsedData.formData || !parsedData.savedAt) {
-        console.warn('Invalid form data structure in localStorage');
-        return false;
-      }
-
-      // Check if data is not too old (optional: 7 days)
+      // Check if data is not expired (7 days)
       const savedAt = new Date(parsedData.savedAt);
-      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      const now = new Date();
+      const daysDiff = (now.getTime() - savedAt.getTime()) / (1000 * 3600 * 24);
       
-      if (savedAt < weekAgo) {
-        console.log('Saved form data is too old, clearing...');
-        clearSavedData();
-        return false;
+      if (daysDiff > 7) {
+        localStorage.removeItem(storageKey);
+        return null;
       }
 
-      // Merge with current form data, preserving excluded fields
-      const restoredData: AdmissionFormData = {
+      // Merge saved data with current form data
+      const restoredFormData = {
         ...formData,
         ...parsedData.formData
       };
 
-      setFormData(restoredData);
-      onRestore?.(parsedData.formData);
+      setFormData(restoredFormData);
+      onRestore?.(parsedData.formData, parsedData.extraData);
       
-      console.log('Form data restored from localStorage');
-      return true;
+      return { formData: parsedData.formData, extraData: parsedData.extraData };
     } catch (error) {
-      console.error('Failed to restore form data from localStorage:', error);
-      return false;
+      console.warn('Failed to restore form data:', error);
+      localStorage.removeItem(storageKey);
+      return null;
     }
   }, [storageKey, formData, setFormData, onRestore]);
 
-  // Clear saved form data
+  // Clear saved data
   const clearSavedData = useCallback(() => {
     try {
       localStorage.removeItem(storageKey);
-      console.log('Saved form data cleared from localStorage');
     } catch (error) {
-      console.error('Failed to clear saved form data:', error);
+      console.warn('Failed to clear saved data:', error);
     }
   }, [storageKey]);
 
-  // Check if there's saved data available
+  // Check if there's saved data
   const hasSavedData = useCallback(() => {
     try {
       const savedData = localStorage.getItem(storageKey);
-      return !!savedData;
-    } catch (error) {
+      if (!savedData) return false;
+
+      const parsedData = JSON.parse(savedData);
+      const savedAt = new Date(parsedData.savedAt);
+      const now = new Date();
+      const daysDiff = (now.getTime() - savedAt.getTime()) / (1000 * 3600 * 24);
+      
+      return daysDiff <= 7;
+    } catch {
       return false;
     }
   }, [storageKey]);
 
-  // Get saved data info without restoring
+  // Get saved data info for display
   const getSavedDataInfo = useCallback(() => {
     try {
       const savedData = localStorage.getItem(storageKey);
@@ -139,32 +141,22 @@ export const useFormPersistence = (
         studentName: parsedData.formData?.studentName || 'Unknown',
         version: parsedData.version || '1.0'
       };
-    } catch (error) {
+    } catch {
       return null;
     }
   }, [storageKey]);
 
-  // Effect to restore data on initial load
+  // Auto-save when form data changes
   useEffect(() => {
-    if (!initialLoadRef.current) {
-      initialLoadRef.current = true;
-      // Don't auto-restore, let the component decide
+    if (hasInitialized.current) {
+      saveData(formData, extraData);
     }
-  }, []);
+  }, [formData, extraData, saveData]);
 
-  // Effect to save data when formData changes
+  // Mark as initialized after first render
   useEffect(() => {
-    if (initialLoadRef.current) {
-      // Only save if the form has some meaningful data
-      const hasData = Object.values(formData).some(value => 
-        value && value !== '' && value !== false
-      );
-      
-      if (hasData) {
-        saveFormData(formData);
-      }
-    }
-  }, [formData, saveFormData]);
+    hasInitialized.current = true;
+  }, []);
 
   // Cleanup on unmount
   useEffect(() => {

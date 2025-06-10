@@ -446,6 +446,11 @@
   
   "admission.form.guardian_data": "Dados do Encarregado de Educação",
   "admission.form.guardian_description": "Preencha apenas se diferente dos pais",
+  "admission.form.copy_from_mother": "Copiar da Mãe",
+  "admission.form.copy_from_father": "Copiar do Pai",
+  "admission.form.custom_guardian": "Entrada Personalizada",
+  "admission.form.guardian_synced_mother": "Dados sincronizados com a mãe - atualizações automáticas",
+  "admission.form.guardian_synced_father": "Dados sincronizados com o pai - atualizações automáticas",
   "admission.form.guardian_name": "Nome do Encarregado de Educação",
   "admission.form.guardian_name_placeholder": "Nome completo",
   "admission.form.guardian_cc": "CC do Encarregado de Educação",
