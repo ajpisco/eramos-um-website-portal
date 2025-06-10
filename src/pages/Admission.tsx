@@ -20,6 +20,17 @@ const Admission = () => {
   // Guardian data source state
   const [guardianDataSource, setGuardianDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
   
+  // Authorized adults data source state
+  const [authorizedAdultsDataSource, setAuthorizedAdultsDataSource] = useState<{
+    adult1: 'mother' | 'father' | 'custom';
+    adult2: 'mother' | 'father' | 'custom';
+    adult3: 'mother' | 'father' | 'custom';
+  }>({
+    adult1: 'custom',
+    adult2: 'custom', 
+    adult3: 'custom'
+  });
+  
   // New form data state for the HTML form
   const [formData, setFormData] = useState<AdmissionFormData>({
     // Dados do Aluno (Student Data)
@@ -92,6 +103,14 @@ const Admission = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Handler for authorized adults data source changes
+  const handleAuthorizedAdultsDataSourceChange = (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => {
+    setAuthorizedAdultsDataSource(prev => ({
+      ...prev,
+      [adult]: source
+    }));
+  };
+
   // Initialize form persistence
   const {
     restoreFormData,
@@ -107,11 +126,14 @@ const Admission = () => {
       if (extraData?.guardianDataSource) {
         setGuardianDataSource(extraData.guardianDataSource);
       }
+      if (extraData?.authorizedAdultsDataSource) {
+        setAuthorizedAdultsDataSource(extraData.authorizedAdultsDataSource);
+      }
     },
     onSave: (data, extraData) => {
       console.log('Form data saved:', data);
     }
-  }, { guardianDataSource }); // Pass guardian data source as extra data
+  }, { guardianDataSource, authorizedAdultsDataSource }); // Pass both data sources as extra data
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -134,6 +156,14 @@ const Admission = () => {
     if (confirmClear) {
       // Clear saved data
       clearSavedData();
+      
+      // Reset data sources
+      setGuardianDataSource('custom');
+      setAuthorizedAdultsDataSource({
+        adult1: 'custom',
+        adult2: 'custom',
+        adult3: 'custom'
+      });
       
       // Reset form data to empty state
       setFormData({
@@ -640,6 +670,8 @@ const Admission = () => {
                     onFormDataChange={handleFormDataChange}
                     guardianDataSource={guardianDataSource}
                     onGuardianDataSourceChange={setGuardianDataSource}
+                    authorizedAdultsDataSource={authorizedAdultsDataSource}
+                    onAuthorizedAdultsDataSourceChange={handleAuthorizedAdultsDataSourceChange}
                   />
                 </div>
               </div>

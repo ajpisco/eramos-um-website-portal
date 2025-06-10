@@ -76,6 +76,12 @@ interface AdmissionFormHTMLProps {
   onFormDataChange: (data: AdmissionFormData) => void;
   guardianDataSource: 'mother' | 'father' | 'custom';
   onGuardianDataSourceChange: (source: 'mother' | 'father' | 'custom') => void;
+  authorizedAdultsDataSource: {
+    adult1: 'mother' | 'father' | 'custom';
+    adult2: 'mother' | 'father' | 'custom';
+    adult3: 'mother' | 'father' | 'custom';
+  };
+  onAuthorizedAdultsDataSourceChange: (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => void;
   className?: string;
 }
 
@@ -84,6 +90,8 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
   onFormDataChange,
   guardianDataSource,
   onGuardianDataSourceChange,
+  authorizedAdultsDataSource,
+  onAuthorizedAdultsDataSourceChange,
   className = "" 
 }) => {
   const { t } = useLanguage();
@@ -119,12 +127,35 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     onFormDataChange(updatedFormData);
   };
 
+  // Function to copy parent data to authorized adult fields
+  const copyParentDataToAuthorizedAdult = (adultNumber: number, source: 'mother' | 'father') => {
+    const sourcePrefix = source === 'mother' ? 'mother' : 'father';
+    
+    const updatedFormData = {
+      ...formData,
+      [`authorizedAdult${adultNumber}Name`]: formData[`${sourcePrefix}Name` as keyof AdmissionFormData] as string,
+      [`authorizedAdult${adultNumber}CC`]: formData[`${sourcePrefix}CC` as keyof AdmissionFormData] as string,
+    };
+    
+    onFormDataChange(updatedFormData);
+  };
+
   // Handle guardian data source change
   const handleGuardianSourceChange = (source: 'mother' | 'father' | 'custom') => {
     onGuardianDataSourceChange(source);
     
     if (source === 'mother' || source === 'father') {
       copyParentDataToGuardian(source);
+    }
+  };
+
+  // Handle authorized adult data source change
+  const handleAuthorizedAdultSourceChange = (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => {
+    onAuthorizedAdultsDataSourceChange(adult, source);
+    
+    if (source === 'mother' || source === 'father') {
+      const adultNumber = parseInt(adult.replace('adult', ''));
+      copyParentDataToAuthorizedAdult(adultNumber, source);
     }
   };
 
@@ -141,6 +172,20 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     guardianDataSource
   ]);
 
+  // Auto-sync authorized adults data when parent data changes
+  useEffect(() => {
+    Object.entries(authorizedAdultsDataSource).forEach(([adult, source]) => {
+      if (source === 'mother' || source === 'father') {
+        const adultNumber = parseInt(adult.replace('adult', ''));
+        copyParentDataToAuthorizedAdult(adultNumber, source);
+      }
+    });
+  }, [
+    formData.motherName, formData.motherCC,
+    formData.fatherName, formData.fatherCC,
+    authorizedAdultsDataSource
+  ]);
+
   const inputClasses = "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent";
   const labelClasses = "block text-sm font-medium text-gray-700 mb-1";
   const sectionClasses = "bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6";
@@ -148,6 +193,11 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
 
   // Guardian input classes - disabled when copying from parent
   const guardianInputClasses = `${inputClasses} ${guardianDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`;
+
+  // Function to get authorized adult input classes
+  const getAuthorizedAdultInputClasses = (adult: 'adult1' | 'adult2' | 'adult3') => {
+    return `${inputClasses} ${authorizedAdultsDataSource[adult] !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`;
+  };
 
   return (
     <div className={`max-w-4xl mx-auto ${className}`}>
@@ -719,36 +769,108 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
         <h3 className="text-lg font-semibold text-school-blue-dark mb-4">
           {t('admission.form.authorized_adults')}
         </h3>
-        <p className="text-sm text-gray-600 mb-4">{t('admission.form.authorized_adults_description')}</p>
+        <p className="text-sm text-gray-600 mb-6">{t('admission.form.authorized_adults_description')}</p>
         
-        {[1, 2, 3].map((num) => (
-          <div key={num} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 p-4 bg-gray-50 rounded">
-            <div>
-              <label className={labelClasses}>
-                {t('admission.form.authorized_adult_name')} {num}
-              </label>
-              <input
-                type="text"
-                value={formData[`authorizedAdult${num}Name` as keyof AdmissionFormData] as string}
-                onChange={(e) => handleInputChange(`authorizedAdult${num}Name` as keyof AdmissionFormData, e.target.value)}
-                className={inputClasses}
-                placeholder={t('admission.form.authorized_adult_name_placeholder')}
-              />
+        {[1, 2, 3].map((num) => {
+          const adultKey = `adult${num}` as 'adult1' | 'adult2' | 'adult3';
+          const currentSource = authorizedAdultsDataSource[adultKey];
+          
+          return (
+            <div key={num} className="mb-6 p-4 bg-gray-50 rounded-lg">
+              <div className="mb-4">
+                <h4 className="text-md font-medium text-gray-800 mb-3">
+                  {t('admission.form.authorized_adult')} {num}
+                </h4>
+                
+                {/* Data Source Buttons for Authorized Adult */}
+                <div className="flex flex-wrap gap-2 mb-3">
+                  <button
+                    type="button"
+                    onClick={() => handleAuthorizedAdultSourceChange(adultKey, 'mother')}
+                    className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border transition-all duration-200 ${
+                      currentSource === 'mother'
+                        ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
+                        : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
+                    }`}
+                  >
+                    <User className="h-3 w-3 mr-1.5" />
+                    {t('admission.form.copy_from_mother')}
+                    {currentSource === 'mother' && <UserCheck className="h-3 w-3 ml-1.5 text-pink-600" />}
+                  </button>
+                  
+                  <button
+                    type="button"
+                    onClick={() => handleAuthorizedAdultSourceChange(adultKey, 'father')}
+                    className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border transition-all duration-200 ${
+                      currentSource === 'father'
+                        ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
+                        : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
+                    }`}
+                  >
+                    <User className="h-3 w-3 mr-1.5" />
+                    {t('admission.form.copy_from_father')}
+                    {currentSource === 'father' && <UserCheck className="h-3 w-3 ml-1.5 text-blue-600" />}
+                  </button>
+                  
+                  <button
+                    type="button"
+                    onClick={() => handleAuthorizedAdultSourceChange(adultKey, 'custom')}
+                    className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border transition-all duration-200 ${
+                      currentSource === 'custom'
+                        ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
+                        : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
+                    }`}
+                  >
+                    <Edit3 className="h-3 w-3 mr-1.5" />
+                    {t('admission.form.custom_guardian')}
+                    {currentSource === 'custom' && <UserCheck className="h-3 w-3 ml-1.5 text-green-600" />}
+                  </button>
+                </div>
+                
+                {currentSource !== 'custom' && (
+                  <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-md">
+                    <p className="text-xs text-blue-800">
+                      <UserCheck className="h-3 w-3 inline mr-1" />
+                      {currentSource === 'mother' 
+                        ? t('admission.form.authorized_synced_mother')
+                        : t('admission.form.authorized_synced_father')
+                      }
+                    </p>
+                  </div>
+                )}
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClasses}>
+                    {t('admission.form.authorized_adult_name')}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData[`authorizedAdult${num}Name` as keyof AdmissionFormData] as string}
+                    onChange={(e) => currentSource === 'custom' && handleInputChange(`authorizedAdult${num}Name` as keyof AdmissionFormData, e.target.value)}
+                    className={getAuthorizedAdultInputClasses(adultKey)}
+                    placeholder={t('admission.form.authorized_adult_name_placeholder')}
+                    disabled={currentSource !== 'custom'}
+                  />
+                </div>
+                <div>
+                  <label className={labelClasses}>
+                    {t('admission.form.authorized_adult_cc')}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData[`authorizedAdult${num}CC` as keyof AdmissionFormData] as string}
+                    onChange={(e) => currentSource === 'custom' && handleInputChange(`authorizedAdult${num}CC` as keyof AdmissionFormData, e.target.value)}
+                    className={getAuthorizedAdultInputClasses(adultKey)}
+                    placeholder={t('admission.form.authorized_adult_cc_placeholder')}
+                    disabled={currentSource !== 'custom'}
+                  />
+                </div>
+              </div>
             </div>
-            <div>
-              <label className={labelClasses}>
-                {t('admission.form.authorized_adult_cc')} {num}
-              </label>
-              <input
-                type="text"
-                value={formData[`authorizedAdult${num}CC` as keyof AdmissionFormData] as string}
-                onChange={(e) => handleInputChange(`authorizedAdult${num}CC` as keyof AdmissionFormData, e.target.value)}
-                className={inputClasses}
-                placeholder={t('admission.form.authorized_adult_cc_placeholder')}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Dados de Emergência (Emergency Data) */}

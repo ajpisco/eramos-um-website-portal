@@ -393,6 +393,9 @@
   
   "admission.form.authorized_adults": "Adultos Autorizados a Levar o Aluno",
   "admission.form.authorized_adults_description": "Indique as pessoas autorizadas a levar o aluno da instituição (máximo 3)",
+  "admission.form.authorized_adult": "Adulto Autorizado",
+  "admission.form.authorized_synced_mother": "Sincronizado com a mãe - atualizações automáticas",
+  "admission.form.authorized_synced_father": "Sincronizado com o pai - atualizações automáticas",
   "admission.form.authorized_adult_name": "Nome do Adulto Autorizado",
   "admission.form.authorized_adult_name_placeholder": "Nome completo",
   "admission.form.authorized_adult_cc": "CC do Adulto Autorizado",

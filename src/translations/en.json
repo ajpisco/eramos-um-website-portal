@@ -611,5 +611,8 @@
   "admission.form.custom_guardian": "Custom Entry",
   "admission.form.guardian_synced_mother": "Data synced with mother - automatic updates",
   "admission.form.guardian_synced_father": "Data synced with father - automatic updates",
-  "admission.form.guardian_name": "Guardian's name"
+  "admission.form.guardian_name": "Guardian's name",
+  "admission.form.authorized_adult": "Authorized Adult",
+  "admission.form.authorized_synced_mother": "Synced with mother - automatic updates",
+  "admission.form.authorized_synced_father": "Synced with father - automatic updates"
 } 
