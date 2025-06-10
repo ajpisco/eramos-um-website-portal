@@ -406,6 +406,9 @@
   "admission.form.add_adult": "Adicionar Adulto",
 
   "admission.form.emergency_data": "Dados a Considerar Em Caso de Acidente",
+  "admission.form.emergency_description": "Preencha os dados de contacto de emergência",
+  "admission.form.emergency_synced_mother": "Dados sincronizados com a mãe - atualizações automáticas",
+  "admission.form.emergency_synced_father": "Dados sincronizados com o pai - atualizações automáticas",
   "admission.form.emergency_contact_name": "Nome do Contacto de Emergência",
   "admission.form.emergency_contact_name_placeholder": "Nome completo",
   "admission.form.emergency_phone1": "Contacto Principal",

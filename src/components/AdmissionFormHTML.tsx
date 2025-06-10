@@ -82,6 +82,8 @@ interface AdmissionFormHTMLProps {
     adult3: 'mother' | 'father' | 'custom';
   };
   onAuthorizedAdultsDataSourceChange: (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => void;
+  emergencyDataSource: 'mother' | 'father' | 'custom';
+  onEmergencyDataSourceChange: (source: 'mother' | 'father' | 'custom') => void;
   className?: string;
 }
 
@@ -92,6 +94,8 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
   onGuardianDataSourceChange,
   authorizedAdultsDataSource,
   onAuthorizedAdultsDataSourceChange,
+  emergencyDataSource,
+  onEmergencyDataSourceChange,
   className = "" 
 }) => {
   const { t } = useLanguage();
@@ -129,6 +133,20 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
       guardianHomePhone: formData[`${sourcePrefix}HomePhone` as keyof AdmissionFormData] as string,
       guardianMobilePhone: formData[`${sourcePrefix}MobilePhone` as keyof AdmissionFormData] as string,
       guardianEmail: formData[`${sourcePrefix}Email` as keyof AdmissionFormData] as string,
+    };
+    
+    onFormDataChange(updatedFormData);
+  };
+
+  // Function to copy parent data to emergency contact fields
+  const copyParentDataToEmergency = (source: 'mother' | 'father') => {
+    const sourcePrefix = source === 'mother' ? 'mother' : 'father';
+    
+    const updatedFormData = {
+      ...formData,
+      emergencyContactName: formData[`${sourcePrefix}Name` as keyof AdmissionFormData] as string,
+      emergencyContactPhone1: formData[`${sourcePrefix}MobilePhone` as keyof AdmissionFormData] as string,
+      emergencyContactPhone2: formData[`${sourcePrefix}HomePhone` as keyof AdmissionFormData] as string,
     };
     
     onFormDataChange(updatedFormData);
@@ -315,6 +333,15 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     }
   };
 
+  // Handle emergency data source change
+  const handleEmergencySourceChange = (source: 'mother' | 'father' | 'custom') => {
+    onEmergencyDataSourceChange(source);
+    
+    if (source === 'mother' || source === 'father') {
+      copyParentDataToEmergency(source);
+    }
+  };
+
   // Update visible adults when form data changes (for custom entries)
   useEffect(() => {
     updateVisibleAdults();
@@ -334,6 +361,17 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     formData.fatherName, formData.fatherCC, formData.fatherAddress, formData.fatherPostalCode,
     formData.fatherNIF, formData.fatherHomePhone, formData.fatherMobilePhone, formData.fatherEmail,
     guardianDataSource
+  ]);
+
+  // Auto-sync emergency data when parent data changes (if emergency is linked to parent)
+  useEffect(() => {
+    if (emergencyDataSource === 'mother' || emergencyDataSource === 'father') {
+      copyParentDataToEmergency(emergencyDataSource);
+    }
+  }, [
+    formData.motherName, formData.motherHomePhone, formData.motherMobilePhone,
+    formData.fatherName, formData.fatherHomePhone, formData.fatherMobilePhone,
+    emergencyDataSource
   ]);
 
   // Auto-sync authorized adults data when parent data changes
@@ -357,6 +395,9 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
 
   // Guardian input classes - disabled when copying from parent
   const guardianInputClasses = `${inputClasses} ${guardianDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`;
+
+  // Emergency input classes - disabled when copying from parent
+  const emergencyInputClasses = `${inputClasses} ${emergencyDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`;
 
   // Function to get authorized adult input classes
   const getAuthorizedAdultInputClasses = (adult: 'adult1' | 'adult2' | 'adult3') => {
@@ -1047,9 +1088,72 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
 
       {/* Dados de Emergência (Emergency Data) */}
       <div className={sectionClasses}>
-        <h3 className="text-lg font-semibold text-school-blue-dark mb-4">
-          {t('admission.form.emergency_data')}
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-school-blue-dark">
+            {t('admission.form.emergency_data')}
+          </h3>
+        </div>
+        
+        {/* Emergency Data Source Buttons */}
+        <div className="mb-6">
+          <p className="text-sm text-gray-600 mb-3">{t('admission.form.emergency_description')}</p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => handleEmergencySourceChange('mother')}
+              className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                emergencyDataSource === 'mother'
+                  ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
+              }`}
+            >
+              <User className="h-4 w-4 mr-2" />
+              {t('admission.form.copy_from_mother')}
+              {emergencyDataSource === 'mother' && <UserCheck className="h-4 w-4 ml-2 text-pink-600" />}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => handleEmergencySourceChange('father')}
+              className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                emergencyDataSource === 'father'
+                  ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
+              }`}
+            >
+              <User className="h-4 w-4 mr-2" />
+              {t('admission.form.copy_from_father')}
+              {emergencyDataSource === 'father' && <UserCheck className="h-4 w-4 ml-2 text-blue-600" />}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => handleEmergencySourceChange('custom')}
+              className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                emergencyDataSource === 'custom'
+                  ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
+              }`}
+            >
+              <Edit3 className="h-4 w-4 mr-2" />
+              {t('admission.form.custom_entry')}
+              {emergencyDataSource === 'custom' && <UserCheck className="h-4 w-4 ml-2 text-green-600" />}
+            </button>
+          </div>
+          
+          {emergencyDataSource !== 'custom' && (
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800">
+                <UserCheck className="h-4 w-4 inline mr-1" />
+                {emergencyDataSource === 'mother' 
+                  ? t('admission.form.emergency_synced_mother')
+                  : t('admission.form.emergency_synced_father')
+                }
+              </p>
+            </div>
+          )}
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2">
             <label className={labelClasses}>
@@ -1059,9 +1163,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
               type="text"
               required
               value={formData.emergencyContactName}
-              onChange={(e) => handleInputChange('emergencyContactName', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => emergencyDataSource === 'custom' && handleInputChange('emergencyContactName', e.target.value)}
+              className={emergencyInputClasses}
               placeholder={t('admission.form.emergency_contact_name_placeholder')}
+              disabled={emergencyDataSource !== 'custom'}
             />
           </div>
           
@@ -1073,9 +1178,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
               type="tel"
               required
               value={formData.emergencyContactPhone1}
-              onChange={(e) => handleInputChange('emergencyContactPhone1', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => emergencyDataSource === 'custom' && handleInputChange('emergencyContactPhone1', e.target.value)}
+              className={emergencyInputClasses}
               placeholder={t('admission.form.emergency_phone1_placeholder')}
+              disabled={emergencyDataSource !== 'custom'}
             />
           </div>
           
@@ -1086,9 +1192,10 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <input
               type="tel"
               value={formData.emergencyContactPhone2}
-              onChange={(e) => handleInputChange('emergencyContactPhone2', e.target.value)}
-              className={inputClasses}
+              onChange={(e) => emergencyDataSource === 'custom' && handleInputChange('emergencyContactPhone2', e.target.value)}
+              className={emergencyInputClasses}
               placeholder={t('admission.form.emergency_phone2_placeholder')}
+              disabled={emergencyDataSource !== 'custom'}
             />
           </div>
           

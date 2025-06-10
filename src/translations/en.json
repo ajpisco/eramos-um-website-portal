@@ -620,6 +620,9 @@
   "admission.form.add_adult": "Add Adult",
 
   "admission.form.emergency_data": "Data to Consider in Case of Accident",
+  "admission.form.emergency_description": "Fill in emergency contact information",
+  "admission.form.emergency_synced_mother": "Data synced with mother - automatic updates",
+  "admission.form.emergency_synced_father": "Data synced with father - automatic updates",
   "admission.form.emergency_contact_name": "Emergency Contact Name",
   "admission.form.emergency_contact_name_placeholder": "Full name",
   "admission.form.emergency_phone1": "Primary Contact",
