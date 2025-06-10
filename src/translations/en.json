@@ -615,9 +615,11 @@
   "admission.form.authorized_data_source": "Data Source:",
   "admission.form.custom_entry": "Custom Entry",
   "admission.form.authorized_adult": "Authorized Adult",
-  "admission.form.authorized_adult_cc_placeholder": "Citizen Card number",
+  "admission.form.authorized_adult_cc_placeholder": "Citizen Card Number",
   
-  "admission.form.emergency_data": "Emergency Information",
+  "admission.form.add_adult": "Add Adult",
+
+  "admission.form.emergency_data": "Data to Consider in Case of Accident",
   "admission.form.emergency_contact_name": "Emergency Contact Name",
   "admission.form.emergency_contact_name_placeholder": "Full name",
   "admission.form.emergency_phone1": "Primary Contact",

@@ -99,6 +99,9 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
   // Track which buttons have been used for authorized adults
   const [usedMotherButton, setUsedMotherButton] = useState(false);
   const [usedFatherButton, setUsedFatherButton] = useState(false);
+  
+  // Track how many authorized adult slots are visible (starts with 1)
+  const [visibleAdults, setVisibleAdults] = useState(1);
 
   const handleInputChange = (field: keyof AdmissionFormData, value: string | boolean | File | null) => {
     onFormDataChange({
@@ -144,6 +147,27 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     onFormDataChange(updatedFormData);
   };
 
+  // Function to count how many adults have data or are assigned
+  const countActiveAdults = () => {
+    let count = 0;
+    for (let i = 1; i <= 3; i++) {
+      const name = formData[`authorizedAdult${i}Name` as keyof AdmissionFormData] as string;
+      const cc = formData[`authorizedAdult${i}CC` as keyof AdmissionFormData] as string;
+      const source = authorizedAdultsDataSource[`adult${i}` as 'adult1' | 'adult2' | 'adult3'];
+      
+      if (name || cc || source !== 'custom') {
+        count = i; // Set count to the highest adult number with data
+      }
+    }
+    return Math.max(count, 1); // Always show at least 1 adult
+  };
+
+  // Update visible adults based on data
+  const updateVisibleAdults = () => {
+    const activeCount = countActiveAdults();
+    setVisibleAdults(activeCount);
+  };
+
   // Handle simple button selection for authorized adults
   const handleAuthorizedAdultSimpleSelection = (source: 'mother' | 'father') => {
     // Check if this button is already used
@@ -162,8 +186,13 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
         { source: authorizedAdultsDataSource.adult3, name: formData.authorizedAdult3Name, cc: formData.authorizedAdult3CC }
       ];
       
-      // Filter out the source we're removing and keep only non-custom entries
-      const filteredArrangement = currentArrangement.filter(adult => adult.source !== source && adult.source !== 'custom');
+      // Separate custom data and parent data
+      const customAdults = currentArrangement.filter(adult => 
+        adult.source === 'custom' && (adult.name.trim() || adult.cc.trim())
+      );
+      const parentAdults = currentArrangement.filter(adult => 
+        adult.source !== source && adult.source !== 'custom'
+      );
       
       // Prepare new form data with cleared authorized adults
       const newFormData = {
@@ -181,50 +210,71 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
       onAuthorizedAdultsDataSourceChange('adult2', 'custom');
       onAuthorizedAdultsDataSourceChange('adult3', 'custom');
       
-      // Reassign the remaining entries from the top and prepare their data
-      filteredArrangement.forEach((adult, index) => {
-        const adultKey = `adult${index + 1}` as 'adult1' | 'adult2' | 'adult3';
-        onAuthorizedAdultsDataSourceChange(adultKey, adult.source);
-        
-        // Assign the data based on the source
-        if (adult.source === 'mother') {
+      // Combine custom and remaining parent data, prioritizing custom data
+      const allRemainingAdults = [...customAdults, ...parentAdults];
+      
+      // Reassign all remaining data
+      allRemainingAdults.forEach((adult, index) => {
+        if (index < 3) { // Only assign if we have space for 3 adults
+          const adultKey = `adult${index + 1}` as 'adult1' | 'adult2' | 'adult3';
+          onAuthorizedAdultsDataSourceChange(adultKey, adult.source);
+          
+          // Assign the data
           if (index === 0) {
-            newFormData.authorizedAdult1Name = formData.motherName;
-            newFormData.authorizedAdult1CC = formData.motherCC;
+            if (adult.source === 'custom') {
+              newFormData.authorizedAdult1Name = adult.name;
+              newFormData.authorizedAdult1CC = adult.cc;
+            } else {
+              newFormData.authorizedAdult1Name = adult.source === 'mother' ? formData.motherName : formData.fatherName;
+              newFormData.authorizedAdult1CC = adult.source === 'mother' ? formData.motherCC : formData.fatherCC;
+            }
           } else if (index === 1) {
-            newFormData.authorizedAdult2Name = formData.motherName;
-            newFormData.authorizedAdult2CC = formData.motherCC;
+            if (adult.source === 'custom') {
+              newFormData.authorizedAdult2Name = adult.name;
+              newFormData.authorizedAdult2CC = adult.cc;
+            } else {
+              newFormData.authorizedAdult2Name = adult.source === 'mother' ? formData.motherName : formData.fatherName;
+              newFormData.authorizedAdult2CC = adult.source === 'mother' ? formData.motherCC : formData.fatherCC;
+            }
           } else if (index === 2) {
-            newFormData.authorizedAdult3Name = formData.motherName;
-            newFormData.authorizedAdult3CC = formData.motherCC;
-          }
-        } else if (adult.source === 'father') {
-          if (index === 0) {
-            newFormData.authorizedAdult1Name = formData.fatherName;
-            newFormData.authorizedAdult1CC = formData.fatherCC;
-          } else if (index === 1) {
-            newFormData.authorizedAdult2Name = formData.fatherName;
-            newFormData.authorizedAdult2CC = formData.fatherCC;
-          } else if (index === 2) {
-            newFormData.authorizedAdult3Name = formData.fatherName;
-            newFormData.authorizedAdult3CC = formData.fatherCC;
+            if (adult.source === 'custom') {
+              newFormData.authorizedAdult3Name = adult.name;
+              newFormData.authorizedAdult3CC = adult.cc;
+            } else {
+              newFormData.authorizedAdult3Name = adult.source === 'mother' ? formData.motherName : formData.fatherName;
+              newFormData.authorizedAdult3CC = adult.source === 'mother' ? formData.motherCC : formData.fatherCC;
+            }
           }
         }
       });
       
       // Apply all changes at once
       onFormDataChange(newFormData);
+      
+      // Update visible adults after state change
+      setTimeout(updateVisibleAdults, 0);
       return;
     }
 
-    // Toggle on - find the first available adult slot (FIFO)
+    // Helper function to check if an adult slot has custom data
+    const hasCustomData = (adultKey: 'adult1' | 'adult2' | 'adult3') => {
+      const adultNumber = parseInt(adultKey.replace('adult', ''));
+      const name = formData[`authorizedAdult${adultNumber}Name` as keyof AdmissionFormData] as string;
+      const cc = formData[`authorizedAdult${adultNumber}CC` as keyof AdmissionFormData] as string;
+      const source = authorizedAdultsDataSource[adultKey];
+      
+      // Has custom data if source is custom AND there's actual data in the fields
+      return source === 'custom' && (name.trim() !== '' || cc.trim() !== '');
+    };
+
+    // Toggle on - find the first available adult slot (FIFO) that doesn't have custom data
     let targetAdult: 'adult1' | 'adult2' | 'adult3' | null = null;
     
-    if (authorizedAdultsDataSource.adult1 === 'custom') {
+    if (authorizedAdultsDataSource.adult1 === 'custom' && !hasCustomData('adult1')) {
       targetAdult = 'adult1';
-    } else if (authorizedAdultsDataSource.adult2 === 'custom') {
+    } else if (authorizedAdultsDataSource.adult2 === 'custom' && !hasCustomData('adult2')) {
       targetAdult = 'adult2';
-    } else if (authorizedAdultsDataSource.adult3 === 'custom') {
+    } else if (authorizedAdultsDataSource.adult3 === 'custom' && !hasCustomData('adult3')) {
       targetAdult = 'adult3';
     }
     
@@ -242,6 +292,17 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
       } else {
         setUsedFatherButton(true);
       }
+      
+      // Expand visible adults if we're using a new slot
+      const newVisibleCount = Math.max(visibleAdults, adultNumber);
+      setVisibleAdults(newVisibleCount);
+    }
+  };
+
+  // Add a new adult slot (+ button functionality)
+  const addNewAdultSlot = () => {
+    if (visibleAdults < 3) {
+      setVisibleAdults(visibleAdults + 1);
     }
   };
 
@@ -253,6 +314,14 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
       copyParentDataToGuardian(source);
     }
   };
+
+  // Update visible adults when form data changes (for custom entries)
+  useEffect(() => {
+    updateVisibleAdults();
+  }, [formData.authorizedAdult1Name, formData.authorizedAdult1CC, 
+      formData.authorizedAdult2Name, formData.authorizedAdult2CC,
+      formData.authorizedAdult3Name, formData.authorizedAdult3CC,
+      authorizedAdultsDataSource]);
 
   // Auto-sync guardian data when parent data changes (if guardian is linked to parent)
   useEffect(() => {
@@ -903,7 +972,8 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
           </div>
         </div>
         
-        {[1, 2, 3].map((num) => {
+        {Array.from({ length: visibleAdults }, (_, index) => {
+          const num = index + 1;
           const adultKey = `adult${num}` as 'adult1' | 'adult2' | 'adult3';
           const currentSource = authorizedAdultsDataSource[adultKey];
           const isAssigned = currentSource !== 'custom';
@@ -957,6 +1027,22 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             </div>
           );
         })}
+        
+        {/* Add New Adult Button */}
+        {visibleAdults < 3 && (
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={addNewAdultSlot}
+              className="inline-flex items-center px-4 py-2 border border-dashed border-gray-300 rounded-md text-gray-600 hover:border-gray-400 hover:text-gray-700 transition-all duration-200"
+            >
+              <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              {t('admission.form.add_adult')}
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Dados de Emergência (Emergency Data) */}

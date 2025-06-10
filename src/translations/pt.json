@@ -403,6 +403,8 @@
   "admission.form.authorized_adult_cc": "CC do Adulto Autorizado",
   "admission.form.authorized_adult_cc_placeholder": "Número do Cartão de Cidadão",
   
+  "admission.form.add_adult": "Adicionar Adulto",
+
   "admission.form.emergency_data": "Dados a Considerar Em Caso de Acidente",
   "admission.form.emergency_contact_name": "Nome do Contacto de Emergência",
   "admission.form.emergency_contact_name_placeholder": "Nome completo",
