@@ -292,7 +292,7 @@ import {
 // Get current addresses
 const addresses = getEmailAddresses();
 console.log(addresses);
-// { admissions: 'andre_pinto@hotmail.com', contact: 'contact@eramosum.edu.pt', noreply: 'noreply@eramosum.edu.pt' }
+// { admissions: 'inscricoes@eramos.pt', contact: 'contacto@eramosum.pt', noreply: 'noreply@eramosum.pt' }
 
 // Update addresses
 updateEmailAddresses({

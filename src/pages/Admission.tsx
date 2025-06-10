@@ -1,10 +1,11 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone } from "lucide-react";
-import { useState } from "react";
+import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { sendAdmissionNotificationWithPDF, EmailErrorType } from "@/services/emailService";
 import AdmissionFormHTML, { AdmissionFormData } from "@/components/AdmissionFormHTML";
 import { generateFormSummary } from "@/services/pdfService";
+import { useFormPersistence } from "@/hooks/useFormPersistence";
 
 const Admission = () => {
   const { t } = useLanguage();
@@ -18,73 +19,210 @@ const Admission = () => {
   
   // New form data state for the HTML form
   const [formData, setFormData] = useState<AdmissionFormData>({
+    // Dados do Aluno (Student Data)
     studentName: '',
+    studentPhoto: null,
     studentBirthDate: '',
-    studentGender: '',
-    studentNationality: '',
-    studentGrade: '',
-    parentName: '',
-    parentEmail: '',
-    parentPhone: '',
-    parentOccupation: '',
-    parentAddress: '',
-    emergencyName: '',
-    emergencyPhone: '',
-    emergencyRelation: '',
-    previousSchool: '',
-    previousSchoolYear: '',
-    reasonForTransfer: '',
-    allergies: '',
-    medications: '',
-    medicalConditions: '',
-    specialNeeds: '',
-    additionalComments: ''
+    studentSocialSecurity: '',
+    studentAddress: '',
+    studentPostalCode: '',
+    studentCitizenCard: '',
+    studentNIF: '',
+    registrationDate: '',
+    scheduleFrom: '',
+    scheduleTo: '',
+    
+    // Adultos autorizados (Authorized Adults)
+    authorizedAdult1Name: '',
+    authorizedAdult1CC: '',
+    authorizedAdult2Name: '',
+    authorizedAdult2CC: '',
+    authorizedAdult3Name: '',
+    authorizedAdult3CC: '',
+    
+    // Dados de Emergência (Emergency Data)
+    emergencyContactName: '',
+    emergencyContactPhone1: '',
+    emergencyContactPhone2: '',
+    specialCareInstructions: '',
+    
+    // Dados da Mãe (Mother's Data)
+    motherName: '',
+    motherCC: '',
+    motherAddress: '',
+    motherPostalCode: '',
+    motherNIF: '',
+    motherHomePhone: '',
+    motherMobilePhone: '',
+    motherEmail: '',
+    
+    // Dados do Pai (Father's Data)
+    fatherName: '',
+    fatherCC: '',
+    fatherAddress: '',
+    fatherPostalCode: '',
+    fatherNIF: '',
+    fatherHomePhone: '',
+    fatherMobilePhone: '',
+    fatherEmail: '',
+    
+    // Dados do Encarregado de Educação (Legal Guardian Data)
+    guardianName: '',
+    guardianCC: '',
+    guardianAddress: '',
+    guardianPostalCode: '',
+    guardianNIF: '',
+    guardianHomePhone: '',
+    guardianMobilePhone: '',
+    guardianEmail: '',
+    
+    // Consentimentos (Consents)
+    consentActivitiesInside: false,
+    consentParentsGroup: false,
+    consentWebsite: false,
+    consentFacebook: false,
+    acceptInternalRegulation: false,
+    
+    // Data de submissão
+    submissionDate: ''
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Initialize form persistence
+  const {
+    restoreFormData,
+    clearSavedData,
+    hasSavedData,
+    getSavedDataInfo
+  } = useFormPersistence(formData, setFormData, {
+    storageKey: 'admission-form-data',
+    debounceMs: 1500, // Save after 1.5 seconds of inactivity
+    excludeFields: ['studentPhoto', 'submissionDate'], // Don't persist files and submission date
+    onRestore: (data) => {
+      console.log('Form data restored:', data);
+    },
+    onSave: (data) => {
+      console.log('Form data saved:', data);
+    }
+  });
+
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setCurrentStep(1);
+    
+    // Automatically restore previous data if available
+    if (hasSavedData()) {
+      restoreFormData();
+    }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setCurrentStep(1);
     setContactData({ name: '', email: '', phone: '' });
-    // Reset form data
-    setFormData({
-      studentName: '',
-      studentBirthDate: '',
-      studentGender: '',
-      studentNationality: '',
-      studentGrade: '',
-      parentName: '',
-      parentEmail: '',
-      parentPhone: '',
-      parentOccupation: '',
-      parentAddress: '',
-      emergencyName: '',
-      emergencyPhone: '',
-      emergencyRelation: '',
-      previousSchool: '',
-      previousSchoolYear: '',
-      reasonForTransfer: '',
-      allergies: '',
-      medications: '',
-      medicalConditions: '',
-      specialNeeds: '',
-      additionalComments: ''
-    });
+  };
+
+  const handleClearForm = () => {
+    const confirmClear = window.confirm(t('admission.modal.clear_form_confirm'));
+    if (confirmClear) {
+      // Clear saved data
+      clearSavedData();
+      
+      // Reset form data to empty state
+      setFormData({
+        // Dados do Aluno (Student Data)
+        studentName: '',
+        studentPhoto: null,
+        studentBirthDate: '',
+        studentSocialSecurity: '',
+        studentAddress: '',
+        studentPostalCode: '',
+        studentCitizenCard: '',
+        studentNIF: '',
+        registrationDate: '',
+        scheduleFrom: '',
+        scheduleTo: '',
+        
+        // Adultos autorizados (Authorized Adults)
+        authorizedAdult1Name: '',
+        authorizedAdult1CC: '',
+        authorizedAdult2Name: '',
+        authorizedAdult2CC: '',
+        authorizedAdult3Name: '',
+        authorizedAdult3CC: '',
+        
+        // Dados de Emergência (Emergency Data)
+        emergencyContactName: '',
+        emergencyContactPhone1: '',
+        emergencyContactPhone2: '',
+        specialCareInstructions: '',
+        
+        // Dados da Mãe (Mother's Data)
+        motherName: '',
+        motherCC: '',
+        motherAddress: '',
+        motherPostalCode: '',
+        motherNIF: '',
+        motherHomePhone: '',
+        motherMobilePhone: '',
+        motherEmail: '',
+        
+        // Dados do Pai (Father's Data)
+        fatherName: '',
+        fatherCC: '',
+        fatherAddress: '',
+        fatherPostalCode: '',
+        fatherNIF: '',
+        fatherHomePhone: '',
+        fatherMobilePhone: '',
+        fatherEmail: '',
+        
+        // Dados do Encarregado de Educação (Legal Guardian Data)
+        guardianName: '',
+        guardianCC: '',
+        guardianAddress: '',
+        guardianPostalCode: '',
+        guardianNIF: '',
+        guardianHomePhone: '',
+        guardianMobilePhone: '',
+        guardianEmail: '',
+        
+        // Consentimentos (Consents)
+        consentActivitiesInside: false,
+        consentParentsGroup: false,
+        consentWebsite: false,
+        consentFacebook: false,
+        acceptInternalRegulation: false,
+        
+        // Data de submissão
+        submissionDate: ''
+      });
+      
+      // Also reset contact data
+      setContactData({ name: '', email: '', phone: '' });
+    }
   };
 
   const handleContinue = () => {
     // Pre-populate contact data from form data if available
-    if (formData.parentName || formData.parentEmail || formData.parentPhone) {
+    if (formData.motherName || formData.motherEmail || formData.motherMobilePhone) {
       setContactData({
-        name: formData.parentName || contactData.name,
-        email: formData.parentEmail || contactData.email,
-        phone: formData.parentPhone || contactData.phone
+        name: formData.motherName || contactData.name,
+        email: formData.motherEmail || contactData.email,
+        phone: formData.motherMobilePhone || contactData.phone
+      });
+    } else if (formData.fatherName || formData.fatherEmail || formData.fatherMobilePhone) {
+      setContactData({
+        name: formData.fatherName || contactData.name,
+        email: formData.fatherEmail || contactData.email,
+        phone: formData.fatherMobilePhone || contactData.phone
+      });
+    } else if (formData.guardianName || formData.guardianEmail || formData.guardianMobilePhone) {
+      setContactData({
+        name: formData.guardianName || contactData.name,
+        email: formData.guardianEmail || contactData.email,
+        phone: formData.guardianMobilePhone || contactData.phone
       });
     }
     setCurrentStep(2);
@@ -131,6 +269,8 @@ const Admission = () => {
       handleCloseModal();
       
       if (emailResult.success) {
+        // Clear saved form data after successful submission
+        clearSavedData();
         alert(t('admission.modal.email_sent'));
       } else {
         console.error('Email sending failed:', emailResult.error, 'Type:', emailResult.errorType);
@@ -176,12 +316,24 @@ const Admission = () => {
   const handleFormDataChange = (newFormData: AdmissionFormData) => {
     setFormData(newFormData);
     
-    // Auto-sync parent email and phone to contact data
-    if (newFormData.parentEmail && newFormData.parentPhone) {
+    // Auto-sync parent email and phone to contact data from mother's data primarily
+    if (newFormData.motherEmail && newFormData.motherMobilePhone) {
       setContactData(prev => ({
-        name: newFormData.parentName || prev.name,
-        email: newFormData.parentEmail || prev.email,
-        phone: newFormData.parentPhone || prev.phone
+        name: newFormData.motherName || prev.name,
+        email: newFormData.motherEmail || prev.email,
+        phone: newFormData.motherMobilePhone || prev.phone
+      }));
+    } else if (newFormData.fatherEmail && newFormData.fatherMobilePhone) {
+      setContactData(prev => ({
+        name: newFormData.fatherName || prev.name,
+        email: newFormData.fatherEmail || prev.email,
+        phone: newFormData.fatherMobilePhone || prev.phone
+      }));
+    } else if (newFormData.guardianEmail && newFormData.guardianMobilePhone) {
+      setContactData(prev => ({
+        name: newFormData.guardianName || prev.name,
+        email: newFormData.guardianEmail || prev.email,
+        phone: newFormData.guardianMobilePhone || prev.phone
       }));
     }
   };
@@ -189,12 +341,20 @@ const Admission = () => {
   // Validate form - check if required fields are filled
   const isFormValid = () => {
     const requiredFields = [
-      'studentName', 'studentBirthDate', 'studentGender', 'studentNationality', 'studentGrade',
-      'parentName', 'parentEmail', 'parentPhone', 'parentAddress',
-      'emergencyName', 'emergencyPhone', 'emergencyRelation'
+      'studentName', 'studentBirthDate', 'studentAddress', 'studentPostalCode',
+      'emergencyContactName', 'emergencyContactPhone1',
+      'motherName', 'motherMobilePhone', 'motherEmail',
+      'fatherName', 'fatherMobilePhone', 'fatherEmail',
+      'acceptInternalRegulation'
     ];
     
-    return requiredFields.every(field => formData[field as keyof AdmissionFormData]?.trim());
+    return requiredFields.every(field => {
+      const value = formData[field as keyof AdmissionFormData];
+      if (typeof value === 'boolean') {
+        return value; // For acceptInternalRegulation checkbox
+      }
+      return value && String(value).trim();
+    });
   };
 
   // Update validation - no longer block submission, just visual feedback
@@ -270,7 +430,7 @@ const Admission = () => {
                 {t('admission.process')}
               </h2>
               
-              <div className="space-y-6 md:space-y-0 grid md:grid-cols-2 md:gap-8">
+              <div className="space-y-6 md:space-y-0 grid md:grid-cols-2 md:gap-6">
                 {steps.map((step, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md relative">
                     <div className="absolute -top-4 left-6 bg-school-blue-dark text-white h-8 w-8 rounded-full flex items-center justify-center font-bold">
@@ -313,7 +473,7 @@ const Admission = () => {
                 {t('admission.requirements')}
               </h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {requirements.map((req, index) => (
                   <div key={index} className="bg-white p-6 rounded-lg shadow-md">
                     <h3 className="text-xl font-semibold text-school-blue-dark mb-4">{req.title}</h3>
@@ -409,7 +569,7 @@ const Admission = () => {
       {/* Application Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] flex flex-col">
+          <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[95vh] flex flex-col">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
               <div className="flex items-center">
@@ -463,8 +623,8 @@ const Admission = () => {
                     <p className="text-gray-600 mb-2">
                       {t('admission.modal.step1.description')}
                     </p>
-                    <p className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg">
-                      ✅ <strong>New:</strong> This form captures all your data and will be included in the email submission - no more blank PDFs!
+                    <p className="text-gray-600">
+                      {t('admission.form.description')}
                     </p>
                   </div>
                   
@@ -472,7 +632,6 @@ const Admission = () => {
                   <AdmissionFormHTML 
                     formData={formData}
                     onFormDataChange={handleFormDataChange}
-                    className="max-h-[600px] overflow-auto"
                   />
                 </div>
               </div>
@@ -545,7 +704,7 @@ const Admission = () => {
             {/* Modal Footer */}
             <div className="px-6 py-4 border-t border-gray-200 flex-shrink-0">
               <div className="flex justify-between">
-                <div>
+                <div className="flex items-center gap-3">
                   {currentStep === 2 && (
                     <button
                       onClick={handleBack}
@@ -555,6 +714,13 @@ const Admission = () => {
                       {t('admission.modal.back')}
                     </button>
                   )}
+                  <button
+                    onClick={handleClearForm}
+                    className="inline-flex items-center px-4 py-2 border border-red-300 text-red-700 rounded-md hover:bg-red-50 transition-colors"
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    {t('admission.modal.clear_form')}
+                  </button>
                 </div>
                 
                 <div className="flex gap-3">

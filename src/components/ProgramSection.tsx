@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -36,7 +35,7 @@ const ProgramSection = () => {
           <span className="text-school-blue">{t('section.programs')}</span>
         </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {programs.map((program) => (
             <Card key={program.id} className="card-gradient overflow-hidden transform hover:scale-[1.02] transition-transform">
               <div className="h-48 overflow-hidden">

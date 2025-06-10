@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -148,7 +147,7 @@ const News = () => {
             <span className="text-school-blue">{t('news.title')}</span>
           </h1>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {news.map((item) => (
               <Card key={item.id} className="card-gradient overflow-hidden">
                 <div className="h-48 overflow-hidden">

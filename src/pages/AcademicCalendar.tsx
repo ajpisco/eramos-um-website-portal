@@ -1,4 +1,3 @@
-
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { CalendarDays } from "lucide-react";
@@ -112,7 +111,7 @@ const AcademicCalendar = () => {
               {t('calendar.intro')}
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
               {/* First Semester */}
               <section className="bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-2xl font-serif font-bold text-school-blue mb-6">

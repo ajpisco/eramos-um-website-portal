@@ -130,7 +130,7 @@ const TeamPage = () => {
         <h2 className="text-3xl font-semibold text-gray-800">{title}</h2>
       </div>
       {members.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {members.map((person, index) => (
             <div
               key={index}

@@ -97,7 +97,7 @@ const Extracurricular = () => {
                 </h2>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
                 {activities.map((activity, index) => (
                   <div key={index} className="bg-white overflow-hidden rounded-lg shadow-md max-w-sm w-full">
                     <div className="aspect-square overflow-hidden">
@@ -130,7 +130,7 @@ const Extracurricular = () => {
                 </h2>
               </div>
               
-              <div className="grid grid-cols-1 gap-8">
+              <div className="grid grid-cols-1 gap-6">
                 {supportActivities.map((activity, index) => (
                   <div key={index} className="bg-white p-8 rounded-lg shadow-md">
                     <h3 className="text-xl font-semibold text-school-blue-dark mb-4">{activity.name}</h3>

@@ -36,7 +36,7 @@ const DressCode = () => {
             <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
               {t('dress.requirements')}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {uniformItems.map((item, index) => (
                 <div key={index} className="bg-white p-6 rounded-lg shadow-md flex items-center">
                   <img src={item.image} alt={item.name} className="w-24 h-24 object-contain rounded-md mr-6" />

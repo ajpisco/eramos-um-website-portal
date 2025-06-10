@@ -3,8 +3,8 @@
 
 // N8N Webhook Configuration
 const N8N_CONFIG = {
-  webhookUrl: 'http://n8n.enshort.me:5678/webhook/test',
-  apiKey: 'schoolSecretKey123',
+  webhookUrl: import.meta.env.VITE_N8N_WEBHOOK_URL,
+  apiKey: import.meta.env.VITE_N8N_API_KEY ,
   timeout: 30000, // 30 seconds
   retryAttempts: 3,
   retryDelay: 1000, // 1 second
@@ -12,8 +12,8 @@ const N8N_CONFIG = {
 
 // Email addresses configuration
 const EMAIL_ADDRESSES = {
-  admissions: 'andre_pinto@hotmail.com',
-  contact: 'contact@eramosum.edu.pt', 
+  admissions: import.meta.env.VITE_ADMISSIONS_EMAIL || 'andre_pisco@hotmail.com',
+  contact: import.meta.env.VITE_SCHOOL_EMAIL || 'contact@eramosum.pt', 
   noreply: 'noreply@eramosum.edu.pt'
 };
 
@@ -93,6 +93,7 @@ export interface EmailParams {
   from_phone?: string;
   subject?: string;
   message: string;
+  isHtml?: boolean; // Flag to indicate HTML content
   attachments?: Array<{
     name: string;
     data: string; // base64 encoded file
@@ -195,12 +196,15 @@ export const sendEmail = async (params: EmailParams): Promise<EmailResponse> => 
         },
         subject: params.subject || 'Website Notification',
         message: params.message,
+        html: params.isHtml ? params.message : undefined, // Add HTML content field
+        isHtml: params.isHtml || false, // Indicate if content is HTML
         phone: params.from_phone,
         attachments: params.attachments || [],
         metadata: {
           submission_date: new Date().toISOString(),
           source: 'website',
           attempt: attempt + 1,
+          contentType: params.isHtml ? 'html' : 'text',
           ...params
         }
       };
@@ -303,39 +307,80 @@ export const EmailTemplates = {
     email?: string; 
     phone?: string;
     formData?: string; // New field for form summary
-  }) => ({
-    to_email: EMAIL_ADDRESSES.admissions,
-    from_name: contactData.name || 'Website Visitor',
-    from_email: contactData.email || EMAIL_ADDRESSES.noreply,
-    from_phone: contactData.phone || '',
-    subject: `New Admission Application - ${contactData.name || 'Unknown Student'}`,
-    message: contactData.formData ? 
-      `New admission application submitted through the website.
+  }) => {
+    // Convert line breaks to HTML for proper email formatting
+    const formatForEmail = (text: string) => {
+      return text
+        .replace(/\n/g, '<br>')
+        .replace(/===/g, '<strong>===')
+        .replace(/===/g, '===</strong>');
+    };
 
-CONTACT INFORMATION:
-- Name: ${contactData.name || 'Not provided'}
-- Email: ${contactData.email || 'Not provided'}
-- Phone: ${contactData.phone || 'Not provided'}
+    const emailContent = contactData.formData ? 
+      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">
+          Nova Candidatura de Inscrição
+        </h2>
+        
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
+          <h3 style="color: #1e40af; margin-top: 0;">Informações de Contacto:</h3>
+          <p><strong>Nome:</strong> ${contactData.name || 'Não fornecido'}</p>
+          <p><strong>Email:</strong> ${contactData.email || 'Não fornecido'}</p>
+          <p><strong>Telefone:</strong> ${contactData.phone || 'Não fornecido'}</p>
+        </div>
 
-ADMISSION APPLICATION DETAILS:
+        <div style="background-color: #ffffff; padding: 20px; border: 1px solid #e5e7eb; border-radius: 5px;">
+          <h3 style="color: #1e40af; margin-top: 0;">Detalhes da Candidatura:</h3>
+          <div style="font-family: monospace; font-size: 14px; white-space: pre-line; background-color: #f9fafb; padding: 15px; border-radius: 4px; border-left: 4px solid #2563eb;">
 ${contactData.formData}
+          </div>
+        </div>
 
-Please review this application and contact the family to proceed with the admission process.
+        <div style="background-color: #eff6ff; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <p style="margin: 0; color: #1e40af;">
+            <strong>Próximos Passos:</strong> Por favor, revise esta candidatura e contacte a família para prosseguir com o processo de admissão.
+          </p>
+        </div>
 
----
-This application was submitted via the school website.` :
-      `New admission application submitted through the website.
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+        <p style="font-size: 12px; color: #6b7280; text-align: center;">
+          Esta candidatura foi submetida através do website da escola.
+        </p>
+      </div>` :
+      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">
+          Nova Solicitação de Informações
+        </h2>
+        
+        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
+          <h3 style="color: #1e40af; margin-top: 0;">Informações de Contacto:</h3>
+          <p><strong>Nome:</strong> ${contactData.name || 'Não fornecido'}</p>
+          <p><strong>Email:</strong> ${contactData.email || 'Não fornecido'}</p>
+          <p><strong>Telefone:</strong> ${contactData.phone || 'Não fornecido'}</p>
+        </div>
 
-Contact Information:
-- Name: ${contactData.name || 'Not provided'}
-- Email: ${contactData.email || 'Not provided'}
-- Phone: ${contactData.phone || 'Not provided'}
+        <div style="background-color: #eff6ff; padding: 15px; border-radius: 5px; border-left: 4px solid #3b82f6;">
+          <p style="margin: 0; color: #1e40af;">
+            Por favor, contacte esta família para mais informações sobre o processo de admissão.
+          </p>
+        </div>
 
-Please contact this family regarding their admission inquiry.
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+        <p style="font-size: 12px; color: #6b7280; text-align: center;">
+          Esta solicitação foi submetida através do website da escola.
+        </p>
+      </div>`;
 
----
-This inquiry was submitted via the school website.`
-  })
+    return {
+      to_email: EMAIL_ADDRESSES.admissions,
+      from_name: contactData.name || 'Website Visitor',
+      from_email: contactData.email || EMAIL_ADDRESSES.noreply,
+      from_phone: contactData.phone || '',
+      subject: `Nova Candidatura de Inscrição - ${contactData.name || 'Candidato Desconhecido'}`,
+      message: emailContent,
+      isHtml: true // Add flag to indicate HTML content
+    };
+  }
 };
 
 // Helper function specifically for admission applications
@@ -344,53 +389,55 @@ export const sendAdmissionNotification = async (contactData: { name?: string; em
   return sendEmail(emailParams);
 };
 
-// Enhanced function for admission applications with optional PDF attachment
-export const sendAdmissionNotificationWithPDF = async (
-  contactData: { 
-    name?: string; 
-    email?: string; 
-    phone?: string;
-    formData?: string; // New field for form summary
-  },
-  pdfFile?: File | string // Optional PDF attachment
-): Promise<EmailResponse> => {
-  try {
-    let attachments: EmailParams['attachments'] = undefined;
-    
-    // Only process PDF attachment if provided
-    if (pdfFile) {
-      let pdfBase64: string;
-      let fileName: string;
-      
-      if (pdfFile instanceof File) {
-        // Handle File object
-        pdfBase64 = await convertFileToBase64(pdfFile);
-        fileName = pdfFile.name;
-      } else {
-        // Handle URL string
-        pdfBase64 = await getPDFAsBase64(pdfFile);
-        fileName = 'admission-application.pdf';
-      }
-      
-      attachments = [{
-        name: fileName,
-        data: pdfBase64,
-        type: 'application/pdf'
-      }];
-    }
-    
-    const emailParams: EmailParams = {
-      ...EmailTemplates.admissionNotification(contactData),
-      attachments
-    };
-    
-    return sendEmail(emailParams);
-  } catch (error) {
-    console.error('Error preparing email:', error);
+// Validate N8N configuration
+const validateN8NConfig = () => {
+  const missingVars = [];
+  if (!import.meta.env.VITE_N8N_WEBHOOK_URL) missingVars.push('VITE_N8N_WEBHOOK_URL');
+  if (!import.meta.env.VITE_N8N_API_KEY) missingVars.push('VITE_N8N_API_KEY');
+  
+  if (missingVars.length > 0) {
+    console.warn('Missing N8N environment variables:', missingVars.join(', '));
+    console.warn('Email functionality may not work properly. Please check your .env file.');
+  }
+  
+  return missingVars.length === 0;
+};
+
+export const sendAdmissionNotificationWithPDF = async (contactData: any): Promise<EmailResponse> => {
+  // Validate N8N configuration first
+  if (!validateN8NConfig()) {
+    console.error('N8N webhook service not properly configured');
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Email preparation error',
-      errorType: EmailErrorType.VALIDATION_ERROR
+      error: 'Email service configuration missing - please check your N8N webhook settings',
+      errorType: EmailErrorType.AUTHENTICATION_ERROR
+    };
+  }
+
+  try {
+    console.log('Sending admission notification via N8N webhook...');
+    
+    // Use the existing EmailTemplates.admissionNotification to format the email
+    const emailParams = EmailTemplates.admissionNotification(contactData);
+    
+    // Send email using the existing N8N webhook implementation
+    const result = await sendEmail(emailParams);
+    
+    if (result.success) {
+      console.log('Admission notification sent successfully via N8N');
+    } else {
+      console.error('Failed to send admission notification:', result.error);
+    }
+    
+    return result;
+    
+  } catch (error: any) {
+    console.error('Unexpected error sending admission notification:', error);
+    
+    return {
+      success: false,
+      error: error.message || 'Unexpected error occurred',
+      errorType: EmailErrorType.UNKNOWN_ERROR
     };
   }
 };
