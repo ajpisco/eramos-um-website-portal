@@ -631,7 +631,7 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
               }`}
             >
               <Edit3 className="h-4 w-4 mr-2" />
-              {t('admission.form.custom_guardian')}
+              {t('admission.form.custom_entry')}
               {guardianDataSource === 'custom' && <UserCheck className="h-4 w-4 ml-2 text-green-600" />}
             </button>
           </div>
@@ -769,76 +769,87 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
         <h3 className="text-lg font-semibold text-school-blue-dark mb-4">
           {t('admission.form.authorized_adults')}
         </h3>
-        <p className="text-sm text-gray-600 mb-6">{t('admission.form.authorized_adults_description')}</p>
+        <p className="text-sm text-gray-600 mb-4">{t('admission.form.authorized_adults_description')}</p>
+        
+        {/* Global Data Source Buttons for All Authorized Adults */}
+        <div className="mb-6">
+          <p className="text-sm font-medium text-gray-700 mb-3">
+            {t('admission.form.authorized_data_source')}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                // Copy mother's data to all authorized adults
+                const updatedFormData = {
+                  ...formData,
+                  authorizedAdult1Name: formData.motherName,
+                  authorizedAdult1CC: formData.motherCC,
+                  authorizedAdult2Name: formData.motherName,
+                  authorizedAdult2CC: formData.motherCC,
+                  authorizedAdult3Name: formData.motherName,
+                  authorizedAdult3CC: formData.motherCC,
+                };
+                onFormDataChange(updatedFormData);
+                onAuthorizedAdultsDataSourceChange('adult1', 'mother');
+                onAuthorizedAdultsDataSourceChange('adult2', 'mother');
+                onAuthorizedAdultsDataSourceChange('adult3', 'mother');
+              }}
+              className="inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200"
+            >
+              <User className="h-4 w-4 mr-2" />
+              {t('admission.form.copy_from_mother')}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => {
+                // Copy father's data to all authorized adults
+                const updatedFormData = {
+                  ...formData,
+                  authorizedAdult1Name: formData.fatherName,
+                  authorizedAdult1CC: formData.fatherCC,
+                  authorizedAdult2Name: formData.fatherName,
+                  authorizedAdult2CC: formData.fatherCC,
+                  authorizedAdult3Name: formData.fatherName,
+                  authorizedAdult3CC: formData.fatherCC,
+                };
+                onFormDataChange(updatedFormData);
+                onAuthorizedAdultsDataSourceChange('adult1', 'father');
+                onAuthorizedAdultsDataSourceChange('adult2', 'father');
+                onAuthorizedAdultsDataSourceChange('adult3', 'father');
+              }}
+              className="inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200"
+            >
+              <User className="h-4 w-4 mr-2" />
+              {t('admission.form.copy_from_father')}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => {
+                // Set all to custom entry mode
+                onAuthorizedAdultsDataSourceChange('adult1', 'custom');
+                onAuthorizedAdultsDataSourceChange('adult2', 'custom');
+                onAuthorizedAdultsDataSourceChange('adult3', 'custom');
+              }}
+              className="inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200"
+            >
+              <Edit3 className="h-4 w-4 mr-2" />
+              {t('admission.form.custom_entry')}
+            </button>
+          </div>
+        </div>
         
         {[1, 2, 3].map((num) => {
           const adultKey = `adult${num}` as 'adult1' | 'adult2' | 'adult3';
           const currentSource = authorizedAdultsDataSource[adultKey];
           
           return (
-            <div key={num} className="mb-6 p-4 bg-gray-50 rounded-lg">
-              <div className="mb-4">
-                <h4 className="text-md font-medium text-gray-800 mb-3">
-                  {t('admission.form.authorized_adult')} {num}
-                </h4>
-                
-                {/* Data Source Buttons for Authorized Adult */}
-                <div className="flex flex-wrap gap-2 mb-3">
-                  <button
-                    type="button"
-                    onClick={() => handleAuthorizedAdultSourceChange(adultKey, 'mother')}
-                    className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border transition-all duration-200 ${
-                      currentSource === 'mother'
-                        ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
-                        : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
-                    }`}
-                  >
-                    <User className="h-3 w-3 mr-1.5" />
-                    {t('admission.form.copy_from_mother')}
-                    {currentSource === 'mother' && <UserCheck className="h-3 w-3 ml-1.5 text-pink-600" />}
-                  </button>
-                  
-                  <button
-                    type="button"
-                    onClick={() => handleAuthorizedAdultSourceChange(adultKey, 'father')}
-                    className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border transition-all duration-200 ${
-                      currentSource === 'father'
-                        ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
-                        : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
-                    }`}
-                  >
-                    <User className="h-3 w-3 mr-1.5" />
-                    {t('admission.form.copy_from_father')}
-                    {currentSource === 'father' && <UserCheck className="h-3 w-3 ml-1.5 text-blue-600" />}
-                  </button>
-                  
-                  <button
-                    type="button"
-                    onClick={() => handleAuthorizedAdultSourceChange(adultKey, 'custom')}
-                    className={`inline-flex items-center px-3 py-1.5 text-sm rounded-md border transition-all duration-200 ${
-                      currentSource === 'custom'
-                        ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
-                        : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
-                    }`}
-                  >
-                    <Edit3 className="h-3 w-3 mr-1.5" />
-                    {t('admission.form.custom_guardian')}
-                    {currentSource === 'custom' && <UserCheck className="h-3 w-3 ml-1.5 text-green-600" />}
-                  </button>
-                </div>
-                
-                {currentSource !== 'custom' && (
-                  <div className="mb-3 p-2 bg-blue-50 border border-blue-200 rounded-md">
-                    <p className="text-xs text-blue-800">
-                      <UserCheck className="h-3 w-3 inline mr-1" />
-                      {currentSource === 'mother' 
-                        ? t('admission.form.authorized_synced_mother')
-                        : t('admission.form.authorized_synced_father')
-                      }
-                    </p>
-                  </div>
-                )}
-              </div>
+            <div key={num} className="mb-4 p-4 bg-gray-50 rounded-lg">
+              <h4 className="text-md font-medium text-gray-800 mb-3">
+                {t('admission.form.authorized_adult')} {num}
+              </h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>

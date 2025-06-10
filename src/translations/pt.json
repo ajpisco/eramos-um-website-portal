@@ -393,6 +393,8 @@
   
   "admission.form.authorized_adults": "Adultos Autorizados a Levar o Aluno",
   "admission.form.authorized_adults_description": "Indique as pessoas autorizadas a levar o aluno da instituição (máximo 3)",
+  "admission.form.authorized_data_source": "Fonte dos Dados:",
+  "admission.form.custom_entry": "Entrada Personalizada",
   "admission.form.authorized_adult": "Adulto Autorizado",
   "admission.form.authorized_synced_mother": "Sincronizado com a mãe - atualizações automáticas",
   "admission.form.authorized_synced_father": "Sincronizado com o pai - atualizações automáticas",
@@ -451,7 +453,6 @@
   "admission.form.guardian_description": "Preencha apenas se diferente dos pais",
   "admission.form.copy_from_mother": "Copiar da Mãe",
   "admission.form.copy_from_father": "Copiar do Pai",
-  "admission.form.custom_guardian": "Entrada Personalizada",
   "admission.form.guardian_synced_mother": "Dados sincronizados com a mãe - atualizações automáticas",
   "admission.form.guardian_synced_father": "Dados sincronizados com o pai - atualizações automáticas",
   "admission.form.guardian_name": "Nome do Encarregado de Educação",
