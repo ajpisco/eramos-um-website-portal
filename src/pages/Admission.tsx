@@ -809,14 +809,22 @@ const Admission = () => {
                   </button>
                   
                   {currentStep === 1 && (
-                    <div className="relative">
+                    <div 
+                      className="relative"
+                      onMouseEnter={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
+                      onMouseLeave={() => setShowMissingFieldsTooltip(false)}
+                    >
                       <button
-                        onClick={isFormValid() ? handleContinue : undefined}
-                        onMouseEnter={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
-                        onMouseLeave={() => setShowMissingFieldsTooltip(false)}
-                        onFocus={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
-                        onBlur={() => setShowMissingFieldsTooltip(false)}
-                        disabled={!isFormValid()}
+                        onClick={(e) => {
+                          if (!isFormValid()) {
+                            e.preventDefault();
+                            setShowMissingFieldsTooltip(true);
+                            // Hide tooltip after 3 seconds when clicked
+                            setTimeout(() => setShowMissingFieldsTooltip(false), 3000);
+                          } else {
+                            handleContinue();
+                          }
+                        }}
                         className={`inline-flex items-center px-6 py-2 rounded-md transition-colors ${
                           isFormValid() 
                             ? 'bg-school-blue text-white hover:bg-opacity-90' 
