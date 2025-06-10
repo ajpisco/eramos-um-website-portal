@@ -148,46 +148,76 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
   const handleAuthorizedAdultSimpleSelection = (source: 'mother' | 'father') => {
     // Check if this button is already used
     if ((source === 'mother' && usedMotherButton) || (source === 'father' && usedFatherButton)) {
-      // Toggle off - remove the selection
+      // Toggle off - remove the selection and shift others up
       if (source === 'mother') {
         setUsedMotherButton(false);
-        // Find and clear the adult that was using mother's data
-        Object.entries(authorizedAdultsDataSource).forEach(([adult, adultSource]) => {
-          if (adultSource === 'mother') {
-            const adultKey = adult as 'adult1' | 'adult2' | 'adult3';
-            onAuthorizedAdultsDataSourceChange(adultKey, 'custom');
-            // Clear the data
-            const adultNumber = parseInt(adult.replace('adult', ''));
-            const updatedFormData = {
-              ...formData,
-              [`authorizedAdult${adultNumber}Name`]: '',
-              [`authorizedAdult${adultNumber}CC`]: '',
-            };
-            onFormDataChange(updatedFormData);
-          }
-        });
       } else {
         setUsedFatherButton(false);
-        // Find and clear the adult that was using father's data
-        Object.entries(authorizedAdultsDataSource).forEach(([adult, adultSource]) => {
-          if (adultSource === 'father') {
-            const adultKey = adult as 'adult1' | 'adult2' | 'adult3';
-            onAuthorizedAdultsDataSourceChange(adultKey, 'custom');
-            // Clear the data
-            const adultNumber = parseInt(adult.replace('adult', ''));
-            const updatedFormData = {
-              ...formData,
-              [`authorizedAdult${adultNumber}Name`]: '',
-              [`authorizedAdult${adultNumber}CC`]: '',
-            };
-            onFormDataChange(updatedFormData);
-          }
-        });
       }
+      
+      // Get current arrangement
+      const currentArrangement = [
+        { source: authorizedAdultsDataSource.adult1, name: formData.authorizedAdult1Name, cc: formData.authorizedAdult1CC },
+        { source: authorizedAdultsDataSource.adult2, name: formData.authorizedAdult2Name, cc: formData.authorizedAdult2CC },
+        { source: authorizedAdultsDataSource.adult3, name: formData.authorizedAdult3Name, cc: formData.authorizedAdult3CC }
+      ];
+      
+      // Filter out the source we're removing and keep only non-custom entries
+      const filteredArrangement = currentArrangement.filter(adult => adult.source !== source && adult.source !== 'custom');
+      
+      // Prepare new form data with cleared authorized adults
+      const newFormData = {
+        ...formData,
+        authorizedAdult1Name: '',
+        authorizedAdult1CC: '',
+        authorizedAdult2Name: '',
+        authorizedAdult2CC: '',
+        authorizedAdult3Name: '',
+        authorizedAdult3CC: '',
+      };
+      
+      // Reset all adult data sources to custom
+      onAuthorizedAdultsDataSourceChange('adult1', 'custom');
+      onAuthorizedAdultsDataSourceChange('adult2', 'custom');
+      onAuthorizedAdultsDataSourceChange('adult3', 'custom');
+      
+      // Reassign the remaining entries from the top and prepare their data
+      filteredArrangement.forEach((adult, index) => {
+        const adultKey = `adult${index + 1}` as 'adult1' | 'adult2' | 'adult3';
+        onAuthorizedAdultsDataSourceChange(adultKey, adult.source);
+        
+        // Assign the data based on the source
+        if (adult.source === 'mother') {
+          if (index === 0) {
+            newFormData.authorizedAdult1Name = formData.motherName;
+            newFormData.authorizedAdult1CC = formData.motherCC;
+          } else if (index === 1) {
+            newFormData.authorizedAdult2Name = formData.motherName;
+            newFormData.authorizedAdult2CC = formData.motherCC;
+          } else if (index === 2) {
+            newFormData.authorizedAdult3Name = formData.motherName;
+            newFormData.authorizedAdult3CC = formData.motherCC;
+          }
+        } else if (adult.source === 'father') {
+          if (index === 0) {
+            newFormData.authorizedAdult1Name = formData.fatherName;
+            newFormData.authorizedAdult1CC = formData.fatherCC;
+          } else if (index === 1) {
+            newFormData.authorizedAdult2Name = formData.fatherName;
+            newFormData.authorizedAdult2CC = formData.fatherCC;
+          } else if (index === 2) {
+            newFormData.authorizedAdult3Name = formData.fatherName;
+            newFormData.authorizedAdult3CC = formData.fatherCC;
+          }
+        }
+      });
+      
+      // Apply all changes at once
+      onFormDataChange(newFormData);
       return;
     }
 
-    // Find the first available adult slot
+    // Toggle on - find the first available adult slot (FIFO)
     let targetAdult: 'adult1' | 'adult2' | 'adult3' | null = null;
     
     if (authorizedAdultsDataSource.adult1 === 'custom') {
