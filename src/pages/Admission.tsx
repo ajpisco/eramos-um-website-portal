@@ -20,6 +20,9 @@ const Admission = () => {
   // Guardian data source state
   const [guardianDataSource, setGuardianDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
   
+  // Emergency data source state
+  const [emergencyDataSource, setEmergencyDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
+  
   // Authorized adults data source state
   const [authorizedAdultsDataSource, setAuthorizedAdultsDataSource] = useState<{
     adult1: 'mother' | 'father' | 'custom';
@@ -126,6 +129,9 @@ const Admission = () => {
       if (extraData?.guardianDataSource) {
         setGuardianDataSource(extraData.guardianDataSource);
       }
+      if (extraData?.emergencyDataSource) {
+        setEmergencyDataSource(extraData.emergencyDataSource);
+      }
       if (extraData?.authorizedAdultsDataSource) {
         setAuthorizedAdultsDataSource(extraData.authorizedAdultsDataSource);
       }
@@ -133,7 +139,7 @@ const Admission = () => {
     onSave: (data, extraData) => {
       console.log('Form data saved:', data);
     }
-  }, { guardianDataSource, authorizedAdultsDataSource }); // Pass both data sources as extra data
+  }, { guardianDataSource, emergencyDataSource, authorizedAdultsDataSource }); // Pass all data sources as extra data
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -159,6 +165,7 @@ const Admission = () => {
       
       // Reset data sources
       setGuardianDataSource('custom');
+      setEmergencyDataSource('custom');
       setAuthorizedAdultsDataSource({
         adult1: 'custom',
         adult2: 'custom',
@@ -672,6 +679,8 @@ const Admission = () => {
                     onGuardianDataSourceChange={setGuardianDataSource}
                     authorizedAdultsDataSource={authorizedAdultsDataSource}
                     onAuthorizedAdultsDataSourceChange={handleAuthorizedAdultsDataSourceChange}
+                    emergencyDataSource={emergencyDataSource}
+                    onEmergencyDataSourceChange={setEmergencyDataSource}
                   />
                 </div>
               </div>
