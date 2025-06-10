@@ -146,6 +146,47 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
 
   // Handle simple button selection for authorized adults
   const handleAuthorizedAdultSimpleSelection = (source: 'mother' | 'father') => {
+    // Check if this button is already used
+    if ((source === 'mother' && usedMotherButton) || (source === 'father' && usedFatherButton)) {
+      // Toggle off - remove the selection
+      if (source === 'mother') {
+        setUsedMotherButton(false);
+        // Find and clear the adult that was using mother's data
+        Object.entries(authorizedAdultsDataSource).forEach(([adult, adultSource]) => {
+          if (adultSource === 'mother') {
+            const adultKey = adult as 'adult1' | 'adult2' | 'adult3';
+            onAuthorizedAdultsDataSourceChange(adultKey, 'custom');
+            // Clear the data
+            const adultNumber = parseInt(adult.replace('adult', ''));
+            const updatedFormData = {
+              ...formData,
+              [`authorizedAdult${adultNumber}Name`]: '',
+              [`authorizedAdult${adultNumber}CC`]: '',
+            };
+            onFormDataChange(updatedFormData);
+          }
+        });
+      } else {
+        setUsedFatherButton(false);
+        // Find and clear the adult that was using father's data
+        Object.entries(authorizedAdultsDataSource).forEach(([adult, adultSource]) => {
+          if (adultSource === 'father') {
+            const adultKey = adult as 'adult1' | 'adult2' | 'adult3';
+            onAuthorizedAdultsDataSourceChange(adultKey, 'custom');
+            // Clear the data
+            const adultNumber = parseInt(adult.replace('adult', ''));
+            const updatedFormData = {
+              ...formData,
+              [`authorizedAdult${adultNumber}Name`]: '',
+              [`authorizedAdult${adultNumber}CC`]: '',
+            };
+            onFormDataChange(updatedFormData);
+          }
+        });
+      }
+      return;
+    }
+
     // Find the first available adult slot
     let targetAdult: 'adult1' | 'adult2' | 'adult3' | null = null;
     
@@ -172,16 +213,6 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
         setUsedFatherButton(true);
       }
     }
-  };
-
-  // Reset authorized adults selections
-  const resetAuthorizedAdultsSelections = () => {
-    setUsedMotherButton(false);
-    setUsedFatherButton(false);
-    // Reset all adults to custom
-    onAuthorizedAdultsDataSourceChange('adult1', 'custom');
-    onAuthorizedAdultsDataSourceChange('adult2', 'custom');
-    onAuthorizedAdultsDataSourceChange('adult3', 'custom');
   };
 
   // Handle guardian data source change
@@ -815,10 +846,9 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <button
               type="button"
               onClick={() => handleAuthorizedAdultSimpleSelection('mother')}
-              disabled={usedMotherButton}
               className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
                 usedMotherButton
-                  ? 'bg-pink-100 border-pink-300 text-pink-800 cursor-not-allowed'
+                  ? 'bg-pink-100 border-pink-300 text-pink-800 hover:bg-pink-200'
                   : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
               }`}
             >
@@ -830,10 +860,9 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             <button
               type="button"
               onClick={() => handleAuthorizedAdultSimpleSelection('father')}
-              disabled={usedFatherButton}
               className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
                 usedFatherButton
-                  ? 'bg-blue-100 border-blue-300 text-blue-800 cursor-not-allowed'
+                  ? 'bg-blue-100 border-blue-300 text-blue-800 hover:bg-blue-200'
                   : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
               }`}
             >
@@ -842,16 +871,6 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
               {usedFatherButton && <UserCheck className="h-4 w-4 ml-2 text-blue-600" />}
             </button>
           </div>
-          
-          {(usedMotherButton || usedFatherButton) && (
-            <button
-              type="button"
-              onClick={resetAuthorizedAdultsSelections}
-              className="text-sm text-red-600 hover:text-red-800 underline"
-            >
-              {t('admission.form.reset')}
-            </button>
-          )}
         </div>
         
         {[1, 2, 3].map((num) => {
