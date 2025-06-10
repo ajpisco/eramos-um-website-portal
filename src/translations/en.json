@@ -634,6 +634,5 @@
   "admission.form.father_short": "Father",
   "admission.form.custom_short": "Custom",
   "admission.form.from_mother": "From Mother",
-  "admission.form.from_father": "From Father",
-  "admission.form.custom": "Custom"
+  "admission.form.from_father": "From Father"
 } 
