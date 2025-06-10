@@ -413,6 +413,16 @@
   "admission.form.special_care": "Cuidados Especiais na Instituição",
   "admission.form.special_care_placeholder": "Descreva cuidados especiais necessários",
   
+  "admission.form.selections": "Seleções",
+  "admission.form.reset": "Reiniciar",
+  "admission.form.selection_order": "Ordem de seleção",
+  "admission.form.mother_short": "Mãe",
+  "admission.form.father_short": "Pai", 
+  "admission.form.custom_short": "Manual",
+  "admission.form.from_mother": "Da Mãe",
+  "admission.form.from_father": "Do Pai",
+  "admission.form.custom": "Manual",
+  
   "admission.form.mother_data": "Dados da Mãe",
   "admission.form.mother_name": "Nome da Mãe",
   "admission.form.mother_name_placeholder": "Nome completo da mãe",

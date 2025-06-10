@@ -614,5 +614,26 @@
   "admission.form.guardian_name": "Guardian's name",
   "admission.form.authorized_data_source": "Data Source:",
   "admission.form.custom_entry": "Custom Entry",
-  "admission.form.authorized_adult": "Authorized Adult"
+  "admission.form.authorized_adult": "Authorized Adult",
+  "admission.form.authorized_adult_cc_placeholder": "Citizen Card number",
+  
+  "admission.form.emergency_data": "Emergency Information",
+  "admission.form.emergency_contact_name": "Emergency Contact Name",
+  "admission.form.emergency_contact_name_placeholder": "Full name",
+  "admission.form.emergency_phone1": "Primary Contact",
+  "admission.form.emergency_phone1_placeholder": "Primary phone number",
+  "admission.form.emergency_phone2": "Alternative Contact",
+  "admission.form.emergency_phone2_placeholder": "Alternative phone number",
+  "admission.form.special_care": "Special Care Instructions",
+  "admission.form.special_care_placeholder": "Describe any special care needed",
+
+  "admission.form.selections": "Selections",
+  "admission.form.reset": "Reset",
+  "admission.form.selection_order": "Selection order",
+  "admission.form.mother_short": "Mother",
+  "admission.form.father_short": "Father",
+  "admission.form.custom_short": "Custom",
+  "admission.form.from_mother": "From Mother",
+  "admission.form.from_father": "From Father",
+  "admission.form.custom": "Custom"
 } 

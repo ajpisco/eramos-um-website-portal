@@ -96,6 +96,9 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
 }) => {
   const { t } = useLanguage();
   
+  // Track selection sequence for authorized adults
+  const [authorizedAdultsSelectionSequence, setAuthorizedAdultsSelectionSequence] = useState<Array<'mother' | 'father' | 'custom'>>([]);
+
   const handleInputChange = (field: keyof AdmissionFormData, value: string | boolean | File | null) => {
     onFormDataChange({
       ...formData,
@@ -127,7 +130,7 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     onFormDataChange(updatedFormData);
   };
 
-  // Function to copy parent data to authorized adult fields
+  // Function to copy parent data to specific authorized adult
   const copyParentDataToAuthorizedAdult = (adultNumber: number, source: 'mother' | 'father') => {
     const sourcePrefix = source === 'mother' ? 'mother' : 'father';
     
@@ -140,6 +143,41 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     onFormDataChange(updatedFormData);
   };
 
+  // Handle sequential selection for authorized adults
+  const handleAuthorizedAdultSequentialSelection = (source: 'mother' | 'father' | 'custom') => {
+    const newSequence = [...authorizedAdultsSelectionSequence];
+    
+    // If we already have 3 selections, reset and start over
+    if (newSequence.length >= 3) {
+      newSequence.length = 0;
+    }
+    
+    // Add the new selection
+    newSequence.push(source);
+    setAuthorizedAdultsSelectionSequence(newSequence);
+    
+    // Apply the selection to the corresponding adult (1-indexed)
+    const adultNumber = newSequence.length;
+    const adultKey = `adult${adultNumber}` as 'adult1' | 'adult2' | 'adult3';
+    
+    // Update the data source for this adult
+    onAuthorizedAdultsDataSourceChange(adultKey, source);
+    
+    // Copy data if it's mother or father
+    if (source === 'mother' || source === 'father') {
+      copyParentDataToAuthorizedAdult(adultNumber, source);
+    }
+  };
+
+  // Reset authorized adults selections
+  const resetAuthorizedAdultsSelections = () => {
+    setAuthorizedAdultsSelectionSequence([]);
+    // Reset all adults to custom
+    onAuthorizedAdultsDataSourceChange('adult1', 'custom');
+    onAuthorizedAdultsDataSourceChange('adult2', 'custom');
+    onAuthorizedAdultsDataSourceChange('adult3', 'custom');
+  };
+
   // Handle guardian data source change
   const handleGuardianSourceChange = (source: 'mother' | 'father' | 'custom') => {
     onGuardianDataSourceChange(source);
@@ -149,7 +187,7 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
     }
   };
 
-  // Handle authorized adult data source change
+  // Handle authorized adult data source change (for individual editing)
   const handleAuthorizedAdultSourceChange = (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => {
     onAuthorizedAdultsDataSourceChange(adult, source);
     
@@ -197,6 +235,26 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
   // Function to get authorized adult input classes
   const getAuthorizedAdultInputClasses = (adult: 'adult1' | 'adult2' | 'adult3') => {
     return `${inputClasses} ${authorizedAdultsDataSource[adult] !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`;
+  };
+
+  // Helper function to get button style based on selection sequence
+  const getSequentialButtonStyle = (source: 'mother' | 'father' | 'custom') => {
+    const selectionCount = authorizedAdultsSelectionSequence.filter(s => s === source).length;
+    const baseClasses = "inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200";
+    
+    if (selectionCount === 0) {
+      // Not selected
+      const hoverColor = source === 'mother' ? 'hover:bg-pink-50 hover:border-pink-200' :
+                        source === 'father' ? 'hover:bg-blue-50 hover:border-blue-200' :
+                        'hover:bg-green-50 hover:border-green-200';
+      return `${baseClasses} bg-white border-gray-300 text-gray-700 ${hoverColor}`;
+    } else {
+      // Selected - show count and color
+      const selectedColor = source === 'mother' ? 'bg-pink-100 border-pink-300 text-pink-800' :
+                           source === 'father' ? 'bg-blue-100 border-blue-300 text-blue-800' :
+                           'bg-green-100 border-green-300 text-green-800';
+      return `${baseClasses} ${selectedColor} shadow-sm`;
+    }
   };
 
   return (
@@ -771,85 +829,125 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
         </h3>
         <p className="text-sm text-gray-600 mb-4">{t('admission.form.authorized_adults_description')}</p>
         
-        {/* Global Data Source Buttons for All Authorized Adults */}
+        {/* Sequential Selection Buttons for Authorized Adults */}
         <div className="mb-6">
-          <p className="text-sm font-medium text-gray-700 mb-3">
-            {t('admission.form.authorized_data_source')}
-          </p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-medium text-gray-700">
+              {t('admission.form.authorized_data_source')}
+            </p>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">
+                {t('admission.form.selections')}: {authorizedAdultsSelectionSequence.length}/3
+              </span>
+              {authorizedAdultsSelectionSequence.length > 0 && (
+                <button
+                  type="button"
+                  onClick={resetAuthorizedAdultsSelections}
+                  className="text-xs text-red-600 hover:text-red-800 underline"
+                >
+                  {t('admission.form.reset')}
+                </button>
+              )}
+            </div>
+          </div>
+          
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
-              onClick={() => {
-                // Copy mother's data to all authorized adults
-                const updatedFormData = {
-                  ...formData,
-                  authorizedAdult1Name: formData.motherName,
-                  authorizedAdult1CC: formData.motherCC,
-                  authorizedAdult2Name: formData.motherName,
-                  authorizedAdult2CC: formData.motherCC,
-                  authorizedAdult3Name: formData.motherName,
-                  authorizedAdult3CC: formData.motherCC,
-                };
-                onFormDataChange(updatedFormData);
-                onAuthorizedAdultsDataSourceChange('adult1', 'mother');
-                onAuthorizedAdultsDataSourceChange('adult2', 'mother');
-                onAuthorizedAdultsDataSourceChange('adult3', 'mother');
-              }}
-              className="inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200"
+              onClick={() => handleAuthorizedAdultSequentialSelection('mother')}
+              className={getSequentialButtonStyle('mother')}
+              disabled={authorizedAdultsSelectionSequence.length >= 3}
             >
               <User className="h-4 w-4 mr-2" />
               {t('admission.form.copy_from_mother')}
+              {authorizedAdultsSelectionSequence.filter(s => s === 'mother').length > 0 && (
+                <span className="ml-2 bg-pink-200 text-pink-800 text-xs px-1.5 py-0.5 rounded-full">
+                  {authorizedAdultsSelectionSequence.filter(s => s === 'mother').length}
+                </span>
+              )}
             </button>
             
             <button
               type="button"
-              onClick={() => {
-                // Copy father's data to all authorized adults
-                const updatedFormData = {
-                  ...formData,
-                  authorizedAdult1Name: formData.fatherName,
-                  authorizedAdult1CC: formData.fatherCC,
-                  authorizedAdult2Name: formData.fatherName,
-                  authorizedAdult2CC: formData.fatherCC,
-                  authorizedAdult3Name: formData.fatherName,
-                  authorizedAdult3CC: formData.fatherCC,
-                };
-                onFormDataChange(updatedFormData);
-                onAuthorizedAdultsDataSourceChange('adult1', 'father');
-                onAuthorizedAdultsDataSourceChange('adult2', 'father');
-                onAuthorizedAdultsDataSourceChange('adult3', 'father');
-              }}
-              className="inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200"
+              onClick={() => handleAuthorizedAdultSequentialSelection('father')}
+              className={getSequentialButtonStyle('father')}
+              disabled={authorizedAdultsSelectionSequence.length >= 3}
             >
               <User className="h-4 w-4 mr-2" />
               {t('admission.form.copy_from_father')}
+              {authorizedAdultsSelectionSequence.filter(s => s === 'father').length > 0 && (
+                <span className="ml-2 bg-blue-200 text-blue-800 text-xs px-1.5 py-0.5 rounded-full">
+                  {authorizedAdultsSelectionSequence.filter(s => s === 'father').length}
+                </span>
+              )}
             </button>
             
             <button
               type="button"
-              onClick={() => {
-                // Set all to custom entry mode
-                onAuthorizedAdultsDataSourceChange('adult1', 'custom');
-                onAuthorizedAdultsDataSourceChange('adult2', 'custom');
-                onAuthorizedAdultsDataSourceChange('adult3', 'custom');
-              }}
-              className="inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200"
+              onClick={() => handleAuthorizedAdultSequentialSelection('custom')}
+              className={getSequentialButtonStyle('custom')}
+              disabled={authorizedAdultsSelectionSequence.length >= 3}
             >
               <Edit3 className="h-4 w-4 mr-2" />
               {t('admission.form.custom_entry')}
+              {authorizedAdultsSelectionSequence.filter(s => s === 'custom').length > 0 && (
+                <span className="ml-2 bg-green-200 text-green-800 text-xs px-1.5 py-0.5 rounded-full">
+                  {authorizedAdultsSelectionSequence.filter(s => s === 'custom').length}
+                </span>
+              )}
             </button>
           </div>
+          
+          {/* Selection sequence display */}
+          {authorizedAdultsSelectionSequence.length > 0 && (
+            <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <p className="text-sm text-blue-800 mb-2">{t('admission.form.selection_order')}:</p>
+              <div className="flex gap-2">
+                {authorizedAdultsSelectionSequence.map((selection, index) => (
+                  <div key={index} className="flex items-center gap-1 text-xs">
+                    <span className="font-medium">{index + 1}.</span>
+                    <span className={`px-2 py-1 rounded ${
+                      selection === 'mother' ? 'bg-pink-100 text-pink-800' :
+                      selection === 'father' ? 'bg-blue-100 text-blue-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {selection === 'mother' ? t('admission.form.mother_short') :
+                       selection === 'father' ? t('admission.form.father_short') :
+                       t('admission.form.custom_short')}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         
         {[1, 2, 3].map((num) => {
           const adultKey = `adult${num}` as 'adult1' | 'adult2' | 'adult3';
           const currentSource = authorizedAdultsDataSource[adultKey];
+          const isAssigned = num <= authorizedAdultsSelectionSequence.length;
+          const assignedSource = isAssigned ? authorizedAdultsSelectionSequence[num - 1] : null;
           
           return (
-            <div key={num} className="mb-4 p-4 bg-gray-50 rounded-lg">
-              <h4 className="text-md font-medium text-gray-800 mb-3">
-                {t('admission.form.authorized_adult')} {num}
-              </h4>
+            <div key={num} className={`mb-4 p-4 rounded-lg transition-all duration-200 ${
+              isAssigned ? 'bg-gray-50 border border-gray-200' : 'bg-gray-25 border border-gray-100'
+            }`}>
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-md font-medium text-gray-800">
+                  {t('admission.form.authorized_adult')} {num}
+                </h4>
+                {isAssigned && assignedSource && (
+                  <span className={`text-xs px-2 py-1 rounded ${
+                    assignedSource === 'mother' ? 'bg-pink-100 text-pink-800' :
+                    assignedSource === 'father' ? 'bg-blue-100 text-blue-800' :
+                    'bg-green-100 text-green-800'
+                  }`}>
+                    {assignedSource === 'mother' ? t('admission.form.from_mother') :
+                     assignedSource === 'father' ? t('admission.form.from_father') :
+                     t('admission.form.custom')}
+                  </span>
+                )}
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
