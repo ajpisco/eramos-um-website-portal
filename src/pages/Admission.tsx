@@ -105,6 +105,7 @@ const Admission = () => {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showMissingFieldsTooltip, setShowMissingFieldsTooltip] = useState(false);
 
   // Handler for authorized adults data source changes
   const handleAuthorizedAdultsDataSourceChange = (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => {
@@ -398,6 +399,33 @@ const Admission = () => {
       }
       return value && String(value).trim();
     });
+  };
+
+  // Get missing required fields for tooltip
+  const getMissingRequiredFields = () => {
+    const requiredFields = [
+      { key: 'studentName', label: t('admission.form.student_name') },
+      { key: 'studentBirthDate', label: t('admission.form.birth_date') },
+      { key: 'studentAddress', label: t('admission.form.address') },
+      { key: 'studentPostalCode', label: t('admission.form.postal_code') },
+      { key: 'emergencyContactName', label: t('admission.form.emergency_contact_name') },
+      { key: 'emergencyContactPhone1', label: t('admission.form.emergency_phone1') },
+      { key: 'motherName', label: t('admission.form.mother_name') },
+      { key: 'motherMobilePhone', label: t('admission.form.mother_mobile') },
+      { key: 'motherEmail', label: t('admission.form.mother_email') },
+      { key: 'fatherName', label: t('admission.form.father_name') },
+      { key: 'fatherMobilePhone', label: t('admission.form.father_mobile') },
+      { key: 'fatherEmail', label: t('admission.form.father_email') },
+      { key: 'acceptInternalRegulation', label: t('admission.form.accept_regulation') }
+    ];
+    
+    return requiredFields.filter(field => {
+      const value = formData[field.key as keyof AdmissionFormData];
+      if (typeof value === 'boolean') {
+        return !value; // For acceptInternalRegulation checkbox
+      }
+      return !value || !String(value).trim();
+    }).map(field => field.label);
   };
 
   // Update validation - no longer block submission, just visual feedback
@@ -781,18 +809,41 @@ const Admission = () => {
                   </button>
                   
                   {currentStep === 1 && (
-                    <button
-                      onClick={handleContinue}
-                      disabled={!isFormValid()}
-                      className={`inline-flex items-center px-6 py-2 rounded-md transition-colors ${
-                        isFormValid() 
-                          ? 'bg-school-blue text-white hover:bg-opacity-90' 
-                          : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      }`}
-                    >
-                      {t('admission.modal.continue')}
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </button>
+                    <div className="relative">
+                      <button
+                        onClick={isFormValid() ? handleContinue : undefined}
+                        onMouseEnter={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
+                        onMouseLeave={() => setShowMissingFieldsTooltip(false)}
+                        onFocus={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
+                        onBlur={() => setShowMissingFieldsTooltip(false)}
+                        disabled={!isFormValid()}
+                        className={`inline-flex items-center px-6 py-2 rounded-md transition-colors ${
+                          isFormValid() 
+                            ? 'bg-school-blue text-white hover:bg-opacity-90' 
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }`}
+                      >
+                        {t('admission.modal.continue')}
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </button>
+                      
+                      {/* Missing Fields Tooltip */}
+                      {showMissingFieldsTooltip && !isFormValid() && (
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
+                          <div className="font-medium mb-2">{t('admission.modal.missing_fields_title')}:</div>
+                          <ul className="space-y-1 text-xs">
+                            {getMissingRequiredFields().map((field, index) => (
+                              <li key={index} className="flex items-start">
+                                <span className="text-red-400 mr-2">•</span>
+                                {field}
+                              </li>
+                            ))}
+                          </ul>
+                          {/* Tooltip Arrow */}
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                        </div>
+                      )}
+                    </div>
                   )}
                   
                   {currentStep === 2 && (

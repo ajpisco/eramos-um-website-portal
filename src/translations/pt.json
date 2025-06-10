@@ -369,6 +369,8 @@
   "admission.modal.clear_form": "Limpar Formulário",
   "admission.modal.clear_form_confirm": "Tem certeza de que deseja limpar todos os dados do formulário e começar de novo? Esta ação não pode ser desfeita.",
   
+  "admission.modal.missing_fields_title": "Campos obrigatórios em falta",
+
   "admission.form.title": "Ficha de Inscrição",
   "admission.form.description": "Por favor, preencha todos os campos obrigatórios abaixo.",
   
