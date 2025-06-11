@@ -132,35 +132,44 @@ const FALLBACK_APPLICATION_TEMPLATE = `
  * @returns Promise with the HTML content
  */
 export const fetchEmailTemplate = async (templateName: string): Promise<string> => {
-  const templatePath = `/templates/${templateName}.html`;
+  // Try multiple possible paths for the template
+  const possiblePaths = [
+    `/templates/${templateName}.html`,
+    `./templates/${templateName}.html`,
+    `../public/templates/${templateName}.html`,
+    `./public/templates/${templateName}.html`,
+    `/public/templates/${templateName}.html`
+  ];
   
-  try {
-    console.log(`Attempting to fetch template from: ${templatePath}`);
-    const response = await fetch(templatePath);
-    
-    console.log(`Fetch response status: ${response.status} ${response.statusText}`);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch template ${templateName}: ${response.status} ${response.statusText}`);
+  for (const templatePath of possiblePaths) {
+    try {
+      console.log(`Attempting to fetch template from: ${templatePath}`);
+      const response = await fetch(templatePath);
+      
+      console.log(`Fetch response status: ${response.status} ${response.statusText} for path: ${templatePath}`);
+      
+      if (response.ok) {
+        const htmlContent = await response.text();
+        console.log(`Template fetched successfully from ${templatePath}, length: ${htmlContent.length} characters`);
+        return htmlContent;
+      }
+    } catch (error) {
+      console.log(`Failed to fetch from path ${templatePath}:`, error);
     }
-    
-    const htmlContent = await response.text();
-    console.log(`Template fetched successfully, length: ${htmlContent.length} characters`);
-    return htmlContent;
-  } catch (error) {
-    console.error(`Error fetching email template ${templateName}:`, error);
-    console.error(`Attempted path: ${templatePath}`);
-    console.error(`Current origin: ${window.location.origin}`);
-    console.error(`Full URL attempted: ${window.location.origin}${templatePath}`);
-    
-    // Fallback to hardcoded template if it's the application template
-    if (templateName === 'application_email') {
-      console.warn('Using fallback template for application_email');
-      return FALLBACK_APPLICATION_TEMPLATE;
-    }
-    
-    throw new Error(`Template ${templateName} not found or could not be loaded`);
   }
+  
+  // If all paths failed, log the details and use fallback
+  console.error(`All template fetch attempts failed for ${templateName}`);
+  console.error(`Current origin: ${window.location.origin}`);
+  console.error(`Tried paths:`, possiblePaths.map(path => `${window.location.origin}${path}`));
+  
+  // Fallback to hardcoded template if it's the application template
+  if (templateName === 'application_email') {
+    console.warn('Using fallback template for application_email');
+    return FALLBACK_APPLICATION_TEMPLATE;
+  }
+  
+  throw new Error(`Template ${templateName} not found or could not be loaded`);
 };
 
 /**
