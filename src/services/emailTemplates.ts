@@ -1,0 +1,280 @@
+// Email Template Service
+// This file handles email template processing and variable substitution
+
+import {
+  EMAIL_TEMPLATES,
+  EMAIL_SUBJECTS
+} from './emailTemplates.html';
+import { renderEmailTemplate, type TemplateVariables } from './templateEngine';
+
+export interface ContactData {
+  name?: string;
+  email?: string;
+  phone?: string;
+  formData?: string;
+  message?: string;
+}
+
+// Import AdmissionFormData type for comprehensive form processing
+export interface AdmissionFormData {
+  // Student Data
+  studentName: string;
+  studentPhoto: File | null;
+  studentBirthDate: string;
+  studentSocialSecurity: string;
+  studentAddress: string;
+  studentPostalCode: string;
+  studentCitizenCard: string;
+  studentNIF: string;
+  registrationDate: string;
+  scheduleFrom: string;
+  scheduleTo: string;
+  
+  // Authorized Adults
+  authorizedAdult1Name: string;
+  authorizedAdult1CC: string;
+  authorizedAdult2Name: string;
+  authorizedAdult2CC: string;
+  authorizedAdult3Name: string;
+  authorizedAdult3CC: string;
+  
+  // Emergency Data
+  emergencyContactName: string;
+  emergencyContactPhone1: string;
+  emergencyContactPhone2: string;
+  specialCareInstructions: string;
+  
+  // Mother's Data
+  motherName: string;
+  motherCC: string;
+  motherAddress: string;
+  motherPostalCode: string;
+  motherNIF: string;
+  motherHomePhone: string;
+  motherMobilePhone: string;
+  motherEmail: string;
+  
+  // Father's Data
+  fatherName: string;
+  fatherCC: string;
+  fatherAddress: string;
+  fatherPostalCode: string;
+  fatherNIF: string;
+  fatherHomePhone: string;
+  fatherMobilePhone: string;
+  fatherEmail: string;
+  
+  // Guardian Data
+  guardianName: string;
+  guardianCC: string;
+  guardianAddress: string;
+  guardianPostalCode: string;
+  guardianNIF: string;
+  guardianHomePhone: string;
+  guardianMobilePhone: string;
+  guardianEmail: string;
+  
+  // Consents
+  consentActivitiesInside: boolean;
+  consentParentsGroup: boolean;
+  consentWebsite: boolean;
+  consentFacebook: boolean;
+  acceptInternalRegulation: boolean;
+  
+  submissionDate: string;
+}
+
+export interface EmailTemplate {
+  subject: string;
+  htmlContent: string;
+}
+
+/**
+ * Maps AdmissionFormData to template variables for the comprehensive application form
+ */
+const mapFormDataToTemplateVariables = (formData: AdmissionFormData, contactData: ContactData): TemplateVariables => {
+  const now = new Date();
+  const submissionDate = now.toLocaleDateString('pt-PT');
+  const submissionTime = now.toLocaleTimeString('pt-PT');
+
+  // Helper function to format boolean values for display
+  const formatBoolean = (value: boolean): string => value ? 'Sim' : 'Não';
+
+  return {
+    // Submission info
+    submissionDate,
+    submissionTime,
+    
+    // Contact info for subject
+    contactName: contactData.name || formData.motherName || formData.fatherName || 'Candidato',
+    
+    // Student data
+    studentName: formData.studentName,
+    studentBirthDate: formData.studentBirthDate,
+    studentSocialSecurity: formData.studentSocialSecurity,
+    studentAddress: formData.studentAddress,
+    studentPostalCode: formData.studentPostalCode,
+    studentCitizenCard: formData.studentCitizenCard,
+    studentNIF: formData.studentNIF,
+    registrationDate: formData.registrationDate,
+    scheduleFrom: formData.scheduleFrom,
+    scheduleTo: formData.scheduleTo,
+    studentPhotoStatus: formData.studentPhoto ? 'Fornecida' : 'Não fornecida',
+    
+    // Authorized adults
+    authorizedAdult1Name: formData.authorizedAdult1Name,
+    authorizedAdult1CC: formData.authorizedAdult1CC,
+    authorizedAdult2Name: formData.authorizedAdult2Name,
+    authorizedAdult2CC: formData.authorizedAdult2CC,
+    authorizedAdult3Name: formData.authorizedAdult3Name,
+    authorizedAdult3CC: formData.authorizedAdult3CC,
+    
+    // Emergency data
+    emergencyContactName: formData.emergencyContactName,
+    emergencyContactPhone1: formData.emergencyContactPhone1,
+    emergencyContactPhone2: formData.emergencyContactPhone2,
+    specialCareInstructions: formData.specialCareInstructions,
+    
+    // Mother's data
+    motherName: formData.motherName,
+    motherCC: formData.motherCC,
+    motherAddress: formData.motherAddress,
+    motherPostalCode: formData.motherPostalCode,
+    motherNIF: formData.motherNIF,
+    motherHomePhone: formData.motherHomePhone,
+    motherMobilePhone: formData.motherMobilePhone,
+    motherEmail: formData.motherEmail,
+    
+    // Father's data
+    fatherName: formData.fatherName,
+    fatherCC: formData.fatherCC,
+    fatherAddress: formData.fatherAddress,
+    fatherPostalCode: formData.fatherPostalCode,
+    fatherNIF: formData.fatherNIF,
+    fatherHomePhone: formData.fatherHomePhone,
+    fatherMobilePhone: formData.fatherMobilePhone,
+    fatherEmail: formData.fatherEmail,
+    
+    // Guardian data
+    guardianName: formData.guardianName,
+    guardianCC: formData.guardianCC,
+    guardianAddress: formData.guardianAddress,
+    guardianPostalCode: formData.guardianPostalCode,
+    guardianNIF: formData.guardianNIF,
+    guardianHomePhone: formData.guardianHomePhone,
+    guardianMobilePhone: formData.guardianMobilePhone,
+    guardianEmail: formData.guardianEmail,
+    
+    // Consents
+    consentActivitiesInside: formatBoolean(formData.consentActivitiesInside),
+    consentParentsGroup: formatBoolean(formData.consentParentsGroup),
+    consentWebsite: formatBoolean(formData.consentWebsite),
+    consentFacebook: formatBoolean(formData.consentFacebook),
+    acceptInternalRegulation: formatBoolean(formData.acceptInternalRegulation)
+  };
+};
+
+/**
+ * Generates comprehensive admission application email with full form data
+ */
+export const admissionApplicationForm = (formData: AdmissionFormData, contactData: ContactData): EmailTemplate => {
+  const variables = mapFormDataToTemplateVariables(formData, contactData);
+
+  const subject = renderEmailTemplate(EMAIL_SUBJECTS.ADMISSION_APPLICATION, variables);
+  const htmlContent = renderEmailTemplate(EMAIL_TEMPLATES.ADMISSION_APPLICATION_FORM, variables);
+
+  return { subject, htmlContent };
+};
+
+/**
+ * Generates admission notification email with form data (backward compatibility)
+ */
+export const admissionNotificationWithFormData = (contactData: ContactData): EmailTemplate => {
+  // For backward compatibility, if formData is a string, use simple template
+  if (typeof contactData.formData === 'string') {
+    const variables: TemplateVariables = {
+      contactName: contactData.name || 'Candidato Desconhecido',
+      name: contactData.name || 'Candidato Desconhecido',
+      email: contactData.email || 'Não fornecido',
+      phone: contactData.phone || 'Não fornecido',
+      formData: contactData.formData || 'Dados não disponíveis'
+    };
+
+    // Use simple inquiry template for backward compatibility
+    const subject = renderEmailTemplate(EMAIL_SUBJECTS.ADMISSION_INQUIRY, variables);
+    const htmlContent = renderEmailTemplate(EMAIL_TEMPLATES.ADMISSION_INQUIRY_NOTIFICATION, variables);
+
+    return { subject, htmlContent };
+  }
+
+  // If no proper form data, fall back to inquiry template
+  return admissionInquiryNotification(contactData);
+};
+
+/**
+ * Generates admission inquiry notification (without form data)
+ */
+export const admissionInquiryNotification = (contactData: ContactData): EmailTemplate => {
+  const variables: TemplateVariables = {
+    name: contactData.name || 'Visitante Desconhecido',
+    email: contactData.email || 'Não fornecido',
+    phone: contactData.phone || 'Não fornecido'
+  };
+
+  const subject = renderEmailTemplate(EMAIL_SUBJECTS.ADMISSION_INQUIRY, variables);
+  const htmlContent = renderEmailTemplate(EMAIL_TEMPLATES.ADMISSION_INQUIRY_NOTIFICATION, variables);
+
+  return { subject, htmlContent };
+};
+
+/**
+ * Generates contact form notification email
+ */
+export const contactFormNotification = (contactData: ContactData): EmailTemplate => {
+  const variables: TemplateVariables = {
+    name: contactData.name || 'Visitante',
+    email: contactData.email || 'Não fornecido',
+    phone: contactData.phone || 'Não fornecido',
+    message: contactData.message || ''
+  };
+
+  const subject = renderEmailTemplate(EMAIL_SUBJECTS.CONTACT_FORM, variables);
+  const htmlContent = renderEmailTemplate(EMAIL_TEMPLATES.CONTACT_FORM_NOTIFICATION, variables);
+
+  return { subject, htmlContent };
+};
+
+/**
+ * Template generator factory - gets the appropriate template based on type and data
+ */
+export const getEmailTemplate = (
+  type: 'admission_application' | 'admission_with_form' | 'admission_inquiry' | 'contact_form',
+  data: ContactData | { formData: AdmissionFormData; contactData: ContactData }
+): EmailTemplate => {
+  switch (type) {
+    case 'admission_application':
+      if ('formData' in data && 'contactData' in data) {
+        return admissionApplicationForm(data.formData, data.contactData);
+      }
+      throw new Error('admission_application requires formData and contactData');
+    case 'admission_with_form':
+      return admissionNotificationWithFormData(data as ContactData);
+    case 'admission_inquiry':
+      return admissionInquiryNotification(data as ContactData);
+    case 'contact_form':
+      return contactFormNotification(data as ContactData);
+    default:
+      throw new Error(`Unknown email template type: ${type}`);
+  }
+};
+
+// Export all templates as a collection (for backward compatibility)
+export const EmailTemplates = {
+  admissionApplicationForm,
+  admissionNotificationWithFormData,
+  admissionInquiryNotification,
+  contactFormNotification,
+  getEmailTemplate
+};
+
+export default EmailTemplates; 
