@@ -3,7 +3,8 @@
 
 import {
   EMAIL_TEMPLATES,
-  EMAIL_SUBJECTS
+  EMAIL_SUBJECTS,
+  fetchAdmissionApplicationTemplate
 } from './emailTemplates.html';
 import { renderEmailTemplate, type TemplateVariables } from './templateEngine';
 
@@ -177,11 +178,14 @@ const mapFormDataToTemplateVariables = (formData: AdmissionFormData, contactData
 /**
  * Generates comprehensive admission application email with full form data
  */
-export const admissionApplicationForm = (formData: AdmissionFormData, contactData: ContactData): EmailTemplate => {
+export const admissionApplicationForm = async (formData: AdmissionFormData, contactData: ContactData): Promise<EmailTemplate> => {
   const variables = mapFormDataToTemplateVariables(formData, contactData);
 
   const subject = renderEmailTemplate(EMAIL_SUBJECTS.ADMISSION_APPLICATION, variables);
-  const htmlContent = renderEmailTemplate(EMAIL_TEMPLATES.ADMISSION_APPLICATION_FORM, variables);
+  
+  // Fetch the HTML template dynamically
+  const templateHtml = await fetchAdmissionApplicationTemplate();
+  const htmlContent = renderEmailTemplate(templateHtml, variables);
 
   return { subject, htmlContent };
 };
@@ -247,14 +251,14 @@ export const contactFormNotification = (contactData: ContactData): EmailTemplate
 /**
  * Template generator factory - gets the appropriate template based on type and data
  */
-export const getEmailTemplate = (
+export const getEmailTemplate = async (
   type: 'admission_application' | 'admission_with_form' | 'admission_inquiry' | 'contact_form',
   data: ContactData | { formData: AdmissionFormData; contactData: ContactData }
-): EmailTemplate => {
+): Promise<EmailTemplate> => {
   switch (type) {
     case 'admission_application':
       if ('formData' in data && 'contactData' in data) {
-        return admissionApplicationForm(data.formData, data.contactData);
+        return await admissionApplicationForm(data.formData, data.contactData);
       }
       throw new Error('admission_application requires formData and contactData');
     case 'admission_with_form':

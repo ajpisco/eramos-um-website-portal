@@ -2,7 +2,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone, Trash2, UserCheck, Edit3 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { sendAdmissionNotificationWithPDF, EmailErrorType } from "@/services/emailService";
+import { sendAdmissionNotificationWithPDF, sendAdmissionApplicationForm, EmailErrorType } from "@/services/emailService";
 import AdmissionFormHTML, { AdmissionFormData } from "@/components/AdmissionFormHTML";
 import { generateFormSummary } from "@/services/pdfService";
 import { useFormPersistence } from "@/hooks/useFormPersistence";
@@ -332,18 +332,8 @@ const Admission = () => {
     setIsSubmitting(true);
     
     try {
-      // Generate a summary of the form data for the email
-      const formSummary = generateFormSummary(formData);
-      
-      // Create enhanced contact data that includes the form summary
-      const enhancedContactData = {
-        ...contactData,
-        formData: formSummary
-      };
-      
-      // Send notification email with the filled form data
-      // Note: Now we're sending the actual filled form data, not a blank PDF
-      const emailResult = await sendAdmissionNotificationWithPDF(enhancedContactData);
+      // Send comprehensive admission application form with full HTML template
+      const emailResult = await sendAdmissionApplicationForm(formData, contactData);
       
       // Close modal and show appropriate success/error message
       handleCloseModal();

@@ -313,8 +313,8 @@ export const sendEmail = async (params: EmailParams): Promise<EmailResponse> => 
 // Updated admission notification template to handle form data
 export const EmailTemplates = {
   // Comprehensive admission application form (uses the full HTML template)
-  admissionApplicationForm: (formData: AdmissionFormData, contactData: ContactData) => {
-    const template = admissionApplicationForm(formData, contactData);
+  admissionApplicationForm: async (formData: AdmissionFormData, contactData: ContactData) => {
+    const template = await admissionApplicationForm(formData, contactData);
 
     return {
       to_email: EMAIL_ADDRESSES.admissions,
@@ -368,7 +368,7 @@ export const sendAdmissionNotification = async (contactData: ContactData): Promi
 
 // Helper function for comprehensive admission application form
 export const sendAdmissionApplicationForm = async (formData: AdmissionFormData, contactData: ContactData): Promise<EmailResponse> => {
-  const emailParams = EmailTemplates.admissionApplicationForm(formData, contactData);
+  const emailParams = await EmailTemplates.admissionApplicationForm(formData, contactData);
   return sendEmail(emailParams);
 };
 
