@@ -523,6 +523,9 @@
   "admission.modal.clear_form": "Clear Form",
   "admission.modal.clear_form_confirm": "Are you sure you want to clear all form data and start over? This action cannot be undone.",
   "admission.modal.missing_fields_title": "Missing required fields",
+  "admission.modal.contact_description": "Choose where to copy contact information from or enter manually:",
+  "admission.modal.contact_synced_mother": "Information synced with mother's data",
+  "admission.modal.contact_synced_father": "Information synced with father's data",
   
   "admission.form.title": "Admission Application Form",
   "admission.form.description": "Please fill out all required fields below.",

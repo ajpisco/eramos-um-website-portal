@@ -1,6 +1,6 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone, Trash2 } from "lucide-react";
+import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone, Trash2, UserCheck, Edit3 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { sendAdmissionNotificationWithPDF, EmailErrorType } from "@/services/emailService";
 import AdmissionFormHTML, { AdmissionFormData } from "@/components/AdmissionFormHTML";
@@ -22,6 +22,9 @@ const Admission = () => {
   
   // Emergency data source state
   const [emergencyDataSource, setEmergencyDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
+  
+  // Contact data source state
+  const [contactDataSource, setContactDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
   
   // Authorized adults data source state
   const [authorizedAdultsDataSource, setAuthorizedAdultsDataSource] = useState<{
@@ -107,12 +110,41 @@ const Admission = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMissingFieldsTooltip, setShowMissingFieldsTooltip] = useState(false);
 
+  // Auto-sync contact data when contactDataSource is not custom
+  useEffect(() => {
+    if (contactDataSource !== 'custom') {
+      copyParentDataToContact(contactDataSource);
+    }
+  }, [formData.motherName, formData.motherEmail, formData.motherMobilePhone, 
+      formData.fatherName, formData.fatherEmail, formData.fatherMobilePhone, 
+      contactDataSource]);
+
   // Handler for authorized adults data source changes
   const handleAuthorizedAdultsDataSourceChange = (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => {
     setAuthorizedAdultsDataSource(prev => ({
       ...prev,
       [adult]: source
     }));
+  };
+
+  // Function to copy parent data to contact fields
+  const copyParentDataToContact = (source: 'mother' | 'father') => {
+    const sourcePrefix = source === 'mother' ? 'mother' : 'father';
+    
+    setContactData({
+      name: formData[`${sourcePrefix}Name` as keyof AdmissionFormData] as string || '',
+      email: formData[`${sourcePrefix}Email` as keyof AdmissionFormData] as string || '',
+      phone: formData[`${sourcePrefix}MobilePhone` as keyof AdmissionFormData] as string || ''
+    });
+  };
+
+  // Handle contact data source change
+  const handleContactSourceChange = (source: 'mother' | 'father' | 'custom') => {
+    setContactDataSource(source);
+    
+    if (source === 'mother' || source === 'father') {
+      copyParentDataToContact(source);
+    }
   };
 
   // Initialize form persistence
@@ -133,6 +165,9 @@ const Admission = () => {
       if (extraData?.emergencyDataSource) {
         setEmergencyDataSource(extraData.emergencyDataSource);
       }
+      if (extraData?.contactDataSource) {
+        setContactDataSource(extraData.contactDataSource);
+      }
       if (extraData?.authorizedAdultsDataSource) {
         setAuthorizedAdultsDataSource(extraData.authorizedAdultsDataSource);
       }
@@ -140,7 +175,7 @@ const Admission = () => {
     onSave: (data, extraData) => {
       console.log('Form data saved:', data);
     }
-  }, { guardianDataSource, emergencyDataSource, authorizedAdultsDataSource }); // Pass all data sources as extra data
+  }, { guardianDataSource, emergencyDataSource, contactDataSource, authorizedAdultsDataSource }); // Pass all data sources as extra data
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -167,6 +202,7 @@ const Admission = () => {
       // Reset data sources
       setGuardianDataSource('custom');
       setEmergencyDataSource('custom');
+      setContactDataSource('custom');
       setAuthorizedAdultsDataSource({
         adult1: 'custom',
         adult2: 'custom',
@@ -725,6 +761,66 @@ const Admission = () => {
                     </p>
                   </div>
 
+                  {/* Contact Data Source Buttons */}
+                  <div className="mb-6">
+                    <p className="text-sm text-gray-600 mb-3">{t('admission.modal.contact_description')}</p>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        type="button"
+                        onClick={() => handleContactSourceChange('mother')}
+                        className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                          contactDataSource === 'mother'
+                            ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
+                        }`}
+                      >
+                        <User className="h-4 w-4 mr-2" />
+                        {t('admission.form.copy_from_mother')}
+                        {contactDataSource === 'mother' && <UserCheck className="h-4 w-4 ml-2 text-pink-600" />}
+                      </button>
+                      
+                      <button
+                        type="button"
+                        onClick={() => handleContactSourceChange('father')}
+                        className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                          contactDataSource === 'father'
+                            ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
+                        }`}
+                      >
+                        <User className="h-4 w-4 mr-2" />
+                        {t('admission.form.copy_from_father')}
+                        {contactDataSource === 'father' && <UserCheck className="h-4 w-4 ml-2 text-blue-600" />}
+                      </button>
+                      
+                      <button
+                        type="button"
+                        onClick={() => handleContactSourceChange('custom')}
+                        className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                          contactDataSource === 'custom'
+                            ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
+                        }`}
+                      >
+                        <Edit3 className="h-4 w-4 mr-2" />
+                        {t('admission.form.custom_entry')}
+                        {contactDataSource === 'custom' && <UserCheck className="h-4 w-4 ml-2 text-green-600" />}
+                      </button>
+                    </div>
+                    
+                    {contactDataSource !== 'custom' && (
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                        <p className="text-sm text-blue-800">
+                          <UserCheck className="h-4 w-4 inline mr-1" />
+                          {contactDataSource === 'mother' 
+                            ? t('admission.modal.contact_synced_mother')
+                            : t('admission.modal.contact_synced_father')
+                          }
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -734,11 +830,12 @@ const Admission = () => {
                       <input
                         type="text"
                         value={contactData.name}
-                        onChange={(e) => handleInputChange('name', e.target.value)}
+                        onChange={(e) => contactDataSource === 'custom' && handleInputChange('name', e.target.value)}
                         placeholder={t('admission.modal.contact.name_placeholder')}
                         className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
                           contactData.name.trim() ? 'border-green-300' : 'border-gray-300'
-                        }`}
+                        } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                        disabled={contactDataSource !== 'custom'}
                       />
                     </div>
 
@@ -750,11 +847,12 @@ const Admission = () => {
                       <input
                         type="email"
                         value={contactData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        onChange={(e) => contactDataSource === 'custom' && handleInputChange('email', e.target.value)}
                         placeholder={t('admission.modal.contact.email_placeholder')}
                         className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
                           contactData.email.trim() && contactData.email.includes('@') ? 'border-green-300' : 'border-gray-300'
-                        }`}
+                        } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                        disabled={contactDataSource !== 'custom'}
                       />
                     </div>
 
@@ -766,11 +864,12 @@ const Admission = () => {
                       <input
                         type="text"
                         value={contactData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                        onChange={(e) => contactDataSource === 'custom' && handleInputChange('phone', e.target.value)}
                         placeholder={t('admission.modal.contact.phone_placeholder')}
                         className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
                           contactData.phone.trim() ? 'border-green-300' : 'border-gray-300'
-                        }`}
+                        } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                        disabled={contactDataSource !== 'custom'}
                       />
                     </div>
                   </form>

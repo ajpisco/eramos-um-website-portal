@@ -370,7 +370,10 @@
   "admission.modal.clear_form_confirm": "Tem certeza de que deseja limpar todos os dados do formulário e começar de novo? Esta ação não pode ser desfeita.",
   
   "admission.modal.missing_fields_title": "Campos obrigatórios em falta",
-
+  "admission.modal.contact_description": "Escolha de onde copiar as informações de contacto ou introduza manualmente:",
+  "admission.modal.contact_synced_mother": "Informações sincronizadas com os dados da mãe",
+  "admission.modal.contact_synced_father": "Informações sincronizadas com os dados do pai",
+  
   "admission.form.title": "Ficha de Inscrição",
   "admission.form.description": "Por favor, preencha todos os campos obrigatórios abaixo.",
   

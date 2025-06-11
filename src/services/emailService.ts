@@ -1,6 +1,16 @@
 // Email Service - N8N Webhook Implementation
 // This service sends emails through the n8n webhook API
 
+import { 
+  admissionNotificationWithFormData, 
+  admissionInquiryNotification,
+  contactFormNotification,
+  admissionApplicationForm,
+  type ContactData,
+  type EmailTemplate,
+  type AdmissionFormData
+} from './emailTemplates';
+
 // N8N Webhook Configuration
 const N8N_CONFIG = {
   webhookUrl: import.meta.env.VITE_N8N_WEBHOOK_URL,
@@ -302,90 +312,69 @@ export const sendEmail = async (params: EmailParams): Promise<EmailResponse> => 
 
 // Updated admission notification template to handle form data
 export const EmailTemplates = {
-  admissionNotification: (contactData: { 
-    name?: string; 
-    email?: string; 
-    phone?: string;
-    formData?: string; // New field for form summary
-  }) => {
-    // Convert line breaks to HTML for proper email formatting
-    const formatForEmail = (text: string) => {
-      return text
-        .replace(/\n/g, '<br>')
-        .replace(/===/g, '<strong>===')
-        .replace(/===/g, '===</strong>');
+  // Comprehensive admission application form (uses the full HTML template)
+  admissionApplicationForm: (formData: AdmissionFormData, contactData: ContactData) => {
+    const template = admissionApplicationForm(formData, contactData);
+
+    return {
+      to_email: EMAIL_ADDRESSES.admissions,
+      from_name: contactData.name || formData.motherName || formData.fatherName || 'Candidato',
+      from_email: contactData.email || formData.motherEmail || formData.fatherEmail || EMAIL_ADDRESSES.noreply,
+      from_phone: contactData.phone || formData.motherMobilePhone || formData.fatherMobilePhone || '',
+      subject: template.subject,
+      message: template.htmlContent,
+      isHtml: true
     };
+  },
 
-    const emailContent = contactData.formData ? 
-      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">
-          Nova Candidatura de Inscrição
-        </h2>
-        
-        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
-          <h3 style="color: #1e40af; margin-top: 0;">Informações de Contacto:</h3>
-          <p><strong>Nome:</strong> ${contactData.name || 'Não fornecido'}</p>
-          <p><strong>Email:</strong> ${contactData.email || 'Não fornecido'}</p>
-          <p><strong>Telefone:</strong> ${contactData.phone || 'Não fornecido'}</p>
-        </div>
-
-        <div style="background-color: #ffffff; padding: 20px; border: 1px solid #e5e7eb; border-radius: 5px;">
-          <h3 style="color: #1e40af; margin-top: 0;">Detalhes da Candidatura:</h3>
-          <div style="font-family: monospace; font-size: 14px; white-space: pre-line; background-color: #f9fafb; padding: 15px; border-radius: 4px; border-left: 4px solid #2563eb;">
-${contactData.formData}
-          </div>
-        </div>
-
-        <div style="background-color: #eff6ff; padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #3b82f6;">
-          <p style="margin: 0; color: #1e40af;">
-            <strong>Próximos Passos:</strong> Por favor, revise esta candidatura e contacte a família para prosseguir com o processo de admissão.
-          </p>
-        </div>
-
-        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
-        <p style="font-size: 12px; color: #6b7280; text-align: center;">
-          Esta candidatura foi submetida através do website da escola.
-        </p>
-      </div>` :
-      `<div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">
-          Nova Solicitação de Informações
-        </h2>
-        
-        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px 0;">
-          <h3 style="color: #1e40af; margin-top: 0;">Informações de Contacto:</h3>
-          <p><strong>Nome:</strong> ${contactData.name || 'Não fornecido'}</p>
-          <p><strong>Email:</strong> ${contactData.email || 'Não fornecido'}</p>
-          <p><strong>Telefone:</strong> ${contactData.phone || 'Não fornecido'}</p>
-        </div>
-
-        <div style="background-color: #eff6ff; padding: 15px; border-radius: 5px; border-left: 4px solid #3b82f6;">
-          <p style="margin: 0; color: #1e40af;">
-            Por favor, contacte esta família para mais informações sobre o processo de admissão.
-          </p>
-        </div>
-
-        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
-        <p style="font-size: 12px; color: #6b7280; text-align: center;">
-          Esta solicitação foi submetida através do website da escola.
-        </p>
-      </div>`;
+  admissionNotification: (contactData: ContactData) => {
+    // Determine which template to use based on whether form data is present
+    const template = contactData.formData 
+      ? admissionNotificationWithFormData(contactData)
+      : admissionInquiryNotification(contactData);
 
     return {
       to_email: EMAIL_ADDRESSES.admissions,
       from_name: contactData.name || 'Website Visitor',
       from_email: contactData.email || EMAIL_ADDRESSES.noreply,
       from_phone: contactData.phone || '',
-      subject: `Nova Candidatura de Inscrição - ${contactData.name || 'Candidato Desconhecido'}`,
-      message: emailContent,
+      subject: template.subject,
+      message: template.htmlContent,
       isHtml: true // Add flag to indicate HTML content
+    };
+  },
+
+  // Contact form template for general inquiries
+  contactForm: (contactData: ContactData) => {
+    const template = contactFormNotification(contactData);
+
+    return {
+      to_email: EMAIL_ADDRESSES.contact,
+      from_name: contactData.name || 'Website Visitor',
+      from_email: contactData.email || EMAIL_ADDRESSES.noreply,
+      from_phone: contactData.phone || '',
+      subject: template.subject,
+      message: template.htmlContent,
+      isHtml: true
     };
   }
 };
 
 // Helper function specifically for admission applications
-export const sendAdmissionNotification = async (contactData: { name?: string; email?: string; phone?: string }): Promise<EmailResponse> => {
+export const sendAdmissionNotification = async (contactData: ContactData): Promise<EmailResponse> => {
   const emailParams = EmailTemplates.admissionNotification(contactData);
+  return sendEmail(emailParams);
+};
+
+// Helper function for comprehensive admission application form
+export const sendAdmissionApplicationForm = async (formData: AdmissionFormData, contactData: ContactData): Promise<EmailResponse> => {
+  const emailParams = EmailTemplates.admissionApplicationForm(formData, contactData);
+  return sendEmail(emailParams);
+};
+
+// Helper function for general contact form submissions
+export const sendContactFormNotification = async (contactData: ContactData): Promise<EmailResponse> => {
+  const emailParams = EmailTemplates.contactForm(contactData);
   return sendEmail(emailParams);
 };
 
@@ -403,7 +392,7 @@ const validateN8NConfig = () => {
   return missingVars.length === 0;
 };
 
-export const sendAdmissionNotificationWithPDF = async (contactData: any): Promise<EmailResponse> => {
+export const sendAdmissionNotificationWithPDF = async (contactData: ContactData): Promise<EmailResponse> => {
   // Validate N8N configuration first
   if (!validateN8NConfig()) {
     console.error('N8N webhook service not properly configured');
@@ -446,6 +435,8 @@ export default {
   sendEmail,
   sendAdmissionNotification,
   sendAdmissionNotificationWithPDF,
+  sendAdmissionApplicationForm,
+  sendContactFormNotification,
   EmailTemplates,
   updateEmailAddresses,
   updateEmailConfig,
