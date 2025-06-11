@@ -1,11 +1,12 @@
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone, Trash2, UserCheck, Edit3 } from "lucide-react";
+import { UserPlus, CheckCircle, Download, Calendar, X, FileText, User, Mail, ArrowLeft, ArrowRight, Phone, Trash2, UserCheck, Edit3, Camera } from "lucide-react";
 import { useState, useEffect } from "react";
 import { sendAdmissionNotificationWithPDF, sendAdmissionApplicationForm, EmailErrorType } from "@/services/emailService";
 import AdmissionFormHTML, { AdmissionFormData } from "@/components/AdmissionFormHTML";
 import { generateFormSummary } from "@/services/pdfService";
 import { useFormPersistence } from "@/hooks/useFormPersistence";
+import { PhotoUpload } from "@/components/PhotoUpload";
 
 const Admission = () => {
   const { t } = useLanguage();
@@ -16,6 +17,12 @@ const Admission = () => {
     email: '',
     phone: ''
   });
+  
+  // Photo upload state
+  const [studentPhotoData, setStudentPhotoData] = useState<{
+    url: string;
+    publicId: string;
+  } | null>(null);
   
   // Guardian data source state
   const [guardianDataSource, setGuardianDataSource] = useState<'mother' | 'father' | 'custom'>('custom');
@@ -42,6 +49,8 @@ const Admission = () => {
     // Dados do Aluno (Student Data)
     studentName: '',
     studentPhoto: null,
+    studentPhotoUrl: '',
+    studentPhotoPublicId: '',
     studentBirthDate: '',
     studentSocialSecurity: '',
     studentAddress: '',
@@ -214,6 +223,8 @@ const Admission = () => {
         // Dados do Aluno (Student Data)
         studentName: '',
         studentPhoto: null,
+        studentPhotoUrl: '',
+        studentPhotoPublicId: '',
         studentBirthDate: '',
         studentSocialSecurity: '',
         studentAddress: '',
@@ -505,6 +516,26 @@ const Admission = () => {
     }
   ];
 
+  // Photo upload handlers
+  const handlePhotoUpload = (url: string, publicId: string) => {
+    setStudentPhotoData({ url, publicId });
+    setFormData(prev => ({
+      ...prev,
+      studentPhotoUrl: url,
+      studentPhotoPublicId: publicId
+    }));
+  };
+
+  const handlePhotoRemove = () => {
+    setStudentPhotoData(null);
+    setFormData(prev => ({
+      ...prev,
+      studentPhoto: null,
+      studentPhotoUrl: '',
+      studentPhotoPublicId: ''
+    }));
+  };
+
   return (
     <Layout>
       <div className="pt-24 pb-16">
@@ -735,6 +766,8 @@ const Admission = () => {
                     onAuthorizedAdultsDataSourceChange={handleAuthorizedAdultsDataSourceChange}
                     emergencyDataSource={emergencyDataSource}
                     onEmergencyDataSourceChange={setEmergencyDataSource}
+                    onPhotoUpload={handlePhotoUpload}
+                    onPhotoRemove={handlePhotoRemove}
                   />
                 </div>
               </div>

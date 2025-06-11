@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { User, UserCheck, Edit3 } from 'lucide-react';
+import { PhotoUpload } from '@/components/PhotoUpload';
 
 export interface AdmissionFormData {
   // Dados do Aluno (Student Data)
   studentName: string;
   studentPhoto: File | null;
+  studentPhotoUrl: string; // Cloudinary URL
+  studentPhotoPublicId: string; // Cloudinary public ID
   studentBirthDate: string;
   studentSocialSecurity: string;
   studentAddress: string;
@@ -84,6 +87,8 @@ interface AdmissionFormHTMLProps {
   onAuthorizedAdultsDataSourceChange: (adult: 'adult1' | 'adult2' | 'adult3', source: 'mother' | 'father' | 'custom') => void;
   emergencyDataSource: 'mother' | 'father' | 'custom';
   onEmergencyDataSourceChange: (source: 'mother' | 'father' | 'custom') => void;
+  onPhotoUpload?: (url: string, publicId: string) => void;
+  onPhotoRemove?: () => void;
   className?: string;
 }
 
@@ -96,6 +101,8 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
   onAuthorizedAdultsDataSourceChange,
   emergencyDataSource,
   onEmergencyDataSourceChange,
+  onPhotoUpload,
+  onPhotoRemove,
   className = "" 
 }) => {
   const { t } = useLanguage();
@@ -426,16 +433,36 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
             />
           </div>
           
-          <div>
+          {/* Photo Upload Section */}
+          <div className="md:col-span-2">
             <label className={labelClasses}>
               {t('admission.form.student_photo')}
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handleFileChange('studentPhoto', e)}
-              className={inputClasses}
-            />
+            <div className="mt-2">
+              <PhotoUpload
+                studentName={formData.studentName || 'Student'}
+                onPhotoUpload={(url, publicId) => {
+                  if (onPhotoUpload) {
+                    onPhotoUpload(url, publicId);
+                  }
+                  handleInputChange('studentPhotoUrl', url);
+                  handleInputChange('studentPhotoPublicId', publicId);
+                }}
+                onPhotoRemove={() => {
+                  if (onPhotoRemove) {
+                    onPhotoRemove();
+                  }
+                  handleInputChange('studentPhoto', null);
+                  handleInputChange('studentPhotoUrl', '');
+                  handleInputChange('studentPhotoPublicId', '');
+                }}
+                currentPhoto={formData.studentPhotoUrl ? {
+                  url: formData.studentPhotoUrl,
+                  publicId: formData.studentPhotoPublicId
+                } : undefined}
+                className="w-full"
+              />
+            </div>
           </div>
           
           <div>
