@@ -7,6 +7,7 @@ import AdmissionFormHTML, { AdmissionFormData } from "@/components/AdmissionForm
 import { generateFormSummary } from "@/services/pdfService";
 import { useFormPersistence } from "@/hooks/useFormPersistence";
 import { PhotoUpload } from "@/components/PhotoUpload";
+import CompletedLottie from '@/components/CompletedLottie';
 
 const Admission = () => {
   const { t } = useLanguage();
@@ -118,6 +119,7 @@ const Admission = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMissingFieldsTooltip, setShowMissingFieldsTooltip] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Auto-sync contact data when contactDataSource is not custom
   useEffect(() => {
@@ -368,13 +370,15 @@ const Admission = () => {
       // Send comprehensive admission application form with full HTML template
       const emailResult = await sendAdmissionApplicationForm(finalFormData, contactData);
       
-      // Close modal and show appropriate success/error message
-      handleCloseModal();
-      
       if (emailResult.success) {
         // Clear saved form data after successful submission
         clearSavedData();
-        alert(t('admission.modal.email_sent'));
+        setShowSuccess(true);
+        setTimeout(() => {
+          setShowSuccess(false);
+          handleCloseModal();
+        }, 2500);
+        return;
       } else {
         console.error('Email sending failed:', emailResult.error, 'Type:', emailResult.errorType);
         
@@ -740,312 +744,320 @@ const Admission = () => {
       {/* Application Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[95vh] flex flex-col">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-              <div className="flex items-center">
-                <FileText className="h-6 w-6 text-school-blue-dark mr-3" />
-                <div>
-                  <h2 className="text-xl font-semibold text-school-blue-dark">
-                    {t('admission.modal.title')}
-                  </h2>
-                  <p className="text-sm text-gray-500">
-                    {currentStep === 1 ? t('admission.modal.step_indicator_simple') : t('admission.modal.step_indicator_simple_2')}
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={handleCloseModal}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-                aria-label={t('admission.modal.close')}
-              >
-                <X className="h-5 w-5 text-gray-500" />
-              </button>
+          {showSuccess ? (
+            <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-8 flex flex-col items-center justify-center text-center">
+              <CompletedLottie />
+              <h2 className="mt-4 text-xl font-bold text-school-blue-dark">{t('admission.modal.success_title')}</h2>
+              <p className="mt-2 text-gray-600">{t('admission.modal.success_message')}</p>
             </div>
-
-            {/* Progress Indicator */}
-            <div className="px-6 py-4 border-b border-gray-200 flex-shrink-0">
-              <div className="flex items-center">
-                <div className={`flex items-center ${currentStep >= 1 ? 'text-school-blue-dark' : 'text-gray-400'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 1 ? 'bg-school-blue text-white' : 'bg-gray-200'}`}>
-                    1
+          ) : (
+            <div className="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[95vh] flex flex-col">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+                <div className="flex items-center">
+                  <FileText className="h-6 w-6 text-school-blue-dark mr-3" />
+                  <div>
+                    <h2 className="text-xl font-semibold text-school-blue-dark">
+                      {t('admission.modal.title')}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      {currentStep === 1 ? t('admission.modal.step_indicator_simple') : t('admission.modal.step_indicator_simple_2')}
+                    </p>
                   </div>
-                  <span className="ml-2 text-sm font-medium">{t('admission.modal.step1.title')}</span>
                 </div>
-                <div className={`flex-1 h-0.5 mx-4 ${currentStep >= 2 ? 'bg-school-blue' : 'bg-gray-200'}`}></div>
-                <div className={`flex items-center ${currentStep >= 2 ? 'text-school-blue-dark' : 'text-gray-400'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 2 ? 'bg-school-blue text-white' : 'bg-gray-200'}`}>
-                    2
-                  </div>
-                  <span className="ml-2 text-sm font-medium">{t('admission.modal.step2.title')}</span>
-                </div>
+                <button
+                  onClick={handleCloseModal}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  aria-label={t('admission.modal.close')}
+                >
+                  <X className="h-5 w-5 text-gray-500" />
+                </button>
               </div>
-            </div>
 
-            {/* Modal Content - Scrollable */}
-            <div className="flex-1 overflow-auto">
-              {/* Step 1 Content - HTML Form */}
-              <div className={`${currentStep === 1 ? 'block' : 'hidden'}`}>
-                <div className="p-6">
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-school-blue-dark mb-2">
-                      {t('admission.modal.step1.title')}
-                    </h3>
-                    <p className="text-gray-600 mb-2">
-                      {t('admission.modal.step1.description')}
-                    </p>
-                    <p className="text-gray-600">
-                      {t('admission.form.description')}
-                    </p>
+              {/* Progress Indicator */}
+              <div className="px-6 py-4 border-b border-gray-200 flex-shrink-0">
+                <div className="flex items-center">
+                  <div className={`flex items-center ${currentStep >= 1 ? 'text-school-blue-dark' : 'text-gray-400'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 1 ? 'bg-school-blue text-white' : 'bg-gray-200'}`}>
+                      1
+                    </div>
+                    <span className="ml-2 text-sm font-medium">{t('admission.modal.step1.title')}</span>
                   </div>
-                  
-                  {/* HTML Form Component */}
-                  <AdmissionFormHTML 
-                    formData={formData}
-                    onFormDataChange={handleFormDataChange}
-                    guardianDataSource={guardianDataSource}
-                    onGuardianDataSourceChange={setGuardianDataSource}
-                    authorizedAdultsDataSource={authorizedAdultsDataSource}
-                    onAuthorizedAdultsDataSourceChange={handleAuthorizedAdultsDataSourceChange}
-                    emergencyDataSource={emergencyDataSource}
-                    onEmergencyDataSourceChange={setEmergencyDataSource}
-                    onPhotoUpload={handlePhotoUpload}
-                    onPhotoRemove={handlePhotoRemove}
-                  />
+                  <div className={`flex-1 h-0.5 mx-4 ${currentStep >= 2 ? 'bg-school-blue' : 'bg-gray-200'}`}></div>
+                  <div className={`flex items-center ${currentStep >= 2 ? 'text-school-blue-dark' : 'text-gray-400'}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${currentStep >= 2 ? 'bg-school-blue text-white' : 'bg-gray-200'}`}>
+                      2
+                    </div>
+                    <span className="ml-2 text-sm font-medium">{t('admission.modal.step2.title')}</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Step 2 Content */}
-              <div className={`${currentStep === 2 ? 'block' : 'hidden'}`}>
-                <div className="p-6">
-                  <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-school-blue-dark mb-2">
-                      {t('admission.modal.step2.title')}
-                    </h3>
-                    <p className="text-gray-600">
-                      {t('admission.modal.step2.description')}
-                    </p>
-                  </div>
-
-                  {/* Contact Data Source Buttons */}
-                  <div className="mb-6">
-                    <p className="text-sm text-gray-600 mb-3">{t('admission.modal.contact_description')}</p>
-                    <div className="flex flex-wrap gap-3">
-                      <button
-                        type="button"
-                        onClick={() => handleContactSourceChange('mother')}
-                        className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
-                          contactDataSource === 'mother'
-                            ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
-                            : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
-                        }`}
-                      >
-                        <User className="h-4 w-4 mr-2" />
-                        {t('admission.form.copy_from_mother')}
-                        {contactDataSource === 'mother' && <UserCheck className="h-4 w-4 ml-2 text-pink-600" />}
-                      </button>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleContactSourceChange('father')}
-                        className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
-                          contactDataSource === 'father'
-                            ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
-                            : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
-                        }`}
-                      >
-                        <User className="h-4 w-4 mr-2" />
-                        {t('admission.form.copy_from_father')}
-                        {contactDataSource === 'father' && <UserCheck className="h-4 w-4 ml-2 text-blue-600" />}
-                      </button>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleContactSourceChange('custom')}
-                        className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
-                          contactDataSource === 'custom'
-                            ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
-                            : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
-                        }`}
-                      >
-                        <Edit3 className="h-4 w-4 mr-2" />
-                        {t('admission.form.custom_entry')}
-                        {contactDataSource === 'custom' && <UserCheck className="h-4 w-4 ml-2 text-green-600" />}
-                      </button>
+              {/* Modal Content - Scrollable */}
+              <div className="flex-1 overflow-auto">
+                {/* Step 1 Content - HTML Form */}
+                <div className={`${currentStep === 1 ? 'block' : 'hidden'}`}>
+                  <div className="p-6">
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold text-school-blue-dark mb-2">
+                        {t('admission.modal.step1.title')}
+                      </h3>
+                      <p className="text-gray-600 mb-2">
+                        {t('admission.modal.step1.description')}
+                      </p>
+                      <p className="text-gray-600">
+                        {t('admission.form.description')}
+                      </p>
                     </div>
                     
-                    {contactDataSource !== 'custom' && (
-                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
-                        <p className="text-sm text-blue-800">
-                          <UserCheck className="h-4 w-4 inline mr-1" />
-                          {contactDataSource === 'mother' 
-                            ? t('admission.modal.contact_synced_mother')
-                            : t('admission.modal.contact_synced_father')
-                          }
-                        </p>
-                      </div>
-                    )}
+                    {/* HTML Form Component */}
+                    <AdmissionFormHTML 
+                      formData={formData}
+                      onFormDataChange={handleFormDataChange}
+                      guardianDataSource={guardianDataSource}
+                      onGuardianDataSourceChange={setGuardianDataSource}
+                      authorizedAdultsDataSource={authorizedAdultsDataSource}
+                      onAuthorizedAdultsDataSourceChange={handleAuthorizedAdultsDataSourceChange}
+                      emergencyDataSource={emergencyDataSource}
+                      onEmergencyDataSourceChange={setEmergencyDataSource}
+                      onPhotoUpload={handlePhotoUpload}
+                      onPhotoRemove={handlePhotoRemove}
+                    />
                   </div>
-
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <User className="inline h-4 w-4 mr-1" />
-                        {t('admission.modal.contact.name_label')}
-                      </label>
-                      <input
-                        type="text"
-                        value={contactData.name}
-                        onChange={(e) => contactDataSource === 'custom' && handleInputChange('name', e.target.value)}
-                        placeholder={t('admission.modal.contact.name_placeholder')}
-                        className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
-                          contactData.name.trim() ? 'border-green-300' : 'border-gray-300'
-                        } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
-                        disabled={contactDataSource !== 'custom'}
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <Mail className="inline h-4 w-4 mr-1" />
-                        {t('admission.modal.contact.email_label')}
-                      </label>
-                      <input
-                        type="email"
-                        value={contactData.email}
-                        onChange={(e) => contactDataSource === 'custom' && handleInputChange('email', e.target.value)}
-                        placeholder={t('admission.modal.contact.email_placeholder')}
-                        className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
-                          contactData.email.trim() && contactData.email.includes('@') ? 'border-green-300' : 'border-gray-300'
-                        } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
-                        disabled={contactDataSource !== 'custom'}
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        <Phone className="inline h-4 w-4 mr-1" />
-                        {t('admission.modal.contact.phone_label')}
-                      </label>
-                      <input
-                        type="text"
-                        value={contactData.phone}
-                        onChange={(e) => contactDataSource === 'custom' && handleInputChange('phone', e.target.value)}
-                        placeholder={t('admission.modal.contact.phone_placeholder')}
-                        className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
-                          contactData.phone.trim() ? 'border-green-300' : 'border-gray-300'
-                        } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
-                        disabled={contactDataSource !== 'custom'}
-                      />
-                    </div>
-                  </form>
                 </div>
-              </div>
-            </div>
 
-            {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-gray-200 flex-shrink-0">
-              <div className="flex justify-between">
-                <div className="flex items-center gap-3">
-                  {currentStep === 2 && (
-                    <button
-                      onClick={handleBack}
-                      className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-2" />
-                      {t('admission.modal.back')}
-                    </button>
-                  )}
-                  <button
-                    onClick={handleClearForm}
-                    className="inline-flex items-center px-4 py-2 border border-red-300 text-red-700 rounded-md hover:bg-red-50 transition-colors"
-                  >
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    {t('admission.modal.clear_form')}
-                  </button>
-                </div>
-                
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleCloseModal}
-                    className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
-                  >
-                    {t('admission.modal.close')}
-                  </button>
-                  
-                  {currentStep === 1 && (
-                    <div 
-                      className="relative"
-                      onMouseEnter={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
-                      onMouseLeave={() => setShowMissingFieldsTooltip(false)}
-                    >
-                      <button
-                        onClick={(e) => {
-                          if (!isFormValid()) {
-                            e.preventDefault();
-                            setShowMissingFieldsTooltip(true);
-                            // Hide tooltip after 3 seconds when clicked
-                            setTimeout(() => setShowMissingFieldsTooltip(false), 3000);
-                          } else {
-                            handleContinue();
-                          }
-                        }}
-                        className={`inline-flex items-center px-6 py-2 rounded-md transition-colors ${
-                          isFormValid() 
-                            ? 'bg-school-blue text-white hover:bg-opacity-90' 
-                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        }`}
-                      >
-                        {t('admission.modal.continue')}
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </button>
+                {/* Step 2 Content */}
+                <div className={`${currentStep === 2 ? 'block' : 'hidden'}`}>
+                  <div className="p-6">
+                    <div className="mb-6">
+                      <h3 className="text-lg font-semibold text-school-blue-dark mb-2">
+                        {t('admission.modal.step2.title')}
+                      </h3>
+                      <p className="text-gray-600">
+                        {t('admission.modal.step2.description')}
+                      </p>
+                    </div>
+
+                    {/* Contact Data Source Buttons */}
+                    <div className="mb-6">
+                      <p className="text-sm text-gray-600 mb-3">{t('admission.modal.contact_description')}</p>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          type="button"
+                          onClick={() => handleContactSourceChange('mother')}
+                          className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                            contactDataSource === 'mother'
+                              ? 'bg-pink-100 border-pink-300 text-pink-800 shadow-sm'
+                              : 'bg-white border-gray-300 text-gray-700 hover:bg-pink-50 hover:border-pink-200'
+                          }`}
+                        >
+                          <User className="h-4 w-4 mr-2" />
+                          {t('admission.form.copy_from_mother')}
+                          {contactDataSource === 'mother' && <UserCheck className="h-4 w-4 ml-2 text-pink-600" />}
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={() => handleContactSourceChange('father')}
+                          className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                            contactDataSource === 'father'
+                              ? 'bg-blue-100 border-blue-300 text-blue-800 shadow-sm'
+                              : 'bg-white border-gray-300 text-gray-700 hover:bg-blue-50 hover:border-blue-200'
+                          }`}
+                        >
+                          <User className="h-4 w-4 mr-2" />
+                          {t('admission.form.copy_from_father')}
+                          {contactDataSource === 'father' && <UserCheck className="h-4 w-4 ml-2 text-blue-600" />}
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={() => handleContactSourceChange('custom')}
+                          className={`inline-flex items-center px-4 py-2 rounded-md border transition-all duration-200 ${
+                            contactDataSource === 'custom'
+                              ? 'bg-green-100 border-green-300 text-green-800 shadow-sm'
+                              : 'bg-white border-gray-300 text-gray-700 hover:bg-green-50 hover:border-green-200'
+                          }`}
+                        >
+                          <Edit3 className="h-4 w-4 mr-2" />
+                          {t('admission.form.custom_entry')}
+                          {contactDataSource === 'custom' && <UserCheck className="h-4 w-4 ml-2 text-green-600" />}
+                        </button>
+                      </div>
                       
-                      {/* Missing Fields Tooltip */}
-                      {showMissingFieldsTooltip && !isFormValid() && (
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
-                          <div className="font-medium mb-2">{t('admission.modal.missing_fields_title')}:</div>
-                          <ul className="space-y-1 text-xs">
-                            {getMissingRequiredFields().map((field, index) => (
-                              <li key={index} className="flex items-start">
-                                <span className="text-red-400 mr-2">•</span>
-                                {field}
-                              </li>
-                            ))}
-                          </ul>
-                          {/* Tooltip Arrow */}
-                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                      {contactDataSource !== 'custom' && (
+                        <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                          <p className="text-sm text-blue-800">
+                            <UserCheck className="h-4 w-4 inline mr-1" />
+                            {contactDataSource === 'mother' 
+                              ? t('admission.modal.contact_synced_mother')
+                              : t('admission.modal.contact_synced_father')
+                            }
+                          </p>
                         </div>
                       )}
                     </div>
-                  )}
-                  
-                  {currentStep === 2 && (
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <User className="inline h-4 w-4 mr-1" />
+                          {t('admission.modal.contact.name_label')}
+                        </label>
+                        <input
+                          type="text"
+                          value={contactData.name}
+                          onChange={(e) => contactDataSource === 'custom' && handleInputChange('name', e.target.value)}
+                          placeholder={t('admission.modal.contact.name_placeholder')}
+                          className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
+                            contactData.name.trim() ? 'border-green-300' : 'border-gray-300'
+                          } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                          disabled={contactDataSource !== 'custom'}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Mail className="inline h-4 w-4 mr-1" />
+                          {t('admission.modal.contact.email_label')}
+                        </label>
+                        <input
+                          type="email"
+                          value={contactData.email}
+                          onChange={(e) => contactDataSource === 'custom' && handleInputChange('email', e.target.value)}
+                          placeholder={t('admission.modal.contact.email_placeholder')}
+                          className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
+                            contactData.email.trim() && contactData.email.includes('@') ? 'border-green-300' : 'border-gray-300'
+                          } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                          disabled={contactDataSource !== 'custom'}
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          <Phone className="inline h-4 w-4 mr-1" />
+                          {t('admission.modal.contact.phone_label')}
+                        </label>
+                        <input
+                          type="text"
+                          value={contactData.phone}
+                          onChange={(e) => contactDataSource === 'custom' && handleInputChange('phone', e.target.value)}
+                          placeholder={t('admission.modal.contact.phone_placeholder')}
+                          className={`w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-school-blue focus:border-transparent ${
+                            contactData.phone.trim() ? 'border-green-300' : 'border-gray-300'
+                          } ${contactDataSource !== 'custom' ? 'bg-gray-50 cursor-not-allowed' : ''}`}
+                          disabled={contactDataSource !== 'custom'}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-6 py-4 border-t border-gray-200 flex-shrink-0">
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-3">
+                    {currentStep === 2 && (
+                      <button
+                        onClick={handleBack}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        {t('admission.modal.back')}
+                      </button>
+                    )}
                     <button
-                      type="submit"
-                      onClick={handleSubmit}
-                      disabled={isSubmitting}
-                      className={`inline-flex items-center px-6 py-2 rounded-md transition-colors disabled:cursor-not-allowed ${
-                        isContactFormValid 
-                          ? 'bg-school-blue text-white hover:bg-opacity-90' 
-                          : hasAnyContactInfo 
-                            ? 'bg-orange-500 text-white hover:bg-orange-600' 
-                            : 'bg-gray-400 text-white hover:bg-gray-500'
-                      }`}
+                      onClick={handleClearForm}
+                      className="inline-flex items-center px-4 py-2 border border-red-300 text-red-700 rounded-md hover:bg-red-50 transition-colors"
                     >
-                      {isSubmitting ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          {t('admission.modal.sending_email')}
-                        </>
-                      ) : (
-                        t('admission.modal.submit')
-                      )}
+                      <Trash2 className="h-4 w-4 mr-2" />
+                      {t('admission.modal.clear_form')}
                     </button>
-                  )}
+                  </div>
+                  
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleCloseModal}
+                      className="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 transition-colors"
+                    >
+                      {t('admission.modal.close')}
+                    </button>
+                    
+                    {currentStep === 1 && (
+                      <div 
+                        className="relative"
+                        onMouseEnter={() => !isFormValid() && setShowMissingFieldsTooltip(true)}
+                        onMouseLeave={() => setShowMissingFieldsTooltip(false)}
+                      >
+                        <button
+                          onClick={(e) => {
+                            if (!isFormValid()) {
+                              e.preventDefault();
+                              setShowMissingFieldsTooltip(true);
+                              // Hide tooltip after 3 seconds when clicked
+                              setTimeout(() => setShowMissingFieldsTooltip(false), 3000);
+                            } else {
+                              handleContinue();
+                            }
+                          }}
+                          className={`inline-flex items-center px-6 py-2 rounded-md transition-colors ${
+                            isFormValid() 
+                              ? 'bg-school-blue text-white hover:bg-opacity-90' 
+                              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          }`}
+                        >
+                          {t('admission.modal.continue')}
+                          <ArrowRight className="h-4 w-4 ml-2" />
+                        </button>
+                        
+                        {/* Missing Fields Tooltip */}
+                        {showMissingFieldsTooltip && !isFormValid() && (
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg z-50">
+                            <div className="font-medium mb-2">{t('admission.modal.missing_fields_title')}:</div>
+                            <ul className="space-y-1 text-xs">
+                              {getMissingRequiredFields().map((field, index) => (
+                                <li key={index} className="flex items-start">
+                                  <span className="text-red-400 mr-2">•</span>
+                                  {field}
+                                </li>
+                              ))}
+                            </ul>
+                            {/* Tooltip Arrow */}
+                            <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900"></div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    {currentStep === 2 && (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        disabled={isSubmitting}
+                        className={`inline-flex items-center px-6 py-2 rounded-md transition-colors disabled:cursor-not-allowed ${
+                          isContactFormValid 
+                            ? 'bg-school-blue text-white hover:bg-opacity-90' 
+                            : hasAnyContactInfo 
+                              ? 'bg-orange-500 text-white hover:bg-orange-600' 
+                              : 'bg-gray-400 text-white hover:bg-gray-500'
+                        }`}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            {t('admission.modal.sending_email')}
+                          </>
+                        ) : (
+                          t('admission.modal.submit')
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </Layout>

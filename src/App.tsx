@@ -23,6 +23,7 @@ import Extracurricular from "./pages/Extracurricular";
 import Inovar from "./pages/Inovar";
 import Admission from "./pages/Admission";
 import NotFound from "./pages/NotFound";
+import TestPage from "./pages/test";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
             
             {/* Admission route */}
             <Route path="/admission" element={<Admission />} />
+            <Route path="/test" element={<TestPage />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

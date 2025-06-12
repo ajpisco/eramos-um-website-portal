@@ -540,5 +540,7 @@
   "admission.form.restoration.saved_at": "Guardado em",
   "admission.form.restoration.restore": "Continuar Candidatura",
   "admission.form.restoration.start_fresh": "Começar de Novo",
-  "admission.form.restoration.dismiss": "Dispensar"
+  "admission.form.restoration.dismiss": "Dispensar",
+  "admission.modal.success_title": "Candidatura enviada com sucesso!",
+  "admission.modal.success_message": "Obrigado pela sua candidatura. Iremos analisar as informações e entraremos em contacto em breve."
 } 
