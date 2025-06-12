@@ -82,32 +82,32 @@ const Contact = () => {
                 <div className="flex items-start">
                   <MapPin className="h-6 w-6 text-school-blue mr-4 mt-1" />
                   <div>
-                    <p className="font-medium">Eramos Um</p>
-                    <p>Rua dos Exemplos, 123</p>
-                    <p>São Paulo - SP</p>
-                    <p>CEP: 01234-567</p>
-                    <p>Brasil</p>
+                    <p className="font-medium">Éramos Um</p>
+                    <p>Praceta Vasco Morgado, nº45</p>
+                    <p>Murtal - Parede</p>
+                    <p>2775-145</p>
+                    <p>Portugal</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center">
                   <Phone className="h-6 w-6 text-school-blue mr-4" />
                   <div>
-                    <p>(11) 5555-1234</p>
-                    <p>(11) 5555-5678</p>
+                    <p>(351) 214 530 512</p>
+                    <p>(351) 964 234 322</p>
                   </div>
                 </div>
                 
                 <div className="flex items-center">
                   <Mail className="h-6 w-6 text-school-blue mr-4" />
-                  <p>contato@eramosum.edu.br</p>
+                  <p>secretaria@eramosum.pt</p>
                 </div>
               </div>
               
               {/* Map */}
               <div className="mt-8 h-64 bg-gray-200 rounded-lg overflow-hidden">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.098370227214!2d-46.65390388502164!3d-23.56518478468939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da0aa315%3A0xd59f9431f2c9776a!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%20Brazil!5e0!3m2!1sen!2suk!4v1607597790921!5m2!1sen!2suk"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3113.6716257407434!2d-9.364551324604212!3d38.70238655818796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ecf56ce733eed%3A0x87af7e626c1f13c4!2s%C3%89ramos%20Um%20-%20Cooperativa%20Ensino%20Responsabilidade%2C%20Lda.!5e0!3m2!1sen!2spt!4v1749769089721!5m2!1sen!2spt"
                   width="100%"
                   height="100%"
                   frameBorder="0"
