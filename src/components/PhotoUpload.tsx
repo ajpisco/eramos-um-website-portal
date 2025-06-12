@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Camera, Upload, X, Image as ImageIcon, Loader2, Check, AlertCircle } from 'lucide-react';
-import { uploadStudentPhoto, CloudinaryUploadResponse, generateImageUrl } from '@/services/cloudinaryService';
+import { uploadStudentPhoto, CloudinaryUploadResponse, generateImageUrl, testCloudinaryConfig } from '@/services/cloudinaryService';
 
 interface PhotoUploadProps {
   studentName: string;
@@ -51,18 +51,19 @@ export const PhotoUpload: React.FC<PhotoUploadProps> = ({
       // Clean up preview URL
       URL.revokeObjectURL(preview);
 
-      // Generate optimized URL
-      const optimizedUrl = generateImageUrl(result.public_id, {
-        width: 400,
-        height: 400,
-        crop: 'fill',
-        quality: 'auto',
-        format: 'auto'
-      });
+      // Use raw Cloudinary URL (no transformations)
+      const rawUrl = result.secure_url || result.url;
 
-      // Update with Cloudinary URL
-      setPreviewUrl(optimizedUrl);
-      onPhotoUpload(optimizedUrl, result.public_id);
+      // Update with raw Cloudinary URL
+      setPreviewUrl(rawUrl);
+      onPhotoUpload(rawUrl, result.public_id);
+
+      // Debug: Log successful upload
+      console.log('Photo upload successful:', {
+        rawUrl,
+        publicId: result.public_id,
+        originalResult: result
+      });
 
     } catch (err) {
       console.error('Upload error:', err);

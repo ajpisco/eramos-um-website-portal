@@ -21,6 +21,8 @@ export interface AdmissionFormData {
   // Student Data
   studentName: string;
   studentPhoto: File | null;
+  studentPhotoUrl: string; // Cloudinary URL
+  studentPhotoPublicId: string; // Cloudinary public ID
   studentBirthDate: string;
   studentSocialSecurity: string;
   studentAddress: string;
@@ -91,9 +93,45 @@ export interface EmailTemplate {
 }
 
 /**
- * Maps AdmissionFormData to template variables for the comprehensive application form
+ * Helper function to format date strings for display
  */
-const mapFormDataToTemplateVariables = (formData: AdmissionFormData, contactData: ContactData): TemplateVariables => {
+const formatDate = (dateString: string): string => {
+  if (!dateString) return '';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-PT');
+  } catch (error) {
+    return dateString; // Return original if parsing fails
+  }
+};
+
+/**
+ * Helper function to format time strings for display
+ */
+const formatTime = (timeString: string): string => {
+  if (!timeString) return '';
+  try {
+    // If it's already in HH:MM format, return as is
+    if (/^\d{2}:\d{2}$/.test(timeString)) {
+      return timeString;
+    }
+    // Otherwise try to parse and format
+    const date = new Date(`1970-01-01T${timeString}`);
+    return date.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+  } catch (error) {
+    return timeString; // Return original if parsing fails
+  }
+};
+
+/**
+ * Maps form data to template variables for email rendering
+ * This function extracts all relevant information from the admission form
+ * and formats it for use in email templates
+ */
+export const mapFormDataToTemplateVariables = (
+  formData: AdmissionFormData,
+  contactData: ContactData
+): TemplateVariables => {
   const now = new Date();
   const submissionDate = now.toLocaleDateString('pt-PT');
   const submissionTime = now.toLocaleTimeString('pt-PT');
@@ -109,18 +147,37 @@ const mapFormDataToTemplateVariables = (formData: AdmissionFormData, contactData
     // Contact info for subject
     contactName: contactData.name || formData.motherName || formData.fatherName || 'Candidato',
     
-    // Student data
-    studentName: formData.studentName,
-    studentBirthDate: formData.studentBirthDate,
-    studentSocialSecurity: formData.studentSocialSecurity,
-    studentAddress: formData.studentAddress,
-    studentPostalCode: formData.studentPostalCode,
-    studentCitizenCard: formData.studentCitizenCard,
-    studentNIF: formData.studentNIF,
-    registrationDate: formData.registrationDate,
-    scheduleFrom: formData.scheduleFrom,
-    scheduleTo: formData.scheduleTo,
-    studentPhotoStatus: formData.studentPhoto ? 'Fornecida' : 'Não fornecida',
+    // Student data - matching template variable names exactly
+    studentName: formData.studentName || '',
+    studentBirthDate: formatDate(formData.studentBirthDate),
+    studentSocialSecurity: formData.studentSocialSecurity || '',
+    studentAddress: formData.studentAddress || '',
+    studentPostalCode: formData.studentPostalCode || '',
+    studentCitizenCard: formData.studentCitizenCard || '',
+    studentNIF: formData.studentNIF || '',
+    registrationDate: formatDate(formData.registrationDate),
+    scheduleFrom: formatTime(formData.scheduleFrom),
+    scheduleTo: formatTime(formData.scheduleTo),
+    
+    // Photo data for "Foto" section
+    studentPhotoUrl: formData.studentPhotoUrl || '',
+    studentPhotoStatus: formData.studentPhotoUrl ? 'Fornecida' : 'Não fornecida',
+    studentPhotoDisplay: formData.studentPhotoUrl 
+      ? `<a href="${formData.studentPhotoUrl}" target="_blank" style="color:#4d7ed2;">Ver foto do aluno</a>`
+      : 'Não fornecida',
+    
+    // Legacy variable names (for backward compatibility)
+    student_name: formData.studentName || '',
+    student_photo_url: formData.studentPhotoUrl || '',
+    student_birth_date: formatDate(formData.studentBirthDate),
+    student_social_security: formData.studentSocialSecurity || '',
+    student_address: formData.studentAddress || '',
+    student_postal_code: formData.studentPostalCode || '',
+    student_citizen_card: formData.studentCitizenCard || '',
+    student_nif: formData.studentNIF || '',
+    registration_date: formatDate(formData.registrationDate),
+    schedule_from: formatTime(formData.scheduleFrom),
+    schedule_to: formatTime(formData.scheduleTo),
     
     // Authorized adults
     authorizedAdult1Name: formData.authorizedAdult1Name,

@@ -1,9 +1,16 @@
 // Cloudinary Service
 // Handles image uploads for the admission form
 
-// Configuration - These should be environment variables in production
-const CLOUDINARY_CLOUD_NAME = 'your-cloud-name'; // Replace with your cloud name
-const CLOUDINARY_UPLOAD_PRESET = 'unsigned_uploads'; // Replace with your upload preset
+// Configuration from environment variables
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY;
+const CLOUDINARY_API_SECRET = import.meta.env.VITE_CLOUDINARY_API_SECRET;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'unsigned_uploads';
+
+// Validate configuration
+if (!CLOUDINARY_CLOUD_NAME) {
+  console.error('Cloudinary configuration missing: VITE_CLOUDINARY_CLOUD_NAME is required');
+}
 
 // Upload response interface
 export interface CloudinaryUploadResponse {
@@ -23,6 +30,26 @@ export interface CloudinaryUploadResponse {
 }
 
 /**
+ * Generate signature for signed uploads (requires API secret)
+ * This should ideally be done on the backend for security
+ */
+const generateSignature = (params: Record<string, any>): string => {
+  if (!CLOUDINARY_API_SECRET) {
+    throw new Error('CLOUDINARY_API_SECRET is required for signed uploads');
+  }
+  
+  // Sort parameters
+  const sortedParams = Object.keys(params)
+    .sort()
+    .map(key => `${key}=${params[key]}`)
+    .join('&');
+  
+  // In a real implementation, you'd use crypto to generate SHA1 hash
+  // For now, we'll use unsigned uploads
+  return sortedParams + CLOUDINARY_API_SECRET;
+};
+
+/**
  * Upload image directly to Cloudinary using fetch API
  * This is the primary method for uploading student photos
  * 
@@ -36,6 +63,11 @@ export const uploadStudentPhoto = async (
   studentName: string,
   onProgress?: (progress: number) => void
 ): Promise<CloudinaryUploadResponse> => {
+  // Validate configuration
+  if (!CLOUDINARY_CLOUD_NAME) {
+    throw new Error('Cloudinary is not configured. Please set VITE_CLOUDINARY_CLOUD_NAME environment variable.');
+  }
+
   // Validate file
   if (!file) {
     throw new Error('No file provided');
@@ -55,19 +87,24 @@ export const uploadStudentPhoto = async (
   // Create form data
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
   
   // Create a unique public_id based on student name and timestamp
   const sanitizedName = studentName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
   const timestamp = Date.now();
-  const publicId = `admission_photos/student_${sanitizedName}_${timestamp}`;
+  const publicId = `admission_photos/${sanitizedName}_${timestamp}`;
+  
+  // Add required fields for unsigned upload
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
   formData.append('public_id', publicId);
   
-  // Add folder organization
-  formData.append('folder', 'admission_photos');
-  
-  // Add transformation for optimization
-  formData.append('eager', 'c_fill,h_400,w_400,q_auto,f_auto');
+  // Debug logging
+  console.log('Cloudinary Upload Configuration:', {
+    cloudName: CLOUDINARY_CLOUD_NAME,
+    uploadPreset: CLOUDINARY_UPLOAD_PRESET,
+    publicId: publicId,
+    fileSize: file.size,
+    fileType: file.type
+  });
 
   try {
     const xhr = new XMLHttpRequest();
@@ -88,24 +125,52 @@ export const uploadStudentPhoto = async (
         if (xhr.status === 200) {
           try {
             const response = JSON.parse(xhr.responseText) as CloudinaryUploadResponse;
+            console.log('Cloudinary upload successful:', response);
             resolve(response);
           } catch (error) {
+            console.error('Failed to parse Cloudinary response:', xhr.responseText);
             reject(new Error('Failed to parse upload response'));
           }
         } else {
-          reject(new Error(`Upload failed with status: ${xhr.status}`));
+          // Log detailed error information
+          console.error('Cloudinary upload failed:', {
+            status: xhr.status,
+            statusText: xhr.statusText,
+            response: xhr.responseText
+          });
+          
+          let errorMessage = `Upload failed with status: ${xhr.status}`;
+          
+          // Try to parse error response for more details
+          try {
+            const errorResponse = JSON.parse(xhr.responseText);
+            if (errorResponse.error && errorResponse.error.message) {
+              errorMessage = `Cloudinary Error: ${errorResponse.error.message}`;
+            }
+          } catch (e) {
+            // If we can't parse the error, use the status text
+            if (xhr.statusText) {
+              errorMessage += ` (${xhr.statusText})`;
+            }
+          }
+          
+          reject(new Error(errorMessage));
         }
       };
 
       xhr.onerror = () => {
+        console.error('Network error during upload');
         reject(new Error('Upload failed - network error'));
       };
 
       // Send request
-      xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`);
+      const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+      console.log('Uploading to:', uploadUrl);
+      xhr.open('POST', uploadUrl);
       xhr.send(formData);
     });
   } catch (error) {
+    console.error('Upload setup error:', error);
     throw new Error(`Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 };
@@ -125,6 +190,11 @@ export const generateImageUrl = (
     format?: 'auto' | 'jpg' | 'png' | 'webp';
   } = {}
 ): string => {
+  if (!CLOUDINARY_CLOUD_NAME) {
+    console.error('Cloudinary cloud name not configured');
+    return '';
+  }
+
   const {
     width = 400,
     height = 400,
@@ -166,6 +236,12 @@ export const openUploadWidget = (
   onSuccess: (result: CloudinaryUploadResponse) => void,
   onError: (error: string) => void
 ): void => {
+  // Validate configuration
+  if (!CLOUDINARY_CLOUD_NAME) {
+    onError('Cloudinary is not configured. Please set VITE_CLOUDINARY_CLOUD_NAME environment variable.');
+    return;
+  }
+
   // Check if Cloudinary widget is loaded
   if (typeof window === 'undefined' || !window.cloudinary) {
     onError('Cloudinary widget not loaded');
@@ -174,7 +250,7 @@ export const openUploadWidget = (
 
   const sanitizedName = studentName.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
   const timestamp = Date.now();
-  const publicId = `admission_photos/student_${sanitizedName}_${timestamp}`;
+  const publicId = `admission_photos/${sanitizedName}_${timestamp}`;
 
   window.cloudinary.openUploadWidget(
     {
@@ -270,6 +346,66 @@ export const loadCloudinaryWidget = (): Promise<void> => {
 
     document.head.appendChild(script);
   });
+};
+
+/**
+ * Test Cloudinary configuration
+ * This function helps debug configuration issues
+ */
+export const testCloudinaryConfig = async (): Promise<void> => {
+  console.log('Testing Cloudinary Configuration...');
+  
+  // Check environment variables
+  console.log('Environment Variables:', {
+    VITE_CLOUDINARY_CLOUD_NAME: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
+    VITE_CLOUDINARY_UPLOAD_PRESET: import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+    hasApiKey: !!import.meta.env.VITE_CLOUDINARY_API_KEY,
+    hasApiSecret: !!import.meta.env.VITE_CLOUDINARY_API_SECRET
+  });
+  
+  // Check if required variables are set
+  if (!CLOUDINARY_CLOUD_NAME) {
+    console.error('❌ VITE_CLOUDINARY_CLOUD_NAME is not set');
+    return;
+  }
+  
+  if (!CLOUDINARY_UPLOAD_PRESET) {
+    console.error('❌ VITE_CLOUDINARY_UPLOAD_PRESET is not set');
+    return;
+  }
+  
+  console.log('✅ Basic configuration looks good');
+  console.log('Cloud Name:', CLOUDINARY_CLOUD_NAME);
+  console.log('Upload Preset:', CLOUDINARY_UPLOAD_PRESET);
+  
+  // Test upload preset by making a simple request
+  try {
+    const testFormData = new FormData();
+    testFormData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+      method: 'POST',
+      body: testFormData
+    });
+    
+    const result = await response.text();
+    
+    if (response.status === 400) {
+      console.error('❌ Upload preset test failed with 400:', result);
+      try {
+        const errorData = JSON.parse(result);
+        if (errorData.error) {
+          console.error('Error details:', errorData.error);
+        }
+      } catch (e) {
+        console.error('Could not parse error response');
+      }
+    } else {
+      console.log('✅ Upload preset is accessible (expected error due to no file)');
+    }
+  } catch (error) {
+    console.error('❌ Network error testing upload preset:', error);
+  }
 };
 
 export default {

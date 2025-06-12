@@ -342,9 +342,31 @@ const Admission = () => {
     
     setIsSubmitting(true);
     
+    // Debug: Log form data before submission
+    console.log('Form submission debug:', {
+      studentPhotoUrl: formData.studentPhotoUrl,
+      studentPhotoPublicId: formData.studentPhotoPublicId,
+      studentPhotoData: studentPhotoData,
+      formDataKeys: Object.keys(formData),
+      hasPhotoUrl: !!formData.studentPhotoUrl
+    });
+    
+    // Fix: Ensure photo URL is in formData if we have studentPhotoData
+    const finalFormData = { ...formData };
+    if (!finalFormData.studentPhotoUrl && studentPhotoData?.url) {
+      console.log('Fixing missing studentPhotoUrl from studentPhotoData');
+      finalFormData.studentPhotoUrl = studentPhotoData.url;
+      finalFormData.studentPhotoPublicId = studentPhotoData.publicId;
+    }
+    
+    console.log('Final form data for submission:', {
+      studentPhotoUrl: finalFormData.studentPhotoUrl,
+      studentPhotoPublicId: finalFormData.studentPhotoPublicId
+    });
+    
     try {
       // Send comprehensive admission application form with full HTML template
-      const emailResult = await sendAdmissionApplicationForm(formData, contactData);
+      const emailResult = await sendAdmissionApplicationForm(finalFormData, contactData);
       
       // Close modal and show appropriate success/error message
       handleCloseModal();
@@ -468,7 +490,7 @@ const Admission = () => {
   // Update validation - no longer block submission, just visual feedback
   const isContactFormValid = contactData.name.trim() && contactData.email.trim() && contactData.email.includes('@') && contactData.phone.trim();
   const hasAnyContactInfo = contactData.name.trim() || contactData.email.trim() || contactData.phone.trim();
-
+  
   const requirements = [
     {
       title: t('admission.requirements.age.title'),
@@ -518,15 +540,24 @@ const Admission = () => {
 
   // Photo upload handlers
   const handlePhotoUpload = (url: string, publicId: string) => {
+    console.log('Admission: handlePhotoUpload called', { url, publicId });
     setStudentPhotoData({ url, publicId });
-    setFormData(prev => ({
-      ...prev,
-      studentPhotoUrl: url,
-      studentPhotoPublicId: publicId
-    }));
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        studentPhotoUrl: url,
+        studentPhotoPublicId: publicId
+      };
+      console.log('Admission: Updated formData with photo', { 
+        studentPhotoUrl: updated.studentPhotoUrl, 
+        studentPhotoPublicId: updated.studentPhotoPublicId 
+      });
+      return updated;
+    });
   };
 
   const handlePhotoRemove = () => {
+    console.log('Admission: handlePhotoRemove called');
     setStudentPhotoData(null);
     setFormData(prev => ({
       ...prev,
@@ -535,6 +566,18 @@ const Admission = () => {
       studentPhotoPublicId: ''
     }));
   };
+
+  // Sync studentPhotoData with formData if they get out of sync
+  useEffect(() => {
+    if (studentPhotoData && !formData.studentPhotoUrl) {
+      console.log('Syncing studentPhotoData to formData');
+      setFormData(prev => ({
+        ...prev,
+        studentPhotoUrl: studentPhotoData.url,
+        studentPhotoPublicId: studentPhotoData.publicId
+      }));
+    }
+  }, [studentPhotoData, formData.studentPhotoUrl]);
 
   return (
     <Layout>
@@ -581,16 +624,16 @@ const Admission = () => {
                     <Calendar className="mr-2 h-5 w-5" />
                     {t('admission.schedule_visit')}
                   </a>
-                  <a 
-                    href="#" 
-                    className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
+                <a 
+                  href="#" 
+                  className="inline-flex items-center px-6 py-3 bg-school-blue text-white rounded-md hover:bg-opacity-90 transition-colors"
                     onClick={(e) => {
                       e.preventDefault();
                       handleOpenModal();
                     }}
-                  >
+                >
                     {t('admission.apply_online')}
-                  </a>
+                </a>
                 </div>
               </div>
             </section>

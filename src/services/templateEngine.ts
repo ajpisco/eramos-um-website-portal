@@ -52,17 +52,25 @@ const processConditionalBlocks = (template: string, variables: TemplateVariables
 export const sanitizeVariables = (variables: TemplateVariables): TemplateVariables => {
   const sanitized: TemplateVariables = {};
   
+  // Variables that contain safe HTML and should not be sanitized
+  const safeHtmlVariables = ['studentPhotoDisplay'];
+  
   Object.entries(variables).forEach(([key, value]) => {
     if (value) {
-      // Basic HTML escape for email safety
-      sanitized[key] = value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#x27;')
-        // Convert line breaks to HTML for email display
-        .replace(/\n/g, '<br>');
+      if (safeHtmlVariables.includes(key)) {
+        // Don't sanitize safe HTML variables
+        sanitized[key] = value;
+      } else {
+        // Basic HTML escape for email safety
+        sanitized[key] = value
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#x27;')
+          // Convert line breaks to HTML for email display
+          .replace(/\n/g, '<br>');
+      }
     } else {
       sanitized[key] = value;
     }

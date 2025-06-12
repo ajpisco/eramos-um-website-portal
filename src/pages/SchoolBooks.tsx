@@ -11,10 +11,10 @@ const SchoolBooks = () => {
   const books = {
     grade1: [
       {
-        subject: language === 'en' ? 'Mathematics' : 'Matemática',
-        title: language === 'en' ? 'Math Adventures 1' : 'Aventuras Matemáticas 1',
-        author: 'Maria Silva',
-        publisher: 'Educational Press',
+        subject: t('books.subject.math'),
+        title: t('books.title.math_adventures_1'),
+        author: t('books.author.maria_silva'),
+        publisher: t('books.publisher.educational_press'),
         isbn: '978-3-16-148410-0'
       },
       {
@@ -140,10 +140,10 @@ const SchoolBooks = () => {
 
   const bookstores = [
     {
-      name: language === 'en' ? 'Academic Bookstore' : 'Livraria Acadêmica',
-      address: 'Rua dos Livros, 123',
-      phone: '(11) 5555-9876',
-      website: 'www.academicbooks.com.br'
+      name: t('books.store.academic'),
+      address: t('books.store.academic_address'),
+      phone: t('books.store.academic_phone'),
+      website: t('books.store.academic_website')
     },
     {
       name: language === 'en' ? 'School Central' : 'Central Escolar',

@@ -176,3 +176,46 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+## Environment Variables
+
+Copy `env.example` to `.env` and fill in your actual values:
+
+```bash
+cp env.example .env
+```
+
+### Required Environment Variables
+
+#### Cloudinary Configuration (for photo uploads)
+```bash
+VITE_CLOUDINARY_CLOUD_NAME=your-cloud-name
+VITE_CLOUDINARY_API_KEY=your-api-key
+VITE_CLOUDINARY_API_SECRET=your-api-secret
+VITE_CLOUDINARY_UPLOAD_PRESET=unsigned_uploads
+```
+
+**To set up Cloudinary:**
+1. Create a free account at [Cloudinary](https://cloudinary.com/)
+2. Go to your [Dashboard](https://cloudinary.com/console)
+3. Copy your Cloud Name, API Key, and API Secret
+4. Create an unsigned upload preset:
+   - Go to Settings → Upload → Upload presets
+   - Click "Add upload preset"
+   - Set Mode to "Unsigned"
+   - Set Folder to "admission_photos" (optional)
+   - Save the preset and copy its name
+
+#### EmailJS Configuration (for email notifications)
+```bash
+VITE_EMAILJS_SERVICE_ID=your-service-id
+VITE_EMAILJS_TEMPLATE_ID=your-template-id
+VITE_EMAILJS_PUBLIC_KEY=your-public-key
+```
+
+#### School Configuration
+```bash
+VITE_SCHOOL_EMAIL=contact@eramosum.edu.pt
+VITE_SCHOOL_PHONE=+351-xxx-xxx-xxx
+VITE_ADMISSIONS_EMAIL=admissions@eramosum.edu.pt
+```

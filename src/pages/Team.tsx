@@ -18,17 +18,17 @@ const TeamPage = () => {
   // Board members
   const boardMembers: TeamMember[] = [
     {
-      name: "Alexandrina Ildefonso",
+      name: t('team.alexandrina_ildefonso'),
       role: t('team_elementary_teacher'),
       imageUrl: placeholderImg,
     },
     {
-      name: "João Seguro",
+      name: t('team.joao_seguro'),
       role: language === 'en' ? `${t('team_teacher')} & ${t('team_study_room_head')} (7th-9th Grades)` : `${t('team_teacher')} e ${t('team_study_room_head')} (Salas de Estudo 7º-9º Ano)`,
       imageUrl: placeholderImg,
     },
     {
-      name: "Diogo Seguro",
+      name: t('team.diogo_seguro'),
       role: language === 'en' ? `${t('team_study_room_head')} (5th-6th Grades)` : `${t('team_study_room_head')} (Salas de Estudo 5º-6º Ano)`,
       imageUrl: placeholderImg,
     }
@@ -36,9 +36,9 @@ const TeamPage = () => {
 
   // All teachers (elementary and kindergarten)
   const teachers: TeamMember[] = [
-    { name: "Carla Moreira", role: t('team_elementary_teacher'), imageUrl: placeholderImg },
-    { name: "Rita Cardoso", role: t('team_elementary_teacher'), imageUrl: placeholderImg },
-    { name: "Raquel Monteiro", role: t('team_elementary_teacher'), imageUrl: placeholderImg },
+    { name: t('team.carla_moreira'), role: t('team_elementary_teacher'), imageUrl: placeholderImg },
+    { name: t('team.rita_cardoso'), role: t('team_elementary_teacher'), imageUrl: placeholderImg },
+    { name: t('team.raquel_monteiro'), role: t('team_elementary_teacher'), imageUrl: placeholderImg },
     {
       name: "Andreia Ferreira",
       role: t('team_pe'),
@@ -59,52 +59,52 @@ const TeamPage = () => {
       role: t('team_music_teacher'),
       imageUrl: placeholderImg,
     },
-    { name: "Catarina Oliveira", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
-    { name: "Catarina Dias", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
-    { name: "Christina Ashley", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
-    { name: "Joana Goulart", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
-    { name: "Catarina Lopes", role: t('team_kindergarten_teacher'), imageUrl: placeholderImg }
+    { name: t('team.catarina_oliveira'), role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: t('team.catarina_dias'), role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: t('team.christina_ashley'), role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: t('team.joana_goulart'), role: t('team_kindergarten_teacher'), imageUrl: placeholderImg },
+    { name: t('team.catarina_lopes'), role: t('team_kindergarten_teacher'), imageUrl: placeholderImg }
   ];
   
   // Operational staff
   const operational: TeamMember[] = [
     {
-      name: "João Ildefonso", // Moved from Assistants
+      name: t('team.joao_ildefonso'),
       role: t('team_school_driver'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Teresa Gonçalves",
+      name: t('team.teresa_goncalves'),
       role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Mónica Fernandes",
+      name: t('team.monica_fernandes'),
       role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Marta Monteiro",
+      name: t('team.marta_monteiro'),
       role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Sílvia Porêlo",
+      name: t('team.silvia_porelo'),
       role: t('team_operational_assistant'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Maria dos Anjos",
+      name: t('team.maria_dos_anjos'),
       role: t('team_cook'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Andreia Valido",
+      name: t('team.andreia_valido'),
       role: t('team_cook_assistant'),
       imageUrl: placeholderImg,
     },
     {
-      name: "Nuno",
+      name: t('team.nuno'),
       role: t('team_maintenance_assistant'),
       imageUrl: placeholderImg,
     }
@@ -113,7 +113,7 @@ const TeamPage = () => {
   // Administrative staff
   const administrative: TeamMember[] = [
     {
-      name: "Fátima Monteiro",
+      name: t('team.fatima_monteiro'),
       role: t('team_administrative_assistant'),
       imageUrl: placeholderImg,
     }
@@ -150,7 +150,7 @@ const TeamPage = () => {
           ))}
         </div>
       ) : (
-        <p className="text-gray-600">{language === 'en' ? 'Team members coming soon.' : 'Membros da equipa em breve.'}</p>
+        <p className="text-gray-600">{t('team.coming_soon')}</p>
       )}
     </section>
   );

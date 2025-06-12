@@ -442,13 +442,19 @@ const AdmissionFormHTML: React.FC<AdmissionFormHTMLProps> = ({
               <PhotoUpload
                 studentName={formData.studentName || 'Student'}
                 onPhotoUpload={(url, publicId) => {
+                  console.log('AdmissionFormHTML: Photo upload callback called', { url, publicId });
                   if (onPhotoUpload) {
                     onPhotoUpload(url, publicId);
                   }
                   handleInputChange('studentPhotoUrl', url);
                   handleInputChange('studentPhotoPublicId', publicId);
+                  console.log('AdmissionFormHTML: Updated form data with photo', { 
+                    studentPhotoUrl: url, 
+                    studentPhotoPublicId: publicId 
+                  });
                 }}
                 onPhotoRemove={() => {
+                  console.log('AdmissionFormHTML: Photo remove callback called');
                   if (onPhotoRemove) {
                     onPhotoRemove();
                   }
