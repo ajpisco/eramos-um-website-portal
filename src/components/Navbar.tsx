@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageToggle from "./LanguageToggle";
@@ -8,16 +8,55 @@ import {
   ChevronDown,
   ChevronRight
 } from "lucide-react";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import logo from '@/assets/logos/main.png';
+
+// Custom Dropdown Component
+interface DropdownProps {
+  trigger: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Dropdown = ({ trigger, children, className }: DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        className={className}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {trigger}
+        <ChevronDown className={`ml-1 h-3 w-3 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      
+      {isOpen && (
+        <div
+          className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-50 min-w-[200px]"
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
+          {children}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Navbar = () => {
   const { t, language } = useLanguage();
@@ -64,126 +103,94 @@ const Navbar = () => {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {/* School Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
-                    {t('nav.school')}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[200px] gap-1 p-2">
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/about" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.about')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/team" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.team')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/regulation" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.regulation')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+            <div className="flex items-center space-x-1">
+              {/* School Dropdown */}
+              <Dropdown
+                trigger={t('nav.school')}
+                className={`navbar-link hover:bg-transparent ${navTextColor} flex items-center`}
+              >
+                <ul className="py-2">
+                  <li>
+                    <Link to="/about" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.about')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/team" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.team')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/regulation" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.regulation')}
+                    </Link>
+                  </li>
+                </ul>
+              </Dropdown>
 
-                {/* Daily Life Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
-                    {t('nav.daily')}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[200px] gap-1 p-2">
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/lunch-menu" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.lunch')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/dress-code" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.dress')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/class-schedules" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.schedule')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/school-books" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.books')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/academic-calendar" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.calendar')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+              {/* Daily Life Dropdown */}
+              <Dropdown
+                trigger={t('nav.daily')}
+                className={`navbar-link hover:bg-transparent ${navTextColor} flex items-center`}
+              >
+                <ul className="py-2">
+                  <li>
+                    <Link to="/lunch-menu" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.lunch')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/dress-code" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.dress')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/class-schedules" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.schedule')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/school-books" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.books')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/academic-calendar" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.calendar')}
+                    </Link>
+                  </li>
+                </ul>
+              </Dropdown>
 
-                {/* Programs & Services Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className={`navbar-link hover:bg-transparent ${navTextColor}`}>
-                    {t('nav.programs')}
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid w-[200px] gap-1 p-2">
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/extracurricular" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.extracurricular')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                      <li>
-                        <NavigationMenuLink asChild>
-                          <Link to="/inovar" className="block p-2 hover:bg-slate-100 rounded-md">
-                            {t('nav.inovar')}
-                          </Link>
-                        </NavigationMenuLink>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+              {/* Programs & Services Dropdown */}
+              <Dropdown
+                trigger={t('nav.programs')}
+                className={`navbar-link hover:bg-transparent ${navTextColor} flex items-center`}
+              >
+                <ul className="py-2">
+                  <li>
+                    <Link to="/extracurricular" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.extracurricular')}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/inovar" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
+                      {t('nav.inovar')}
+                    </Link>
+                  </li>
+                </ul>
+              </Dropdown>
 
-                {/* Admissions Link */}
-                <NavigationMenuItem>
-                  <Link to="/admission" className={`navbar-link ${navTextColor}`}>
-                    {t('nav.admission')}
-                  </Link>
-                </NavigationMenuItem>
+              {/* Admissions Link */}
+              <Link to="/admission" className={`navbar-link ${navTextColor}`}>
+                {t('nav.admission')}
+              </Link>
 
-                {/* Contact Link */}
-                <NavigationMenuItem>
-                  <Link to="/contact" className={`navbar-link ${navTextColor} ${isActive('/contact') ? 'active-link' : ''}`}>
-                    {t('nav.contact')}
-                  </Link>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+              {/* Contact Link */}
+              <Link to="/contact" className={`navbar-link ${navTextColor} ${isActive('/contact') ? 'active-link' : ''}`}>
+                {t('nav.contact')}
+              </Link>
+            </div>
             
             <div className="ml-6">
               <LanguageToggle isDarkMode={shouldUseDarkText} />
