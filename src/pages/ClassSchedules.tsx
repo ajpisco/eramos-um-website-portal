@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
-import { CalendarDays, Clock } from "lucide-react";
-import { ScheduleRow, SubOption } from "@/types/schedules";
+import { CalendarDays } from "lucide-react";
+import { SubOption } from "@/types/schedules";
 import { getDaycareSchedules } from "@/data/schedules/daycare";
 import { getKindergartenSchedules } from "@/data/schedules/kindergarten";
-import { getElementarySchedules } from "@/data/schedules/elementary";
+import { getElementarySchedules, getElementaryTeachers } from "@/data/schedules/elementary";
+import UniversalScheduleCalendar from "@/components/UniversalScheduleCalendar";
 
 const ClassSchedules = () => {
   const { t, language } = useLanguage();
@@ -15,6 +16,7 @@ const ClassSchedules = () => {
   const daycareSchedules = getDaycareSchedules(language);
   const kindergartenSchedules = getKindergartenSchedules(language);
   const elementarySchedules = getElementarySchedules(language);
+  const elementaryTeachers = getElementaryTeachers(language);
 
   const tabSubOptions: Record<string, SubOption[]> = {
     daycare: [
@@ -56,6 +58,21 @@ const ClassSchedules = () => {
     setActiveSubOption(subOption);
   };
 
+  // Get room name for display
+  const getRoomName = (subOption: SubOption) => {
+    if (activeMainTab === 'elementary') {
+      const gradeKey = subOption.key.replace('e', 'grade');
+      const teacher = elementaryTeachers[gradeKey] || '';
+      return `${t(subOption.labelKey)} - ${teacher}`;
+    }
+    return t(subOption.labelKey);
+  };
+
+  // Get schedule type for the calendar
+  const getScheduleType = (): 'daycare' | 'kindergarten' | 'elementary' => {
+    return activeMainTab as 'daycare' | 'kindergarten' | 'elementary';
+  };
+
   return (
     <Layout>
       <div className="pt-24 pb-16">
@@ -67,13 +84,13 @@ const ClassSchedules = () => {
             </h1>
           </div>
           
-          <div className="max-w-5xl mx-auto">
-            <p className="text-lg text-gray-700 text-center mb-4">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-lg text-gray-700 text-center mb-6">
               {t('schedules.intro')}
             </p>
             
             {/* Main Tabs */}
-            <div className="flex justify-center mb-2">
+            <div className="flex justify-center mb-4">
               <div className="inline-flex bg-gray-100 rounded-lg p-1">
                 <button 
                   onClick={() => handleMainTabClick("daycare")} 
@@ -93,7 +110,7 @@ const ClassSchedules = () => {
               </div>
             </div>
 
-            {/* Sub-Option Tabs */}
+            {/* Sub-Option Tabs (Room/Grade Selection) */}
             {activeMainTab && tabSubOptions[activeMainTab] && (
               <div className="flex justify-center mb-8">
                 <div className="inline-flex bg-gray-100 rounded-lg p-1 mt-1">
@@ -109,37 +126,13 @@ const ClassSchedules = () => {
               </div>
             )}
             
-            {/* Schedule Table Display Logic */}
+            {/* Universal Calendar Display */}
             {activeSubOption && activeSubOption.scheduleData ? (
-              <div className="bg-white p-4 rounded-lg shadow-md overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-4 py-3 border-b text-left">{language === 'en' ? 'Time' : 'Horário'}</th>
-                      <th className="px-4 py-3 border-b text-left">{language === 'en' ? 'Monday' : 'Segunda'}</th>
-                      <th className="px-4 py-3 border-b text-left">{language === 'en' ? 'Tuesday' : 'Terça'}</th>
-                      <th className="px-4 py-3 border-b text-left">{language === 'en' ? 'Wednesday' : 'Quarta'}</th>
-                      <th className="px-4 py-3 border-b text-left">{language === 'en' ? 'Thursday' : 'Quinta'}</th>
-                      <th className="px-4 py-3 border-b text-left">{language === 'en' ? 'Friday' : 'Sexta'}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {activeSubOption.scheduleData.map((row, index) => (
-                      <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="px-4 py-3 border-b flex items-center">
-                          <Clock className="h-4 w-4 mr-1 text-school-blue" />
-                          {row.time}
-                        </td>
-                        <td className="px-4 py-3 border-b">{row.monday}</td>
-                        <td className="px-4 py-3 border-b">{row.tuesday}</td>
-                        <td className="px-4 py-3 border-b">{row.wednesday}</td>
-                        <td className="px-4 py-3 border-b">{row.thursday}</td>
-                        <td className="px-4 py-3 border-b">{row.friday}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <UniversalScheduleCalendar
+                scheduleData={activeSubOption.scheduleData}
+                roomName={getRoomName(activeSubOption)}
+                scheduleType={getScheduleType()}
+              />
             ) : (
               <div className="bg-white p-8 rounded-lg shadow-md text-center">
                 <p className="text-gray-600">

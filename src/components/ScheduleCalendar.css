@@ -1,0 +1,230 @@
+/* Custom styles for react-big-calendar */
+.rbc-calendar {
+  font-family: inherit;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.rbc-header {
+  padding: 8px 4px;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.rbc-time-view {
+  border: 1px solid #e2e8f0;
+}
+
+.rbc-time-header {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.rbc-time-content {
+  border-top: none;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.rbc-time-slot {
+  border-top: 1px solid #f8fafc;
+}
+
+.rbc-event {
+  border-radius: 4px;
+  border: none !important;
+  padding: 2px 4px;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.rbc-event-content {
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.rbc-time-gutter {
+  background-color: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+}
+
+.rbc-time-gutter .rbc-timeslot-group {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.rbc-day-slot {
+  border-left: 1px solid #f1f5f9;
+}
+
+.rbc-day-slot:first-child {
+  border-left: none;
+}
+
+/* Hide weekend columns - Sunday (first) and Saturday (last) */
+.rbc-time-view .rbc-header:first-child,
+.rbc-time-view .rbc-day-slot:first-child {
+  display: none;
+}
+
+.rbc-time-view .rbc-header:last-child,
+.rbc-time-view .rbc-day-slot:last-child {
+  display: none;
+}
+
+/* Target the specific Sunday column that appears after time gutter */
+.rbc-time-view .rbc-time-content .rbc-day-slot:first-of-type {
+  display: none !important;
+}
+
+/* Target the Saturday column at the end */
+.rbc-time-view .rbc-time-content .rbc-day-slot:last-of-type {
+  display: none !important;
+}
+
+/* Alternative targeting for the empty Sunday column */
+.rbc-time-view .rbc-day-slot:has(.rbc-events-container:empty) {
+  display: none !important;
+}
+
+/* Hide all-day event header */
+.rbc-allday-cell,
+.rbc-time-header .rbc-allday-cell,
+.rbc-time-view .rbc-allday-cell {
+  display: none !important;
+}
+
+/* More targeted approach to hide all-day row */
+.rbc-time-view .rbc-time-header .rbc-row.rbc-row-segment {
+  display: none !important;
+  height: 0 !important;
+}
+
+.rbc-time-header-content {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Ensure proper width distribution for 5 weekdays */
+.rbc-time-view .rbc-header {
+  width: 20% !important;
+  flex: 1;
+}
+
+.rbc-time-view .rbc-day-slot {
+  width: 20% !important;
+  flex: 1;
+}
+
+.rbc-event:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.rbc-toolbar {
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.rbc-toolbar button {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #374151;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+  color: white;
+}
+
+.rbc-toolbar-label {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 18px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .rbc-calendar {
+    font-size: 12px;
+  }
+  
+  .rbc-header {
+    padding: 6px 2px;
+    font-size: 12px;
+  }
+  
+  .rbc-event {
+    font-size: 10px;
+    padding: 1px 2px;
+  }
+  
+  .rbc-event-content {
+    font-size: 10px;
+  }
+  
+  .rbc-time-gutter {
+    width: 50px;
+  }
+  
+  .rbc-time-header-gutter {
+    width: 50px;
+  }
+}
+
+/* Week view specific styles */
+.rbc-time-view .rbc-day-slot .rbc-events-container {
+  margin-right: 2px;
+}
+
+.rbc-time-view .rbc-day-slot .rbc-event {
+  margin: 1px 2px 1px 0;
+}
+
+/* Day view specific styles */
+.rbc-time-view.rbc-day-view .rbc-day-slot .rbc-event {
+  margin: 1px 4px 1px 0;
+}
+
+/* Custom scrollbar for time view */
+.rbc-time-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rbc-time-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.rbc-time-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Adjust time gutter width for better mobile experience */
+@media (max-width: 640px) {
+  .rbc-time-view .rbc-time-gutter {
+    width: 50px;
+  }
+  
+  .rbc-time-view .rbc-time-gutter .rbc-time-slot {
+    font-size: 10px;
+    padding: 2px;
+  }
+} 

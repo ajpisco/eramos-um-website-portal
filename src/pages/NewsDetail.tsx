@@ -1,9 +1,11 @@
+import React from 'react';
 import { useParams, Navigate, Link } from "react-router-dom";
 import { useLanguage } from "@/context/LanguageContext";
 import Layout from "@/components/Layout";
 import { newsData } from "@/data/news";
+import PhotoGallery from '@/components/PhotoGallery';
 
-const NewsDetail = () => {
+const NewsDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { t, language } = useLanguage();
 
@@ -60,6 +62,14 @@ const NewsDetail = () => {
                 </p>
               </div>
             </div>
+
+            {/* Photo Gallery */}
+            {newsItem.photos && newsItem.photos.length > 0 && (
+              <PhotoGallery
+                photos={newsItem.photos}
+                showTitle={true}
+              />
+            )}
 
             {/* Back to News Link */}
             <div className="mt-12 text-center">
