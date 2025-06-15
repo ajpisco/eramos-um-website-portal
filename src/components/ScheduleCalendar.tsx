@@ -48,44 +48,42 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({ selectedGrade = 'gr
     
     const events: ScheduleEvent[] = [];
     const baseDate = moment().startOf('week').add(1, 'day'); // Start from Monday
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
     
-    schedule.forEach((row) => {
-      const timeStr = row.time;
-      let timeHour = 8;
-      let timeMinute = 0;
-      
-      // Parse time string - format is "HH:MM"
-      if (timeStr.includes(':')) {
-        const [hourStr, minuteStr] = timeStr.split(':');
-        timeHour = parseInt(hourStr);
-        timeMinute = parseInt(minuteStr || '0');
-      }
-      
-      // Calculate end time (assuming 1-hour slots, except for breaks)
-      let duration = 60; // minutes
-      
-      // Create events for each day of the week
-      const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-      days.forEach((day, dayIndex) => {
-        const subject = row[day as keyof typeof row];
+    days.forEach((day, dayIndex) => {
+      const daySchedule = schedule[day as keyof typeof schedule] || [];
+      daySchedule.forEach((row) => {
+        const timeStr = row.time;
+        let timeHour = 8;
+        let timeMinute = 0;
+        let duration = row.duration || 60;
+        
+        // Parse time string - format is "HH:MM" or "HH:MM-HH:MM"
+        if (timeStr.includes('-')) {
+          const [startTime] = timeStr.split('-');
+          const [hourStr, minuteStr] = startTime.split(':');
+          timeHour = parseInt(hourStr);
+          timeMinute = parseInt(minuteStr || '0');
+        } else if (timeStr.includes(':')) {
+          const [hourStr, minuteStr] = timeStr.split(':');
+          timeHour = parseInt(hourStr);
+          timeMinute = parseInt(minuteStr || '0');
+        }
+        
+        const subject = row.subject;
         if (subject && subject.trim() !== '') {
           const eventDate = baseDate.clone().add(dayIndex, 'days');
           const startDateTime = eventDate.clone().hour(timeHour).minute(timeMinute);
           
-          // Determine event type and duration based on subject content
+          // Determine event type based on subject content
           let eventType: 'class' | 'break' | 'lunch' | 'snack' = 'class';
           const subjectLower = subject.toLowerCase();
           if (subjectLower.includes('intervalo') || subjectLower.includes('break')) {
             eventType = 'break';
-            duration = 30;
           } else if (subjectLower.includes('almoço') || subjectLower.includes('lunch')) {
             eventType = 'lunch';
-            duration = 60;
           } else if (subjectLower.includes('lanche') || subjectLower.includes('snack')) {
             eventType = 'snack';
-            duration = 30;
-          } else {
-            duration = 60; // Regular class duration
           }
           
           const endDateTime = startDateTime.clone().add(duration, 'minutes');
@@ -229,34 +227,6 @@ const ScheduleCalendar: React.FC<ScheduleCalendarProps> = ({ selectedGrade = 'gr
               </button>
             </div>
           </div>
-        </div>
-      </div>
-      
-      {/* Legend */}
-      <div className="mb-4 flex flex-wrap gap-4 text-sm">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span>{language === 'en' ? 'Portuguese' : 'Português'}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span>{language === 'en' ? 'Mathematics' : 'Matemática'}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-cyan-500 rounded"></div>
-          <span>{language === 'en' ? 'English' : 'Inglês'}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-          <span>{language === 'en' ? 'Physical Education' : 'Ed. Física'}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span>{language === 'en' ? 'Break' : 'Intervalo'}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-orange-500 rounded"></div>
-          <span>{language === 'en' ? 'Lunch' : 'Almoço'}</span>
         </div>
       </div>
       

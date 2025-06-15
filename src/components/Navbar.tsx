@@ -104,92 +104,92 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             <div className="flex items-center space-x-1">
-              {/* School Dropdown */}
+                {/* School Dropdown */}
               <Dropdown
                 trigger={t('nav.school')}
                 className={`navbar-link hover:bg-transparent ${navTextColor} flex items-center`}
               >
                 <ul className="py-2">
-                  <li>
+                      <li>
                     <Link to="/about" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.about')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.about')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/team" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.team')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.team')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/regulation" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.regulation')}
-                    </Link>
-                  </li>
-                </ul>
+                            {t('nav.regulation')}
+                          </Link>
+                      </li>
+                    </ul>
               </Dropdown>
 
-              {/* Daily Life Dropdown */}
+                {/* Daily Life Dropdown */}
               <Dropdown
                 trigger={t('nav.daily')}
                 className={`navbar-link hover:bg-transparent ${navTextColor} flex items-center`}
               >
                 <ul className="py-2">
-                  <li>
+                      <li>
                     <Link to="/lunch-menu" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.lunch')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.lunch')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/dress-code" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.dress')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.dress')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/class-schedules" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.schedule')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.schedule')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/school-books" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.books')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.books')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/academic-calendar" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.calendar')}
-                    </Link>
-                  </li>
-                </ul>
+                            {t('nav.calendar')}
+                          </Link>
+                      </li>
+                    </ul>
               </Dropdown>
 
-              {/* Programs & Services Dropdown */}
+                {/* Programs & Services Dropdown */}
               <Dropdown
                 trigger={t('nav.programs')}
                 className={`navbar-link hover:bg-transparent ${navTextColor} flex items-center`}
               >
                 <ul className="py-2">
-                  <li>
+                      <li>
                     <Link to="/extracurricular" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.extracurricular')}
-                    </Link>
-                  </li>
-                  <li>
+                            {t('nav.extracurricular')}
+                          </Link>
+                      </li>
+                      <li>
                     <Link to="/inovar" className="block px-4 py-2 text-gray-900 hover:bg-slate-100">
-                      {t('nav.inovar')}
-                    </Link>
-                  </li>
-                </ul>
+                            {t('nav.inovar')}
+                          </Link>
+                      </li>
+                    </ul>
               </Dropdown>
 
-              {/* Admissions Link */}
-              <Link to="/admission" className={`navbar-link ${navTextColor}`}>
-                {t('nav.admission')}
-              </Link>
+                {/* Admissions Link */}
+                  <Link to="/admission" className={`navbar-link ${navTextColor}`}>
+                    {t('nav.admission')}
+                  </Link>
 
-              {/* Contact Link */}
-              <Link to="/contact" className={`navbar-link ${navTextColor} ${isActive('/contact') ? 'active-link' : ''}`}>
-                {t('nav.contact')}
-              </Link>
+                {/* Contact Link */}
+                  <Link to="/contact" className={`navbar-link ${navTextColor} ${isActive('/contact') ? 'active-link' : ''}`}>
+                    {t('nav.contact')}
+                  </Link>
             </div>
             
             <div className="ml-6">

@@ -5,7 +5,7 @@ import 'moment/locale/pt';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './ScheduleCalendar.css';
 import { useLanguage } from '@/context/LanguageContext';
-import { ScheduleRow } from '@/types/schedules';
+import { ScheduleByDay } from '@/types/schedules';
 
 const localizer = momentLocalizer(moment);
 
@@ -18,11 +18,12 @@ interface ScheduleEvent {
     subject: string;
     room: string;
     type: 'activity' | 'break' | 'lunch' | 'snack' | 'nap' | 'class';
+    color?: string;
   };
 }
 
 interface UniversalScheduleCalendarProps {
-  scheduleData: ScheduleRow[];
+  scheduleData: ScheduleByDay;
   roomName: string;
   scheduleType: 'daycare' | 'kindergarten' | 'elementary';
 }
@@ -35,155 +36,195 @@ const UniversalScheduleCalendar: React.FC<UniversalScheduleCalendarProps> = ({
   const { language } = useLanguage();
   
   useEffect(() => {
-    moment.locale(language === 'pt' ? 'pt' : 'en');
+    const newLocale = language === 'pt' ? 'pt' : 'en';
+    if (moment.locale() !== newLocale) {
+      moment.locale(newLocale);
+    }
   }, [language]);
 
   const events: ScheduleEvent[] = useMemo(() => {
-    if (!scheduleData || scheduleData.length === 0) return [];
+    if (!scheduleData) return [];
     
     const events: ScheduleEvent[] = [];
     const baseDate = moment().startOf('week').add(1, 'day');
-    
-    scheduleData.forEach((row) => {
-      const timeStr = row.time;
-      let timeHour = 8;
-      let timeMinute = 30;
-      let duration = 60;
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+
+    days.forEach((day, dayIndex) => {
+      const rows = scheduleData[day as keyof ScheduleByDay] || [];
+      const eventDate = baseDate.clone().add(dayIndex, 'days');
       
-      if (timeStr.includes('-')) {
-        const [startTime, endTime] = timeStr.split('-');
-        const [startHour, startMinute] = startTime.split(':').map(Number);
-        const [endHour, endMinute] = endTime.split(':').map(Number);
-        
-        timeHour = startHour;
-        timeMinute = startMinute;
-        
-        const startMoment = moment().hour(startHour).minute(startMinute);
-        const endMoment = moment().hour(endHour).minute(endMinute);
-        duration = endMoment.diff(startMoment, 'minutes');
-      } else if (timeStr.includes(':')) {
-        const [hourStr, minuteStr] = timeStr.split(':');
-        timeHour = parseInt(hourStr);
-        timeMinute = parseInt(minuteStr || '0');
-        duration = 60;
-      }
-      
-      const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-      days.forEach((day, dayIndex) => {
-        const subject = row[day as keyof typeof row];
-        if (subject && subject.trim() !== '') {
-          const eventDate = baseDate.clone().add(dayIndex, 'days');
+      // If no activities for this day, create an invisible placeholder to ensure the column shows
+      if (rows.length === 0) {
+        events.push({
+          id: `${roomName}-${day}-placeholder`,
+          title: '',
+          start: eventDate.clone().hour(8).minute(30).toDate(),
+          end: eventDate.clone().hour(8).minute(30).add(1, 'minute').toDate(),
+          resource: {
+            subject: '',
+            room: roomName,
+            type: 'activity',
+            color: 'transparent'
+          }
+        });
+      } else {
+        rows.forEach((row) => {
+          const timeStr = row.time;
+          let timeHour = 8;
+          let timeMinute = 30;
+          let duration = row.duration ?? 60;
+
+          if (timeStr.includes('-')) {
+            const [startTime, endTime] = timeStr.split('-');
+            const [startHour, startMinute] = startTime.split(':').map(Number);
+            const [endHour, endMinute] = endTime.split(':').map(Number);
+            
+            timeHour = startHour;
+            timeMinute = startMinute;
+            
+            const startMoment = moment().hour(startHour).minute(startMinute);
+            const endMoment = moment().hour(endHour).minute(endMinute);
+            duration = endMoment.diff(startMoment, 'minutes');
+          } else if (timeStr.includes(':')) {
+            const [hourStr, minuteStr] = timeStr.split(':');
+            timeHour = parseInt(hourStr);
+            timeMinute = parseInt(minuteStr || '0');
+          }
+
+          const subject = row.subject;
+          // Create event even for empty subjects to maintain day structure
           const startDateTime = eventDate.clone().hour(timeHour).minute(timeMinute);
           const endDateTime = startDateTime.clone().add(duration, 'minutes');
           
           let eventType: 'activity' | 'break' | 'lunch' | 'snack' | 'nap' | 'class' = 'activity';
-          const subjectLower = subject.toLowerCase();
           
-          if (subjectLower.includes('intervalo') || subjectLower.includes('break')) {
-            eventType = 'break';
-          } else if (subjectLower.includes('almoco') || subjectLower.includes('lunch')) {
-            eventType = 'lunch';
-          } else if (subjectLower.includes('lanche') || subjectLower.includes('snack')) {
-            eventType = 'snack';
-          } else if (subjectLower.includes('soneca') || subjectLower.includes('nap')) {
-            eventType = 'nap';
-          } else if (scheduleType === 'elementary') {
-            eventType = 'class';
-          } else {
-            eventType = 'activity';
+          if (subject && subject.trim() !== '') {
+            const subjectLower = subject.toLowerCase();
+            
+            if (subjectLower.includes('intervalo') || subjectLower.includes('break')) {
+              eventType = 'break';
+            } else if (subjectLower.includes('almoco') || subjectLower.includes('lunch')) {
+              eventType = 'lunch';
+            } else if (subjectLower.includes('lanche') || subjectLower.includes('snack')) {
+              eventType = 'snack';
+            } else if (subjectLower.includes('soneca') || subjectLower.includes('nap')) {
+              eventType = 'nap';
+            } else if (scheduleType === 'elementary') {
+              eventType = 'class';
+            } else {
+              eventType = 'activity';
+            }
           }
           
           events.push({
             id: `${roomName}-${day}-${timeStr}`,
-            title: subject,
+            title: subject || '',
             start: startDateTime.toDate(),
             end: endDateTime.toDate(),
             resource: {
-              subject,
+              subject: subject || '',
               room: roomName,
-              type: eventType
+              type: eventType,
+              color: subject && subject.trim() !== '' ? row.color : 'transparent'
             }
           });
-        }
-      });
+        });
+      }
     });
     
     return events;
   }, [scheduleData, roomName, scheduleType]);
   
   const eventStyleGetter = (event: ScheduleEvent) => {
-    let backgroundColor = '#6b7280';
-    let borderColor = '#6b7280';
+    // Handle transparent/empty events
+    if (event.resource.color === 'transparent' || !event.resource.subject) {
+      return {
+        style: {
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+          color: 'transparent',
+          border: 'none',
+          fontSize: '1px',
+          padding: '0px',
+          pointerEvents: 'none'
+        }
+      };
+    }
     
-    switch (event.resource.type) {
-      case 'break':
-        backgroundColor = '#10b981';
-        borderColor = '#10b981';
-        break;
-      case 'lunch':
-        backgroundColor = '#f59e0b';
-        borderColor = '#f59e0b';
-        break;
-      case 'snack':
-        backgroundColor = '#8b5cf6';
-        borderColor = '#8b5cf6';
-        break;
-      case 'nap':
-        backgroundColor = '#6366f1';
-        borderColor = '#6366f1';
-        break;
-      case 'class':
-        if (event.resource.subject.toLowerCase().includes('portugues') || 
-            event.resource.subject.toLowerCase().includes('portuguese')) {
-          backgroundColor = '#ef4444';
-          borderColor = '#ef4444';
-        } else if (event.resource.subject.toLowerCase().includes('matematica') || 
-                   event.resource.subject.toLowerCase().includes('math')) {
-          backgroundColor = '#3b82f6';
-          borderColor = '#3b82f6';
-        } else if (event.resource.subject.toLowerCase().includes('ingles') || 
-                   event.resource.subject.toLowerCase().includes('english')) {
-          backgroundColor = '#06b6d4';
-          borderColor = '#06b6d4';
-        } else if (event.resource.subject.toLowerCase().includes('fisica') || 
-                   event.resource.subject.toLowerCase().includes('physical')) {
-          backgroundColor = '#eab308';
-          borderColor = '#eab308';
-        } else {
-          backgroundColor = '#64748b';
-          borderColor = '#64748b';
-        }
-        break;
-      case 'activity':
-        if (event.resource.subject.toLowerCase().includes('music') || 
-            event.resource.subject.toLowerCase().includes('musica')) {
-          backgroundColor = '#ec4899';
-          borderColor = '#ec4899';
-        } else if (event.resource.subject.toLowerCase().includes('arts') || 
-                   event.resource.subject.toLowerCase().includes('artes')) {
-          backgroundColor = '#f97316';
-          borderColor = '#f97316';
-        } else if (event.resource.subject.toLowerCase().includes('outdoor') || 
-                   event.resource.subject.toLowerCase().includes('ar livre')) {
-          backgroundColor = '#22c55e';
-          borderColor = '#22c55e';
-        } else if (event.resource.subject.toLowerCase().includes('story') || 
-                   event.resource.subject.toLowerCase().includes('conto')) {
-          backgroundColor = '#a855f7';
-          borderColor = '#a855f7';
-        } else if (event.resource.subject.toLowerCase().includes('circle') || 
-                   event.resource.subject.toLowerCase().includes('circulo')) {
-          backgroundColor = '#06b6d4';
-          borderColor = '#06b6d4';
-        } else if (event.resource.subject.toLowerCase().includes('sensory') || 
-                   event.resource.subject.toLowerCase().includes('sensorial')) {
-          backgroundColor = '#84cc16';
-          borderColor = '#84cc16';
-        } else {
-          backgroundColor = '#64748b';
-          borderColor = '#64748b';
-        }
-        break;
+    let backgroundColor = event.resource.color || '#6b7280';
+    let borderColor = event.resource.color || '#6b7280';
+    
+    if (!event.resource.color) {
+      switch (event.resource.type) {
+        case 'break':
+          backgroundColor = '#10b981';
+          borderColor = '#10b981';
+          break;
+        case 'lunch':
+          backgroundColor = '#f59e0b';
+          borderColor = '#f59e0b';
+          break;
+        case 'snack':
+          backgroundColor = '#8b5cf6';
+          borderColor = '#8b5cf6';
+          break;
+        case 'nap':
+          backgroundColor = '#6366f1';
+          borderColor = '#6366f1';
+          break;
+        case 'class':
+          if (event.resource.subject.toLowerCase().includes('portugues') || 
+              event.resource.subject.toLowerCase().includes('portuguese')) {
+            backgroundColor = '#ef4444';
+            borderColor = '#ef4444';
+          } else if (event.resource.subject.toLowerCase().includes('matematica') || 
+                     event.resource.subject.toLowerCase().includes('math')) {
+            backgroundColor = '#3b82f6';
+            borderColor = '#3b82f6';
+          } else if (event.resource.subject.toLowerCase().includes('ingles') || 
+                     event.resource.subject.toLowerCase().includes('english')) {
+            backgroundColor = '#06b6d4';
+            borderColor = '#06b6d4';
+          } else if (event.resource.subject.toLowerCase().includes('fisica') || 
+                     event.resource.subject.toLowerCase().includes('physical')) {
+            backgroundColor = '#eab308';
+            borderColor = '#eab308';
+          } else {
+            backgroundColor = '#64748b';
+            borderColor = '#64748b';
+          }
+          break;
+        case 'activity':
+          if (event.resource.subject.toLowerCase().includes('music') || 
+              event.resource.subject.toLowerCase().includes('musica')) {
+            backgroundColor = '#ec4899';
+            borderColor = '#ec4899';
+          } else if (event.resource.subject.toLowerCase().includes('arts') || 
+                     event.resource.subject.toLowerCase().includes('artes')) {
+            backgroundColor = '#f97316';
+            borderColor = '#f97316';
+          } else if (event.resource.subject.toLowerCase().includes('outdoor') || 
+                     event.resource.subject.toLowerCase().includes('ar livre')) {
+            backgroundColor = '#22c55e';
+            borderColor = '#22c55e';
+          } else if (event.resource.subject.toLowerCase().includes('story') || 
+                     event.resource.subject.toLowerCase().includes('conto')) {
+            backgroundColor = '#a855f7';
+            borderColor = '#a855f7';
+          } else if (event.resource.subject.toLowerCase().includes('circle') || 
+                     event.resource.subject.toLowerCase().includes('circulo')) {
+            backgroundColor = '#06b6d4';
+            borderColor = '#06b6d4';
+          } else if (event.resource.subject.toLowerCase().includes('sensory') || 
+                     event.resource.subject.toLowerCase().includes('sensorial')) {
+            backgroundColor = '#84cc16';
+            borderColor = '#84cc16';
+          } else {
+            backgroundColor = '#64748b';
+            borderColor = '#64748b';
+          }
+          break;
+      }
     }
     
     return {
@@ -214,62 +255,6 @@ const UniversalScheduleCalendar: React.FC<UniversalScheduleCalendarProps> = ({
             </p>
           </div>
         </div>
-      </div>
-      
-      <div className="mb-4 flex flex-wrap gap-3 text-xs">
-        {scheduleType === 'elementary' ? (
-          <>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-red-500 rounded"></div>
-              <span>{language === 'en' ? 'Portuguese' : 'Portugues'}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-blue-500 rounded"></div>
-              <span>{language === 'en' ? 'Mathematics' : 'Matematica'}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-cyan-500 rounded"></div>
-              <span>{language === 'en' ? 'English' : 'Ingles'}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-yellow-500 rounded"></div>
-              <span>{language === 'en' ? 'Physical Ed.' : 'Ed. Fisica'}</span>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-pink-500 rounded"></div>
-              <span>{language === 'en' ? 'Music' : 'Musica'}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-orange-500 rounded"></div>
-              <span>{language === 'en' ? 'Arts' : 'Artes'}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-green-500 rounded"></div>
-              <span>{language === 'en' ? 'Outdoor' : 'Ar Livre'}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-purple-500 rounded"></div>
-              <span>{language === 'en' ? 'Story' : 'Conto'}</span>
-            </div>
-          </>
-        )}
-        <div className="flex items-center gap-1">
-          <div className="w-3 h-3 bg-green-600 rounded"></div>
-          <span>{language === 'en' ? 'Break' : 'Intervalo'}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="w-3 h-3 bg-amber-500 rounded"></div>
-          <span>{language === 'en' ? 'Lunch' : 'Almoco'}</span>
-        </div>
-        {scheduleType !== 'elementary' && (
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-indigo-500 rounded"></div>
-            <span>{language === 'en' ? 'Nap' : 'Soneca'}</span>
-          </div>
-        )}
       </div>
       
       <div className="h-96 sm:h-[500px]">

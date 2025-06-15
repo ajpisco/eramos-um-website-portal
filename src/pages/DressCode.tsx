@@ -3,17 +3,107 @@ import Layout from "@/components/Layout";
 import { Shirt, ShoppingCart, Download, Store, ExternalLink } from "lucide-react";
 
 const DressCode = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
-  const uniformItems = [
-    { name: t('dress.uniform.polo'), description: t('dress.uniform.polo_desc'), image: "/images/uniform/polo.jpg" },
-    { name: t('dress.uniform.tshirt'), description: t('dress.uniform.tshirt_desc'), image: "/images/uniform/tshirt.jpg" },
-    { name: t('dress.uniform.pants'), description: t('dress.uniform.pants_desc'), image: "/images/uniform/pants.jpg" },
-    { name: t('dress.uniform.jacket'), description: t('dress.uniform.jacket_desc'), image: "/images/uniform/jacket.jpg" },
+  // Organize uniform items by category
+  const uniformCategories = [
+    {
+      title: language === 'en' ? 'Basic Uniform' : 'Fardamento Básico',
+      items: [
+        { 
+          name: language === 'en' ? 'Unisex Bib' : 'Bibe Unisexo', 
+          image: "/images/uniform/bib.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Green Polo Shirt - Girls Short Sleeve' : 'Polo Menina Verde manga curta', 
+          image: "/images/uniform/polo-girl-short.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Green Polo Shirt - Boys Short Sleeve' : 'Polo Menino Verde manga curta', 
+          image: "/images/uniform/polo-boy-short.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Green Polo Shirt - Girls Long Sleeve' : 'Polo Menina Verde manga comprida', 
+          image: "/images/uniform/polo-girl-long.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Green Polo Shirt - Boys Long Sleeve' : 'Polo Menino Verde manga comprida', 
+          image: "/images/uniform/polo-boy-long.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Unisex Fleece' : 'Polar Unisexo', 
+          image: "/images/uniform/fleece.jpg" 
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Headwear' : 'Chapéus',
+      items: [
+        { 
+          name: language === 'en' ? 'Blue Cap' : 'Boné Azul', 
+          image: "/images/uniform/blue-cap.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Green Panama Hat' : 'Panamá Verde', 
+          image: "/images/uniform/panama-green.jpg" 
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Bottoms' : 'Calças e Calções',
+      items: [
+        { 
+          name: language === 'en' ? 'Blue Skort' : 'Saia Calção Azul', 
+          image: "/images/uniform/blue-skort.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Blue Twill Shorts - Boys' : 'Calção Rapaz Sarja Azul', 
+          image: "/images/uniform/blue-shorts-boys.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Blue Twill Pants' : 'Calça Sarja Azul', 
+          image: "/images/uniform/blue-pants.jpg" 
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Physical Education' : 'Educação Física',
+      items: [
+        { 
+          name: language === 'en' ? 'Blue PE Shorts' : 'Calção Educação Física Azul', 
+          image: "/images/uniform/pe-shorts.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Green PE T-Shirt' : 'T-Shirt Verde Educação Física', 
+          image: "/images/uniform/pe-tshirt.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'PE Tracksuit Pants' : 'Calça Fato Treino Educação Física', 
+          image: "/images/uniform/pe-tracksuit.jpg" 
+        }
+      ]
+    },
+    {
+      title: language === 'en' ? 'Accessories & Outerwear' : 'Acessórios e Agasalhos',
+      items: [
+        { 
+          name: language === 'en' ? 'High Socks' : 'Meia Alta', 
+          image: "/images/uniform/high-socks.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Tights' : 'Collant', 
+          image: "/images/uniform/tights.jpg" 
+        },
+        { 
+          name: language === 'en' ? 'Unisex Hooded Jacket' : 'Casaco Unisexo com Capuz', 
+          image: "/images/uniform/hooded-jacket.jpg" 
+        }
+      ]
+    }
   ];
 
   const storeAddress = "Rua do Moinho, Bairro do Moinho Lote 10, 2785-278 São Domingos de Rana";
-  const storeWebsite = "https://funnypaper.pt"; // Assuming https for the website
+  const storeWebsite = "https://funnypaper.pt";
 
   return (
     <Layout>
@@ -32,22 +122,30 @@ const DressCode = () => {
             </p>
           </section>
 
-          <section className="mb-12">
-            <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
-              {t('dress.requirements')}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {uniformItems.map((item, index) => (
-                <div key={index} className="bg-white p-6 rounded-lg shadow-md flex items-center">
-                  <img src={item.image} alt={item.name} className="w-24 h-24 object-contain rounded-md mr-6" />
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-800">{item.name}</h3>
-                    <p className="text-gray-600">{item.description}</p>
+          {/* Uniform Categories */}
+          {uniformCategories.map((category, categoryIndex) => (
+            <section key={categoryIndex} className="mb-12">
+              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
+                {category.title}
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.items.map((item, index) => (
+                  <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+                    <img 
+                      src={item.image} 
+                      alt={item.name} 
+                      className="w-full h-48 object-cover rounded-md mb-4"
+                      onError={(e) => {
+                        // Fallback to placeholder if image doesn't exist
+                        e.currentTarget.src = "/images/uniform/placeholder.jpg";
+                      }}
+                    />
+                    <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          ))}
 
           {/* Purchase Information Section */}
           <section className="bg-white p-8 rounded-lg shadow-md">
@@ -64,7 +162,7 @@ const DressCode = () => {
             {/* Funny Paper Store Details */}
             <div className="mb-8 p-6 border border-gray-200 rounded-lg bg-gray-50">
               <div className="flex items-center mb-3">
-                 <Store className="h-6 w-6 text-school-blue-dark mr-2" />
+                <Store className="h-6 w-6 text-school-blue-dark mr-2" />
                 <h3 className="text-xl font-semibold text-gray-800">{t('dress.store_name')}</h3>
               </div> 
               <p className="text-gray-700 mb-2">
@@ -102,4 +200,4 @@ const DressCode = () => {
   );
 };
 
-export default DressCode;
+export default DressCode; 

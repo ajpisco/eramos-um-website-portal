@@ -1,50 +1,194 @@
-import { ScheduleRow } from '../../types/schedules';
+import { ScheduleRow, ScheduleByDay } from '../../types/schedules';
+import { SCHEDULE_COLORS } from './colorPalette';
 
-export const getElementarySchedules = (lang: string): Record<string, ScheduleRow[]> => ({
-  grade1: [
-    { time: "8:30", monday: lang === 'en' ? 'Portuguese' : 'Português', tuesday: lang === 'en' ? 'Physical Education' : 'Ed. Física', wednesday: lang === 'en' ? 'Portuguese' : 'Português', thursday: lang === 'en' ? 'Mathematics' : 'Matemática', friday: lang === 'en' ? 'Portuguese' : 'Português' },
-    { time: "9:30", monday: lang === 'en' ? 'Mathematics' : 'Matemática', tuesday: '', wednesday: '', thursday: '', friday: '' },
-    { time: "10:30", monday: lang === 'en' ? 'Break' : 'Intervalo', tuesday: lang === 'en' ? 'Break' : 'Intervalo', wednesday: lang === 'en' ? 'Break' : 'Intervalo', thursday: lang === 'en' ? 'Break' : 'Intervalo', friday: lang === 'en' ? 'Break' : 'Intervalo' },
-    { time: "11:00", monday: lang === 'en' ? 'Mathematics' : 'Matemática', tuesday: lang === 'en' ? 'Mathematics' : 'Matemática', wednesday: lang === 'en' ? 'Mathematics' : 'Matemática', thursday: lang === 'en' ? 'Physical Education' : 'Ed. Física', friday: lang === 'en' ? 'Discovery Time' : 'Vou descobrir…' },
-    { time: "12:00", monday: lang === 'en' ? 'World Knowledge' : 'Conhecimento do Mundo', tuesday: lang === 'en' ? 'Technology Education (OE)' : 'Ed. Tec. (OE)', wednesday: lang === 'en' ? 'Dramatic Expression' : 'Expressão Dramática', thursday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', friday: '' },
-    { time: "13:00", monday: lang === 'en' ? 'Lunch' : 'Almoço', tuesday: lang === 'en' ? 'Lunch' : 'Almoço', wednesday: lang === 'en' ? 'Lunch' : 'Almoço', thursday: lang === 'en' ? 'Lunch' : 'Almoço', friday: lang === 'en' ? 'Lunch' : 'Almoço' },
-    { time: "14:00", monday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', tuesday: lang === 'en' ? 'English/AE' : 'Inglês/AE', wednesday: '', thursday: lang === 'en' ? 'Music Education' : 'Ed. Musical', friday: '' },
-    { time: "15:00", monday: '', tuesday: lang === 'en' ? 'Music Education' : 'Ed. Musical', wednesday: '', thursday: lang === 'en' ? 'English/AE' : 'Inglês/AE', friday: '' },
-    { time: "16:00", monday: lang === 'en' ? 'Snack' : 'Lanche', tuesday: lang === 'en' ? 'Snack' : 'Lanche', wednesday: lang === 'en' ? 'Snack' : 'Lanche', thursday: lang === 'en' ? 'Snack' : 'Lanche', friday: lang === 'en' ? 'Snack' : 'Lanche' }
-  ],
-  grade2: [
-    { time: "8:30", monday: lang === 'en' ? 'Portuguese' : 'Português', tuesday: lang === 'en' ? 'Mathematics' : 'Matemática', wednesday: lang === 'en' ? 'Physical Education' : 'Ed. Física', thursday: lang === 'en' ? 'Portuguese' : 'Português', friday: lang === 'en' ? 'Mathematics' : 'Matemática' },
-    { time: "9:30", monday: lang === 'en' ? 'Mathematics' : 'Matemática', tuesday: '', wednesday: '', thursday: '', friday: '' },
-    { time: "10:30", monday: lang === 'en' ? 'Break' : 'Intervalo', tuesday: lang === 'en' ? 'Break' : 'Intervalo', wednesday: lang === 'en' ? 'Break' : 'Intervalo', thursday: lang === 'en' ? 'Break' : 'Intervalo', friday: lang === 'en' ? 'Break' : 'Intervalo' },
-    { time: "11:00", monday: lang === 'en' ? 'Physical Education' : 'Ed. Física', tuesday: lang === 'en' ? 'Technology Education (OE)' : 'Edu. Tec. (OE)', wednesday: lang === 'en' ? 'Portuguese' : 'Português', thursday: lang === 'en' ? 'Mathematics' : 'Matemática', friday: lang === 'en' ? 'Discovery Time' : 'Vou descobrir…' },
-    { time: "12:00", monday: lang === 'en' ? 'World Knowledge' : 'Conhecimento do Mundo', tuesday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', wednesday: lang === 'en' ? 'Dramatic Expression' : 'Expressão Dramática', thursday: '', friday: '' },
-    { time: "13:00", monday: lang === 'en' ? 'Lunch' : 'Almoço', tuesday: lang === 'en' ? 'Lunch' : 'Almoço', wednesday: lang === 'en' ? 'Lunch' : 'Almoço', thursday: lang === 'en' ? 'Lunch' : 'Almoço', friday: lang === 'en' ? 'Lunch' : 'Almoço' },
-    { time: "14:00", monday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', tuesday: lang === 'en' ? 'Music Education' : 'Ed. Musical', wednesday: '', thursday: lang === 'en' ? 'English/AE' : 'Inglês/AE', friday: '' },
-    { time: "15:00", monday: '', tuesday: lang === 'en' ? 'English/AE' : 'Inglês/AE', wednesday: '', thursday: lang === 'en' ? 'Music Education' : 'Ed. Musical', friday: '' },
-    { time: "16:00", monday: lang === 'en' ? 'Snack' : 'Lanche', tuesday: lang === 'en' ? 'Snack' : 'Lanche', wednesday: lang === 'en' ? 'Snack' : 'Lanche', thursday: lang === 'en' ? 'Snack' : 'Lanche', friday: lang === 'en' ? 'Snack' : 'Lanche' }
-  ],
-  grade3: [
-    { time: "8:30", monday: lang === 'en' ? 'Portuguese' : 'Português', tuesday: lang === 'en' ? 'Technology Education (OE)/AE' : 'Ed.Tec.(OE)/AE', wednesday: lang === 'en' ? 'Mathematics' : 'Matemática', thursday: lang === 'en' ? 'Physical Education' : 'Ed. Física', friday: lang === 'en' ? 'Mathematics' : 'Matemática' },
-    { time: "9:30", monday: lang === 'en' ? 'Portuguese' : 'Português', tuesday: lang === 'en' ? 'Mathematics' : 'Matemática', wednesday: '', thursday: '', friday: '' },
-    { time: "10:30", monday: lang === 'en' ? 'Break' : 'Intervalo', tuesday: lang === 'en' ? 'Break' : 'Intervalo', wednesday: lang === 'en' ? 'Break' : 'Intervalo', thursday: lang === 'en' ? 'Break' : 'Intervalo', friday: lang === 'en' ? 'Break' : 'Intervalo' },
-    { time: "11:00", monday: lang === 'en' ? 'Mathematics' : 'Matemática', tuesday: lang === 'en' ? 'Physical Education' : 'Ed. Física', wednesday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', thursday: lang === 'en' ? 'Portuguese' : 'Português', friday: lang === 'en' ? 'Discovery Time' : 'Vou descobrir…' },
-    { time: "12:00", monday: lang === 'en' ? 'World Knowledge' : 'Conhecimento do Mundo', tuesday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', wednesday: lang === 'en' ? 'Portuguese' : 'Português', thursday: '', friday: '' },
-    { time: "13:00", monday: lang === 'en' ? 'Lunch' : 'Almoço', tuesday: lang === 'en' ? 'Lunch' : 'Almoço', wednesday: lang === 'en' ? 'Lunch' : 'Almoço', thursday: lang === 'en' ? 'Lunch' : 'Almoço', friday: lang === 'en' ? 'Lunch' : 'Almoço' },
-    { time: "14:00", monday: lang === 'en' ? 'English' : 'Inglês', tuesday: lang === 'en' ? 'Dramatic Expression' : 'Exp. Dramática', wednesday: lang === 'en' ? 'Music Education' : 'Ed. Musical', thursday: '', friday: '' },
-    { time: "15:00", monday: lang === 'en' ? 'Music Education' : 'Ed. Musical', tuesday: '', wednesday: lang === 'en' ? 'English' : 'Inglês', thursday: '', friday: '' },
-    { time: "16:00", monday: lang === 'en' ? 'Snack' : 'Lanche', tuesday: lang === 'en' ? 'Snack' : 'Lanche', wednesday: lang === 'en' ? 'Snack' : 'Lanche', thursday: lang === 'en' ? 'Snack' : 'Lanche', friday: lang === 'en' ? 'Snack' : 'Lanche' }
-  ],
-  grade4: [
-    { time: "8:30", monday: lang === 'en' ? 'Physical Education' : 'Ed. Física', tuesday: lang === 'en' ? 'Portuguese' : 'Português', wednesday: lang === 'en' ? 'Mathematics' : 'Matemática', thursday: lang === 'en' ? 'Portuguese' : 'Português', friday: lang === 'en' ? 'Mathematics' : 'Matemática' },
-    { time: "9:30", monday: lang === 'en' ? 'Portuguese' : 'Português', tuesday: lang === 'en' ? 'Technology Education (OE)/AE' : 'Ed.Tec.(OE)/AE', wednesday: lang === 'en' ? 'Portuguese' : 'Português', thursday: '', friday: '' },
-    { time: "10:30", monday: lang === 'en' ? 'Break' : 'Intervalo', tuesday: lang === 'en' ? 'Break' : 'Intervalo', wednesday: lang === 'en' ? 'Break' : 'Intervalo', thursday: lang === 'en' ? 'Break' : 'Intervalo', friday: lang === 'en' ? 'Break' : 'Intervalo' },
-    { time: "11:00", monday: lang === 'en' ? 'Mathematics' : 'Matemática', tuesday: lang === 'en' ? 'Mathematics' : 'Matemática', wednesday: lang === 'en' ? 'Physical Education' : 'Ed. Física', thursday: lang === 'en' ? 'Mathematics' : 'Matemática', friday: lang === 'en' ? 'Discovery Time' : 'Vou descobrir…' },
-    { time: "12:00", monday: lang === 'en' ? 'World Knowledge' : 'Conhecimento do Mundo', tuesday: lang === 'en' ? 'Dramatic Expression' : 'Expressão Dramática', wednesday: lang === 'en' ? 'Portuguese' : 'Português', thursday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', friday: '' },
-    { time: "13:00", monday: lang === 'en' ? 'Lunch' : 'Almoço', tuesday: lang === 'en' ? 'Lunch' : 'Almoço', wednesday: lang === 'en' ? 'Lunch' : 'Almoço', thursday: lang === 'en' ? 'Lunch' : 'Almoço', friday: lang === 'en' ? 'Lunch' : 'Almoço' },
-    { time: "14:00", monday: lang === 'en' ? 'Music Education' : 'Ed. Musical', tuesday: lang === 'en' ? 'Environmental Studies' : 'Estudo do Meio', wednesday: lang === 'en' ? 'English' : 'Inglês', thursday: '', friday: '' },
-    { time: "15:00", monday: lang === 'en' ? 'English' : 'Inglês', tuesday: '', wednesday: lang === 'en' ? 'Music Education' : 'Ed. Musical', thursday: '', friday: '' },
-    { time: "16:00", monday: lang === 'en' ? 'Snack' : 'Lanche', tuesday: lang === 'en' ? 'Snack' : 'Lanche', wednesday: lang === 'en' ? 'Snack' : 'Lanche', thursday: lang === 'en' ? 'Snack' : 'Lanche', friday: lang === 'en' ? 'Snack' : 'Lanche' }
-  ]
+export const getElementarySchedules = (lang: string): Record<string, ScheduleByDay> => ({
+  grade1: {
+    monday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "World Knowledge" : "Conhecimento do Mundo", duration: 60, color: SCHEDULE_COLORS.WORLD_KNOWLEDGE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    tuesday: [
+      { time: "8:30", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "9:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "Technology Education (OE)" : "Ed. Tec. (OE)", duration: 60, color: SCHEDULE_COLORS.TECHNOLOGY_EDUCATION },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "English/AE" : "Inglês/AE", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "15:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    wednesday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "Dramatic Expression" : "Expressão Dramática", duration: 60, color: SCHEDULE_COLORS.DRAMATIC_EXPRESSION },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    thursday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 120, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "12:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "15:00", subject: lang === 'en' ? "English/AE" : "Inglês/AE", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    friday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Discovery Time" : "Vou descobrir…", duration: 120, color: SCHEDULE_COLORS.DISCOVERY_TIME },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ]
+  },
+  grade2: {
+    monday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "12:00", subject: lang === 'en' ? "World Knowledge" : "Conhecimento do Mundo", duration: 60, color: SCHEDULE_COLORS.WORLD_KNOWLEDGE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    tuesday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 120, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Technology Education (OE)" : "Ed. Tec. (OE)", duration: 60, color: SCHEDULE_COLORS.TECHNOLOGY_EDUCATION },
+      { time: "12:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "15:00", subject: lang === 'en' ? "English/AE" : "Inglês/AE", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    wednesday: [
+      { time: "8:30", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "12:00", subject: lang === 'en' ? "Dramatic Expression" : "Expressão Dramática", duration: 60, color: SCHEDULE_COLORS.DRAMATIC_EXPRESSION },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    thursday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "English/AE" : "Inglês/AE", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "15:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    friday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 120, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Discovery Time" : "Vou descobrir…", duration: 120, color: SCHEDULE_COLORS.DISCOVERY_TIME },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ]
+  },
+  grade3: {
+    monday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "World Knowledge" : "Conhecimento do Mundo", duration: 60, color: SCHEDULE_COLORS.WORLD_KNOWLEDGE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "English" : "Inglês", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "15:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    tuesday: [
+      { time: "8:30", subject: lang === 'en' ? "Technology Education (OE)/AE" : "Ed.Tec.(OE)/AE", duration: 60, color: SCHEDULE_COLORS.TECHNOLOGY_EDUCATION },
+      { time: "9:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "12:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Dramatic Expression" : "Exp. Dramática", duration: 60, color: SCHEDULE_COLORS.DRAMATIC_EXPRESSION },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    wednesday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "12:00", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "15:00", subject: lang === 'en' ? "English" : "Inglês", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    thursday: [
+      { time: "8:30", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    friday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 120, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Discovery Time" : "Vou descobrir…", duration: 120, color: SCHEDULE_COLORS.DISCOVERY_TIME },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ]
+  },
+  grade4: {
+    monday: [
+      { time: "8:30", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "9:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "World Knowledge" : "Conhecimento do Mundo", duration: 60, color: SCHEDULE_COLORS.WORLD_KNOWLEDGE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "15:00", subject: lang === 'en' ? "English" : "Inglês", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    tuesday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "9:30", subject: lang === 'en' ? "Technology Education (OE)/AE" : "Ed.Tec.(OE)/AE", duration: 60, color: SCHEDULE_COLORS.TECHNOLOGY_EDUCATION },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "Dramatic Expression" : "Expressão Dramática", duration: 60, color: SCHEDULE_COLORS.DRAMATIC_EXPRESSION },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    wednesday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "9:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Physical Education" : "Ed. Física", duration: 60, color: SCHEDULE_COLORS.PHYSICAL_EDUCATION },
+      { time: "12:00", subject: lang === 'en' ? "Portuguese" : "Português", duration: 60, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "14:00", subject: lang === 'en' ? "English" : "Inglês", duration: 60, color: SCHEDULE_COLORS.ENGLISH },
+      { time: "15:00", subject: lang === 'en' ? "Music Education" : "Ed. Musical", duration: 60, color: SCHEDULE_COLORS.MUSIC_EDUCATION },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    thursday: [
+      { time: "8:30", subject: lang === 'en' ? "Portuguese" : "Português", duration: 120, color: SCHEDULE_COLORS.PORTUGUESE },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 60, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "12:00", subject: lang === 'en' ? "Environmental Studies" : "Estudo do Meio", duration: 60, color: SCHEDULE_COLORS.SCIENCE },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ],
+    friday: [
+      { time: "8:30", subject: lang === 'en' ? "Mathematics" : "Matemática", duration: 120, color: SCHEDULE_COLORS.MATHEMATICS },
+      { time: "10:30", subject: lang === 'en' ? "Break" : "Intervalo", duration: 30, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "11:00", subject: lang === 'en' ? "Discovery Time" : "Vou descobrir…", duration: 120, color: SCHEDULE_COLORS.DISCOVERY_TIME },
+      { time: "13:00", subject: lang === 'en' ? "Lunch" : "Almoço", duration: 60, color: SCHEDULE_COLORS.DEFAULT },
+      { time: "16:00", subject: lang === 'en' ? "Snack" : "Lanche", duration: 30, color: SCHEDULE_COLORS.SNACK_TIME }
+    ]
+  }
 });
 
 // Teacher information for each grade

@@ -8,10 +8,17 @@ import { getKindergartenSchedules } from "@/data/schedules/kindergarten";
 import { getElementarySchedules, getElementaryTeachers } from "@/data/schedules/elementary";
 import UniversalScheduleCalendar from "@/components/UniversalScheduleCalendar";
 
+// Constants for localStorage keys
+const SCHEDULE_STORAGE_KEYS = {
+  MAIN_TAB: 'eramos-um-schedule-main-tab',
+  SUB_OPTION: 'eramos-um-schedule-sub-option'
+};
+
 const ClassSchedules = () => {
   const { t, language } = useLanguage();
   const [activeMainTab, setActiveMainTab] = useState("daycare");
   const [activeSubOption, setActiveSubOption] = useState<SubOption | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const daycareSchedules = getDaycareSchedules(language);
   const kindergartenSchedules = getKindergartenSchedules(language);
@@ -36,19 +43,79 @@ const ClassSchedules = () => {
     ],
   };
 
+  // Load saved preferences from localStorage on component mount
   useEffect(() => {
+    try {
+      const savedMainTab = localStorage.getItem(SCHEDULE_STORAGE_KEYS.MAIN_TAB);
+      const savedSubOptionKey = localStorage.getItem(SCHEDULE_STORAGE_KEYS.SUB_OPTION);
+      
+      // Restore main tab if valid
+      if (savedMainTab && tabSubOptions[savedMainTab]) {
+        setActiveMainTab(savedMainTab);
+        
+        // Restore sub option if valid for the saved main tab
+        if (savedSubOptionKey) {
+          const subOptions = tabSubOptions[savedMainTab];
+          const savedSubOption = subOptions.find(sub => sub.key === savedSubOptionKey);
+          if (savedSubOption) {
+            setActiveSubOption(savedSubOption);
+          } else {
+            // If saved sub option is not valid, use first available
+            setActiveSubOption(subOptions[0]);
+          }
+        } else {
+          // No saved sub option, use first available
+          setActiveSubOption(tabSubOptions[savedMainTab][0]);
+        }
+      } else {
+        // No valid saved preferences, use defaults
+        setActiveMainTab("daycare");
+        setActiveSubOption(tabSubOptions["daycare"][0]);
+      }
+    } catch (error) {
+      // If localStorage fails, use defaults
+      console.warn('Failed to load schedule preferences from localStorage:', error);
+      setActiveMainTab("daycare");
+      setActiveSubOption(tabSubOptions["daycare"][0]);
+    }
+    
+    setIsInitialized(true);
+  }, []);
+
+  // Update sub option when main tab changes (but not during initialization)
+  useEffect(() => {
+    if (!isInitialized) return;
+    
     if (activeMainTab && tabSubOptions[activeMainTab] && tabSubOptions[activeMainTab].length > 0) {
       const currentSubOptions = tabSubOptions[activeMainTab];
-      const stillActive = currentSubOptions.find(sub => sub.key === activeSubOption?.key);
-      if (stillActive && stillActive.scheduleData !== activeSubOption?.scheduleData) {
-        setActiveSubOption(stillActive);
-      } else if (!stillActive || !activeSubOption) {
+      if (!activeSubOption || !currentSubOptions.find(sub => sub.key === activeSubOption.key)) {
         setActiveSubOption(currentSubOptions[0]);
       }
     } else {
       setActiveSubOption(null);
     }
-  }, [activeMainTab, language, tabSubOptions, activeSubOption]);
+  }, [activeMainTab, language, isInitialized]);
+
+  // Save preferences to localStorage whenever they change
+  useEffect(() => {
+    if (!isInitialized) return;
+    
+    try {
+      localStorage.setItem(SCHEDULE_STORAGE_KEYS.MAIN_TAB, activeMainTab);
+    } catch (error) {
+      console.warn('Failed to save main tab preference to localStorage:', error);
+    }
+  }, [activeMainTab, isInitialized]);
+
+  useEffect(() => {
+    if (!isInitialized || !activeSubOption) return;
+    
+    try {
+      localStorage.setItem(SCHEDULE_STORAGE_KEYS.SUB_OPTION, activeSubOption.key);
+    } catch (error) {
+      console.warn('Failed to save sub option preference to localStorage:', error);
+    }
+  }, [activeSubOption, isInitialized]);
 
   const handleMainTabClick = (tabKey: string) => {
     setActiveMainTab(tabKey);
