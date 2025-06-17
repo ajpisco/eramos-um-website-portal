@@ -16,10 +16,22 @@
     <meta name="twitter:site" content="@lovable_dev" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     <link rel="icon" type="image/x-icon" href="/eramos-um-website-portal/favicon.ico" />
-    <script type="module" crossorigin src="/eramos-um-website-portal/assets/index-DyK1EfUB.js"></script>
-    <link rel="modulepreload" crossorigin href="/eramos-um-website-portal/assets/vendor-pqYWMQEF.js">
-    <link rel="modulepreload" crossorigin href="/eramos-um-website-portal/assets/polyfills-CFCe90AQ.js">
-    <link rel="stylesheet" crossorigin href="/eramos-um-website-portal/assets/index-DzdPPiEN.css">
+    
+    <!-- Minimal polyfill for WeakMap -->
+    <script>
+      if (typeof window.WeakMap !== 'function') {
+        window.WeakMap = function WeakMap() {
+          var map = new Map();
+          this.set = function(key, value) { map.set(key, value); return this; };
+          this.get = function(key) { return map.get(key); };
+          this.has = function(key) { return map.has(key); };
+          this.delete = function(key) { return map.delete(key); };
+        };
+      }
+    </script>
+    <script type="module" crossorigin src="/eramos-um-website-portal/assets/index-CFkOW97w.js"></script>
+    <link rel="modulepreload" crossorigin href="/eramos-um-website-portal/assets/vendor-CxnSocOk.js">
+    <link rel="stylesheet" crossorigin href="/eramos-um-website-portal/assets/index-DfLylBi1.css">
   </head>
 
   <body>
