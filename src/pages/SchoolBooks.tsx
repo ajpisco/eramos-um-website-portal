@@ -32,217 +32,191 @@ const SchoolBooks = () => {
   // Books data organized by education level and year/grade
   const getBooksData = () => {
     const daycareBooks = {
-      year1: [
-        {
-          subject: language === 'en' ? 'Early Learning' : 'Aprendizagem Precoce',
-          title: language === 'en' ? 'My First Colors and Shapes' : 'Minhas Primeiras Cores e Formas',
-          author: language === 'en' ? 'Ana Santos' : 'Ana Santos',
-          publisher: language === 'en' ? 'Early Education Press' : 'Editora Educação Precoce',
-          isbn: '978-3-16-148410-0'
-        },
-        {
-          subject: language === 'en' ? 'Motor Skills' : 'Coordenação Motora',
-          title: language === 'en' ? 'Little Hands, Big Adventures' : 'Mãozinhas, Grandes Aventuras',
-          author: language === 'en' ? 'Maria Costa' : 'Maria Costa',
-          publisher: language === 'en' ? 'Child Development Books' : 'Livros Desenvolvimento Infantil',
-          isbn: '978-3-16-148410-1'
-        }
-      ],
-      year2: [
-        {
-          subject: language === 'en' ? 'Pre-Reading' : 'Pré-Leitura',
-          title: language === 'en' ? 'Letters and Sounds Adventure' : 'Aventura das Letras e Sons',
-          author: language === 'en' ? 'João Silva' : 'João Silva',
-          publisher: language === 'en' ? 'Early Education Press' : 'Editora Educação Precoce',
-          isbn: '978-3-16-148410-2'
-        },
-        {
-          subject: language === 'en' ? 'Numbers' : 'Números',
-          title: language === 'en' ? 'Counting Fun' : 'Diversão com Números',
-          author: language === 'en' ? 'Carla Pereira' : 'Carla Pereira',
-          publisher: language === 'en' ? 'Math for Kids' : 'Matemática para Crianças',
-          isbn: '978-3-16-148410-3'
-        }
-      ]
+      year1: [],
+      year2: []
     };
 
     const kindergartenBooks = {
-      year3: [
-        {
-          subject: language === 'en' ? 'Pre-Writing' : 'Pré-Escrita',
-          title: language === 'en' ? 'My First Writing Book' : 'Meu Primeiro Livro de Escrita',
-          author: language === 'en' ? 'Rita Oliveira' : 'Rita Oliveira',
-          publisher: language === 'en' ? 'Kindergarten Press' : 'Editora Jardim de Infância',
-          isbn: '978-3-16-148410-4'
-        },
-        {
-          subject: language === 'en' ? 'Basic Math' : 'Matemática Básica',
-          title: language === 'en' ? 'Numbers and Me' : 'Os Números e Eu',
-          author: language === 'en' ? 'Pedro Santos' : 'Pedro Santos',
-          publisher: language === 'en' ? 'Early Math Books' : 'Livros Matemática Inicial',
-          isbn: '978-3-16-148410-5'
-        }
-      ],
-      year4: [
-        {
-          subject: language === 'en' ? 'Reading Readiness' : 'Preparação para Leitura',
-          title: language === 'en' ? 'Stories and Words' : 'Histórias e Palavras',
-          author: language === 'en' ? 'Luisa Ferreira' : 'Luisa Ferreira',
-          publisher: language === 'en' ? 'Reading Adventures' : 'Aventuras de Leitura',
-          isbn: '978-3-16-148410-6'
-        },
-        {
-          subject: language === 'en' ? 'Science Discovery' : 'Descoberta Científica',
-          title: language === 'en' ? 'Little Scientists' : 'Pequenos Cientistas',
-          author: language === 'en' ? 'Carlos Lima' : 'Carlos Lima',
-          publisher: language === 'en' ? 'Discovery Kids' : 'Crianças Descobridoras',
-          isbn: '978-3-16-148410-7'
-        }
-      ],
-      year5: [
-        {
-          subject: language === 'en' ? 'Advanced Reading' : 'Leitura Avançada',
-          title: language === 'en' ? 'Reading Adventures' : 'Aventuras de Leitura',
-          author: language === 'en' ? 'Sofia Rodrigues' : 'Sofia Rodrigues',
-          publisher: language === 'en' ? 'Advanced Learning' : 'Aprendizagem Avançada',
-          isbn: '978-3-16-148410-8'
-        },
-        {
-          subject: language === 'en' ? 'Math Concepts' : 'Conceitos Matemáticos',
-          title: language === 'en' ? 'Math Explorers' : 'Exploradores da Matemática',
-          author: language === 'en' ? 'Miguel Torres' : 'Miguel Torres',
-          publisher: language === 'en' ? 'Math Adventures' : 'Aventuras Matemáticas',
-          isbn: '978-3-16-148410-9'
-        }
-      ]
+      year3: [],
+      year4: [],
+      year5: []
     };
 
     const elementaryBooks = {
       grade1: [
         {
-          subject: language === 'en' ? 'Mathematics' : 'Matemática',
-          title: language === 'en' ? 'Math Adventures 1' : 'Aventuras Matemáticas 1',
-          author: 'Maria Silva',
-          publisher: language === 'en' ? 'Educational Press' : 'Editora Educacional',
+          subject: language === 'en' ? 'Portuguese/Mathematics' : 'Português/Matemática',
+          title: 'Português/Matemática - Bloco Pedagógico Vamos aprender',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-0'
         },
         {
-          subject: language === 'en' ? 'Portuguese' : 'Português',
-          title: language === 'en' ? 'Portuguese Language 1' : 'Língua Portuguesa 1',
-          author: 'João Pereira',
-          publisher: language === 'en' ? 'Learning Books' : 'Livros de Aprendizagem',
+          subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
+          title: 'Estudo do Meio - Manual Vamos aprender',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-1'
         },
         {
-          subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
-          title: language === 'en' ? 'Discovering Our World 1' : 'Descobrindo Nosso Mundo 1',
-          author: 'Ana Costa',
-          publisher: language === 'en' ? 'Discovery Press' : 'Editora Descoberta',
+          subject: language === 'en' ? 'English' : 'Inglês',
+          title: 'Manual Little Rocky 1',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-2'
         },
         {
-          subject: language === 'en' ? 'English' : 'Inglês',
-          title: language === 'en' ? 'English Adventure 1' : 'Aventura em Inglês 1',
-          author: 'John Smith',
-          publisher: language === 'en' ? 'Global Education' : 'Educação Global',
+          subject: language === 'en' ? 'Digital Platform' : 'Plataforma Digital',
+          title: 'Escola Virtual - Licença anual 1.º ano*',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-3'
         }
       ],
       grade2: [
         {
-          subject: language === 'en' ? 'Mathematics' : 'Matemática',
-          title: language === 'en' ? 'Math Adventures 2' : 'Aventuras Matemáticas 2',
-          author: 'Maria Silva',
-          publisher: language === 'en' ? 'Educational Press' : 'Editora Educacional',
+          subject: language === 'en' ? 'Portuguese' : 'Português',
+          title: 'Português - Manual Top 2',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-4'
         },
         {
-          subject: language === 'en' ? 'Portuguese' : 'Português',
-          title: language === 'en' ? 'Portuguese Language 2' : 'Língua Portuguesa 2',
-          author: 'João Pereira',
-          publisher: language === 'en' ? 'Learning Books' : 'Livros de Aprendizagem',
+          subject: language === 'en' ? 'Mathematics' : 'Matemática',
+          title: 'Matemática - Bloco Pedagógico Top 2',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-5'
         },
         {
           subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
-          title: language === 'en' ? 'Discovering Our World 2' : 'Descobrindo Nosso Mundo 2',
-          author: 'Ana Costa',
-          publisher: language === 'en' ? 'Discovery Press' : 'Editora Descoberta',
+          title: 'Estudo do Meio - Manual Top 2',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-6'
         },
         {
-          subject: language === 'en' ? 'English' : 'Inglês',
-          title: language === 'en' ? 'English Adventure 2' : 'Aventura em Inglês 2',
-          author: 'John Smith',
-          publisher: language === 'en' ? 'Global Education' : 'Educação Global',
+          subject: language === 'en' ? 'Grammar' : 'Gramática',
+          title: 'A Gramática de Português, 1º ciclo',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148411-7'
+        },
+        {
+          subject: language === 'en' ? 'Grammar Exercises' : 'Exercícios de Gramática',
+          title: 'A Gramática Exercícios 2',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148411-8'
+        },
+        {
+          subject: language === 'en' ? 'English' : 'Inglês',
+          title: 'Manual Little Rocky 2',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148411-9'
+        },
+        {
+          subject: language === 'en' ? 'Digital Platform' : 'Plataforma Digital',
+          title: 'Escola Virtual - Licença anual 2.º ano*',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148412-0'
         }
       ],
       grade3: [
         {
-          subject: language === 'en' ? 'Mathematics' : 'Matemática',
-          title: language === 'en' ? 'Math Adventures 3' : 'Aventuras Matemáticas 3',
-          author: 'Maria Silva',
-          publisher: language === 'en' ? 'Educational Press' : 'Editora Educacional',
-          isbn: '978-3-16-148411-8'
-        },
-        {
           subject: language === 'en' ? 'Portuguese' : 'Português',
-          title: language === 'en' ? 'Portuguese Language 3' : 'Língua Portuguesa 3',
-          author: 'João Pereira',
-          publisher: language === 'en' ? 'Learning Books' : 'Livros de Aprendizagem',
-          isbn: '978-3-16-148411-9'
-        },
-        {
-          subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
-          title: language === 'en' ? 'Discovering Our World 3' : 'Descobrindo Nosso Mundo 3',
-          author: 'Ana Costa',
-          publisher: language === 'en' ? 'Discovery Press' : 'Editora Descoberta',
-          isbn: '978-3-16-148412-0'
-        },
-        {
-          subject: language === 'en' ? 'English' : 'Inglês',
-          title: language === 'en' ? 'English Adventure 3' : 'Aventura em Inglês 3',
-          author: 'John Smith',
-          publisher: language === 'en' ? 'Global Education' : 'Educação Global',
+          title: 'Português - Manual Zupi 3',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148412-1'
-        }
-      ],
-      grade4: [
+        },
         {
           subject: language === 'en' ? 'Mathematics' : 'Matemática',
-          title: language === 'en' ? 'Math Adventures 4' : 'Aventuras Matemáticas 4',
-          author: 'Maria Silva',
-          publisher: language === 'en' ? 'Educational Press' : 'Editora Educacional',
+          title: 'Matemática - Bloco Pedagógico Zupi 3',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148412-2'
         },
         {
-          subject: language === 'en' ? 'Portuguese' : 'Português',
-          title: language === 'en' ? 'Portuguese Language 4' : 'Língua Portuguesa 4',
-          author: 'João Pereira',
-          publisher: language === 'en' ? 'Learning Books' : 'Livros de Aprendizagem',
+          subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
+          title: 'Estudo do Meio - Manual Zupi 3',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148412-3'
         },
         {
-          subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
-          title: language === 'en' ? 'Discovering Our World 4' : 'Descobrindo Nosso Mundo 4',
-          author: 'Ana Costa',
-          publisher: language === 'en' ? 'Discovery Press' : 'Editora Descoberta',
+          subject: language === 'en' ? 'Grammar Exercises' : 'Exercícios de Gramática',
+          title: 'A Gramática Exercícios 3',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148412-4'
         },
         {
           subject: language === 'en' ? 'English' : 'Inglês',
-          title: language === 'en' ? 'English Adventure 4' : 'Aventura em Inglês 4',
-          author: 'John Smith',
-          publisher: language === 'en' ? 'Global Education' : 'Educação Global',
+          title: 'Easy Peasy 3',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148412-5'
         },
         {
-          subject: language === 'en' ? 'Geography' : 'Geografia',
-          title: language === 'en' ? 'Our World 4' : 'Nosso Mundo 4',
-          author: 'Carlos Santos',
-          publisher: language === 'en' ? 'Global Education' : 'Educação Global',
+          subject: language === 'en' ? 'Dictionary' : 'Dicionário',
+          title: 'Dicionário Escolar da Língua Portuguesa 2º Ciclo',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
           isbn: '978-3-16-148412-6'
+        },
+        {
+          subject: language === 'en' ? 'Digital Platform' : 'Plataforma Digital',
+          title: 'Escola Virtual - Licença anual 3.º ano*',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148412-7'
+        }
+      ],
+      grade4: [
+        {
+          subject: language === 'en' ? 'Portuguese' : 'Português',
+          title: 'Português - Manual Zupi 4',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148412-8'
+        },
+        {
+          subject: language === 'en' ? 'Mathematics' : 'Matemática',
+          title: 'Matemática - Bloco Pedagógico Zupi 4',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148412-9'
+        },
+        {
+          subject: language === 'en' ? 'Environmental Studies' : 'Estudo do Meio',
+          title: 'Estudo do Meio - Manual Zupi 4',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148413-0'
+        },
+        {
+          subject: language === 'en' ? 'Grammar Exercises' : 'Exercícios de Gramática',
+          title: 'A Gramática Exercícios 4',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148413-1'
+        },
+        {
+          subject: language === 'en' ? 'English' : 'Inglês',
+          title: 'Easy Peasy 4',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148413-2'
+        },
+        {
+          subject: language === 'en' ? 'Digital Platform' : 'Plataforma Digital',
+          title: 'Escola Virtual - Licença anual 4.º ano*',
+          author: 'Porto Editora',
+          publisher: 'Porto Editora',
+          isbn: '978-3-16-148413-3'
         }
       ]
     };
@@ -428,67 +402,68 @@ const SchoolBooks = () => {
             
             {/* Books List */}
             {activeSubOption && (
-              <div className="grid grid-cols-1 gap-6 mb-12">
-                {activeSubOption.books.map((book, index) => (
-                  <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-                    <div className="flex items-start">
-                      <div className="h-12 w-12 flex-shrink-0 bg-school-green bg-opacity-20 rounded-full flex items-center justify-center">
-                        <BookOpen className="h-6 w-6 text-school-green" />
-                      </div>
-                      <div className="ml-4">
-                        <h3 className="text-xl font-bold text-school-blue">{book.title}</h3>
-                        <p className="text-gray-500 text-sm mb-2">{book.subject}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-gray-700">
-                          <div>
-                            <span className="font-medium">{t('books.author_label')} </span> {book.author}
+              <div className="mb-12">
+                {activeSubOption.books.length > 0 ? (
+                  <div className="grid grid-cols-1 gap-6">
+                    {activeSubOption.books.map((book, index) => (
+                      <div key={index} className="bg-white p-6 rounded-lg shadow-md">
+                        <div className="flex items-start">
+                          <div className="h-12 w-12 flex-shrink-0 bg-school-green bg-opacity-20 rounded-full flex items-center justify-center">
+                            <BookOpen className="h-6 w-6 text-school-green" />
                           </div>
-                          <div>
-                            <span className="font-medium">{t('books.publisher_label')} </span> {book.publisher}
-                          </div>
-                          <div className="md:col-span-2">
-                            <span className="font-medium">{t('books.isbn_label')} </span> {book.isbn}
+                          <div className="ml-4">
+                            <h3 className="text-xl font-bold text-school-blue">{book.title}</h3>
+                            <p className="text-gray-500 text-sm mb-2">{book.subject}</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-gray-700">
+                              <div>
+                                <span className="font-medium">{t('books.author_label')} </span> {book.author}
+                              </div>
+                              <div>
+                                <span className="font-medium">{t('books.publisher_label')} </span> {book.publisher}
+                              </div>
+                              <div className="md:col-span-2">
+                                <span className="font-medium">{t('books.isbn_label')} </span> {book.isbn}
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                ) : (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
+                    <div className="flex justify-center mb-4">
+                      <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
+                        <BookOpen className="h-8 w-8 text-blue-600" />
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-semibold text-blue-900 mb-2">
+                      {t('books.no_books_required')}
+                    </h3>
+                    <p className="text-blue-700">
+                      {t('books.no_books_message')}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
             
-            {/* Where to Buy */}
-            <div className="bg-white p-8 rounded-lg shadow-md">
-              <h2 className="text-2xl font-serif font-bold text-school-blue mb-6 text-center">
-                {t('books.where_to_buy')}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {bookstores.map((store, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4">
-                    <h3 className="font-bold text-school-blue mb-2">{store.name}</h3>
-                    {store.address && (
-                      <p className="text-gray-600 text-sm mb-1">
-                        <span className="font-medium">{t('books.address_label')} </span>
-                        {store.address}
-                      </p>
-                    )}
-                    <p className="text-gray-600 text-sm mb-1">
-                      <span className="font-medium">{t('books.phone_label')} </span>
-                      {store.phone}
-                    </p>
-                    <p className="text-gray-600 text-sm">
-                      <span className="font-medium">{t('books.website_label')} </span>
-                      <a 
-                        href={`https://${store.website}`} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-school-blue hover:underline inline-flex items-center"
-                      >
-                        {store.website}
-                        <ExternalLink className="ml-1 h-3 w-3" />
-                      </a>
-                    </p>
+            {/* Discount Note */}
+            <div className="bg-school-blue bg-opacity-5 border-l-4 border-school-blue rounded-lg p-6">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-school-blue rounded-full flex items-center justify-center">
+                    <span className="text-white text-base font-bold">*</span>
                   </div>
-                ))}
+                </div>
+                <div className="ml-4">
+                  <p className="text-gray-800 font-semibold text-base leading-relaxed">
+                    {t('books.discount_note')}
+                  </p>
+                  <p className="text-gray-600 text-sm mt-2 leading-relaxed">
+                    {t('books.discount_contact')}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
